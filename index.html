@@ -167,19 +167,17 @@ html,body{height:100%;font-family:'Nunito',sans-serif;background:var(--warm);ove
 <body>
 
 <!-- ════════════ SPLASH ════════════ -->
-<div class="screen" id="splash">
-  <div class="splash-logo">
-    <svg width="64" height="58" viewBox="0 0 120 108" fill="none">
-      <path d="M8 8C18 8 30 20 42 44L60 80L78 44C90 20 102 8 112 8" stroke="white" stroke-width="20" stroke-linecap="round" stroke-linejoin="round"/>
-      <path d="M78 44C90 20 102 8 112 8" stroke="#3DBE5A" stroke-width="20" stroke-linecap="round"/>
-      <ellipse cx="60" cy="88" rx="10" ry="7" fill="#3DBE5A"/>
-    </svg>
-    <div>
-      <div class="splash-wordmark">Vanti<span class="dot"></span></div>
-      <p class="splash-tagline">O parceiro que conecta</p>
-    </div>
-    <div class="splash-bar"><div class="splash-fill"></div></div>
-  </div>
+<div class="screen" id="splash" style="background:#f0f0ee;">
+  <video
+    id="splashVideo"
+    autoplay
+    muted
+    playsinline
+    style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;"
+    onended="splashDone()"
+  >
+    <source src="splash.mp4" type="video/mp4"/>
+  </video>
 </div>
 
 <!-- ════════════ LOGIN ════════════ -->
@@ -601,10 +599,17 @@ window.showToast = (msg, green=false) => {
   window._toastTimer = setTimeout(() => t.classList.remove('show'), 2500);
 };
 
-// Splash → login after 2s
-setTimeout(() => {
+// Splash video ended → go to login
+window.splashDone = () => {
   if (!auth.currentUser) showLogin();
-}, 2000);
+};
+// Fallback if video fails to load
+setTimeout(() => {
+  const splash = document.getElementById('splash');
+  if (!splash.classList.contains('hidden')) {
+    if (!auth.currentUser) showLogin();
+  }
+}, 5000);
 
 </script>
 </body>
