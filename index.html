@@ -1,0 +1,611 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"/>
+<meta name="theme-color" content="#111110"/>
+<title>Vanti</title>
+<link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&display=swap" rel="stylesheet"/>
+<style>
+:root {
+  --green:#3DBE5A; --carbon:#111110; --orange:#FF7D00;
+  --white:#FFFFFF; --warm:#F7F7F6; --gray:#6B6B68;
+  --gray2:#E2E2DF; --gray3:#F0F0EE;
+}
+*{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent;}
+html,body{height:100%;font-family:'Nunito',sans-serif;background:var(--warm);overflow:hidden;}
+
+/* ── SCREENS ── */
+.screen{position:fixed;inset:0;display:flex;flex-direction:column;transition:opacity .35s ease,transform .35s cubic-bezier(.22,.68,0,1.1);will-change:transform,opacity;}
+.screen.hidden{opacity:0;pointer-events:none;transform:translateY(24px);}
+
+/* ══════════════════════════════
+   SPLASH
+══════════════════════════════ */
+#splash{background:var(--carbon);align-items:center;justify-content:center;z-index:100;}
+.splash-logo{display:flex;flex-direction:column;align-items:center;gap:20px;}
+.splash-wordmark{font-weight:900;font-size:52px;color:var(--white);letter-spacing:-.04em;position:relative;display:inline-block;}
+.splash-wordmark .dot{position:absolute;top:-4px;right:4px;width:11px;height:11px;border-radius:50%;background:var(--green);}
+.splash-tagline{font-size:14px;color:rgba(255,255,255,.4);font-weight:600;letter-spacing:.04em;}
+.splash-bar{width:48px;height:3px;background:rgba(255,255,255,.1);border-radius:3px;overflow:hidden;margin-top:8px;}
+.splash-fill{height:100%;background:var(--green);border-radius:3px;animation:load 1.8s ease forwards;}
+@keyframes load{from{width:0}to{width:100%}}
+
+/* ══════════════════════════════
+   LOGIN
+══════════════════════════════ */
+#login{background:var(--carbon);overflow-y:auto;}
+.login-top{flex:0 0 auto;padding:60px 32px 32px;display:flex;flex-direction:column;align-items:center;text-align:center;}
+.login-icon{width:72px;height:72px;border-radius:22px;background:rgba(61,190,90,.12);border:1.5px solid rgba(61,190,90,.25);display:flex;align-items:center;justify-content:center;margin-bottom:24px;}
+.login-title{font-weight:900;font-size:28px;color:var(--white);letter-spacing:-.02em;line-height:1.15;}
+.login-title span{color:var(--green);}
+.login-sub{font-size:13px;color:rgba(255,255,255,.4);margin-top:8px;line-height:1.6;}
+.login-form{flex:1;padding:8px 28px 40px;display:flex;flex-direction:column;gap:14px;}
+.input-wrap{display:flex;flex-direction:column;gap:6px;}
+.input-label{font-size:11px;font-weight:800;color:rgba(255,255,255,.4);letter-spacing:.06em;text-transform:uppercase;}
+.input-field{background:rgba(255,255,255,.06);border:1.5px solid rgba(255,255,255,.1);border-radius:16px;padding:16px 18px;font-family:'Nunito',sans-serif;font-size:15px;font-weight:600;color:var(--white);outline:none;transition:border .2s;}
+.input-field::placeholder{color:rgba(255,255,255,.25);}
+.input-field:focus{border-color:rgba(61,190,90,.5);background:rgba(61,190,90,.05);}
+.btn-primary{background:var(--green);border:none;border-radius:50px;padding:17px;font-family:'Nunito',sans-serif;font-weight:900;font-size:16px;color:var(--white);cursor:pointer;box-shadow:0 6px 24px rgba(61,190,90,.35);transition:transform .1s,box-shadow .1s;margin-top:4px;}
+.btn-primary:active{transform:scale(.97);box-shadow:0 3px 12px rgba(61,190,90,.25);}
+.btn-primary:disabled{opacity:.5;cursor:default;}
+.btn-ghost{background:none;border:1.5px solid rgba(255,255,255,.12);border-radius:50px;padding:15px;font-family:'Nunito',sans-serif;font-weight:700;font-size:14px;color:rgba(255,255,255,.5);cursor:pointer;transition:border .2s;}
+.login-divider{display:flex;align-items:center;gap:12px;margin:4px 0;}
+.login-divider::before,.login-divider::after{content:'';flex:1;height:1px;background:rgba(255,255,255,.08);}
+.login-divider span{font-size:11px;color:rgba(255,255,255,.25);font-weight:700;}
+.login-switch{text-align:center;font-size:13px;color:rgba(255,255,255,.4);}
+.login-switch a{color:var(--green);font-weight:800;text-decoration:none;cursor:pointer;}
+.error-msg{background:rgba(229,62,62,.1);border:1px solid rgba(229,62,62,.25);border-radius:12px;padding:12px 14px;font-size:12px;color:#FC8181;font-weight:700;display:none;}
+.error-msg.show{display:block;}
+
+/* ══════════════════════════════
+   HOME
+══════════════════════════════ */
+#home{background:var(--warm);overflow:hidden;}
+.home-scroll{flex:1;overflow-y:auto;padding-bottom:90px;}
+.home-scroll::-webkit-scrollbar{display:none;}
+
+/* Header */
+.home-header{background:var(--warm);padding:52px 20px 16px;display:flex;justify-content:space-between;align-items:center;position:sticky;top:0;z-index:10;}
+.header-left p:first-child{font-size:12px;color:var(--gray);font-weight:600;}
+.header-left p:last-child{font-weight:900;font-size:22px;color:var(--carbon);letter-spacing:-.02em;}
+.header-right{display:flex;gap:10px;align-items:center;}
+.icon-btn{width:40px;height:40px;border-radius:13px;background:var(--white);border:1.5px solid var(--gray2);display:flex;align-items:center;justify-content:center;cursor:pointer;position:relative;box-shadow:0 2px 8px rgba(0,0,0,.05);}
+.notif-dot{position:absolute;top:8px;right:8px;width:7px;height:7px;border-radius:50%;background:var(--orange);border:2px solid var(--warm);}
+.avatar-btn{width:40px;height:40px;border-radius:13px;background:var(--carbon);display:flex;align-items:center;justify-content:center;cursor:pointer;box-shadow:0 2px 8px rgba(17,17,16,.2);}
+.avatar-btn span{font-weight:900;font-size:15px;color:var(--white);}
+
+/* Disponível toggle */
+.disponivel-wrap{padding:0 16px 14px;}
+.disponivel-card{background:var(--white);border-radius:20px;padding:15px 18px;border:1.5px solid var(--gray2);display:flex;justify-content:space-between;align-items:center;cursor:pointer;transition:all .25s;box-shadow:0 2px 10px rgba(0,0,0,.04);}
+.disponivel-card.active{background:var(--carbon);border-color:var(--carbon);box-shadow:0 8px 28px rgba(17,17,16,.22);}
+.disp-left{display:flex;align-items:center;gap:12px;}
+.disp-icon{width:38px;height:38px;border-radius:12px;background:#EDF9F0;display:flex;align-items:center;justify-content:center;flex-shrink:0;transition:background .25s;}
+.disponivel-card.active .disp-icon{background:rgba(61,190,90,.15);}
+.disp-title{font-weight:800;font-size:14px;color:var(--carbon);transition:color .25s;}
+.disponivel-card.active .disp-title{color:var(--white);}
+.disp-sub{font-size:11px;color:var(--gray);margin-top:1px;transition:color .25s;}
+.disponivel-card.active .disp-sub{color:rgba(255,255,255,.45);}
+.toggle{width:46px;height:28px;border-radius:14px;background:var(--gray2);padding:3px;display:flex;align-items:center;justify-content:flex-start;transition:all .25s;flex-shrink:0;}
+.toggle.on{background:var(--green);justify-content:flex-end;}
+.toggle-thumb{width:22px;height:22px;border-radius:50%;background:var(--white);box-shadow:0 1px 4px rgba(0,0,0,.2);}
+
+/* Stats */
+.stats-wrap{padding:0 16px 14px;display:flex;gap:8px;}
+.stat-card{flex:1;border-radius:16px;padding:12px 10px;text-align:center;border:1.5px solid var(--gray2);}
+.stat-val{font-weight:900;font-size:16px;letter-spacing:-.02em;}
+.stat-label{font-size:9px;color:var(--gray);margin-top:2px;line-height:1.3;}
+
+/* Section header */
+.sec-head{display:flex;justify-content:space-between;align-items:center;padding:0 16px;margin-bottom:10px;}
+.sec-head p{font-weight:800;font-size:13px;color:var(--carbon);}
+.sec-head a{font-size:11px;font-weight:700;color:var(--green);text-decoration:none;cursor:pointer;}
+
+/* Categorias */
+.cats-scroll{display:flex;gap:8px;padding:0 16px;overflow-x:auto;margin-bottom:16px;}
+.cats-scroll::-webkit-scrollbar{display:none;}
+.cat-chip{display:flex;align-items:center;gap:7px;background:var(--white);border:1.5px solid var(--gray2);border-radius:50px;padding:8px 14px;cursor:pointer;transition:all .15s;white-space:nowrap;flex-shrink:0;}
+.cat-chip.active{background:var(--carbon);border-color:var(--carbon);}
+.cat-chip span{font-size:12px;font-weight:700;color:var(--carbon);transition:color .15s;}
+.cat-chip.active span{color:var(--white);}
+
+/* Diária cards */
+.diarias-wrap{padding:0 16px;display:flex;flex-direction:column;gap:10px;margin-bottom:16px;}
+.diaria-card{background:var(--white);border-radius:20px;padding:16px;border:1.5px solid var(--gray2);box-shadow:0 3px 14px rgba(0,0,0,.05);}
+.diaria-card.hot{border-color:rgba(255,125,0,.2);box-shadow:0 5px 20px rgba(255,125,0,.08);}
+.diaria-top{display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:8px;}
+.diaria-info{flex:1;}
+.diaria-badges{display:flex;gap:6px;margin-bottom:5px;flex-wrap:wrap;}
+.badge{font-size:9px;font-weight:800;padding:2px 8px;border-radius:20px;display:inline-flex;align-items:center;gap:3px;}
+.badge-green{background:#EDF9F0;color:var(--green);}
+.badge-orange{background:#FFF0E0;color:var(--orange);}
+.diaria-title{font-weight:900;font-size:15px;color:var(--carbon);}
+.diaria-company{font-size:12px;color:var(--gray);margin-top:2px;font-weight:600;}
+.diaria-value{font-weight:900;font-size:18px;color:var(--carbon);letter-spacing:-.02em;}
+.diaria-value-sub{font-size:10px;color:var(--gray);text-align:right;}
+.diaria-meta{background:var(--gray3);border-radius:12px;padding:8px 12px;display:flex;gap:12px;align-items:center;margin-bottom:12px;}
+.meta-item{display:flex;align-items:center;gap:4px;font-size:11px;color:var(--gray);font-weight:600;}
+.diaria-actions{display:flex;gap:8px;}
+.btn-ghost-sm{flex:1;background:none;border:1.5px solid var(--gray2);border-radius:50px;padding:10px;font-family:'Nunito',sans-serif;font-weight:700;font-size:12px;color:var(--gray);cursor:pointer;}
+.btn-apply{flex:2;background:var(--carbon);border:none;border-radius:50px;padding:10px;font-family:'Nunito',sans-serif;font-weight:800;font-size:13px;color:var(--white);cursor:pointer;display:flex;align-items:center;justify-content:center;gap:7px;box-shadow:0 4px 14px rgba(17,17,16,.2);transition:transform .1s;}
+.btn-apply:active{transform:scale(.97);}
+.btn-apply.applied{background:#EDF9F0;color:var(--green);border:1.5px solid var(--green);box-shadow:none;}
+
+/* Comunidade */
+.comunidade-scroll{display:flex;gap:10px;padding:0 16px;overflow-x:auto;margin-bottom:16px;}
+.comunidade-scroll::-webkit-scrollbar{display:none;}
+.worker-card{background:var(--white);border-radius:18px;padding:14px;border:1.5px solid var(--gray2);min-width:150px;flex-shrink:0;box-shadow:0 2px 8px rgba(0,0,0,.04);}
+.worker-avatar{width:44px;height:44px;border-radius:14px;display:flex;align-items:center;justify-content:center;font-size:22px;margin-bottom:8px;position:relative;}
+.worker-dot{position:absolute;bottom:2px;right:2px;width:10px;height:10px;border-radius:50%;background:var(--green);border:2px solid var(--white);}
+.worker-name{font-weight:800;font-size:13px;color:var(--carbon);}
+.worker-role{font-size:11px;color:var(--gray);margin-top:1px;}
+.worker-stats{display:flex;gap:8px;margin-top:6px;}
+.worker-stat{font-size:10px;color:var(--gray);}
+.worker-stat span{font-weight:800;color:var(--carbon);}
+
+/* Destaque banner */
+.destaque-wrap{padding:0 16px 14px;}
+.destaque-card{background:var(--orange);border-radius:20px;padding:18px 20px;display:flex;justify-content:space-between;align-items:center;box-shadow:0 6px 20px rgba(255,125,0,.28);}
+.destaque-left p:first-child{font-weight:900;font-size:15px;color:var(--white);}
+.destaque-left p:last-child{font-size:11px;color:rgba(255,255,255,.7);margin-top:3px;line-height:1.5;}
+.destaque-btn{background:var(--white);border-radius:50px;padding:9px 18px;font-family:'Nunito',sans-serif;font-weight:800;font-size:12px;color:var(--orange);cursor:pointer;border:none;flex-shrink:0;white-space:nowrap;}
+
+/* Bottom nav */
+.bottom-nav{position:fixed;bottom:0;left:50%;transform:translateX(-50%);width:100%;max-width:430px;background:var(--white);border-top:1px solid var(--gray2);padding:8px 8px 20px;display:flex;justify-content:space-around;z-index:50;}
+.nav-btn{display:flex;flex-direction:column;align-items:center;gap:3px;background:none;border:none;cursor:pointer;padding:6px 10px;border-radius:12px;}
+.nav-icon{width:40px;height:36px;border-radius:12px;display:flex;align-items:center;justify-content:center;transition:background .15s;}
+.nav-btn.active .nav-icon{background:var(--gray3);}
+.nav-label{font-size:9px;font-family:'Nunito',sans-serif;font-weight:500;color:var(--gray2);transition:color .15s;}
+.nav-btn.active .nav-label{font-weight:900;color:var(--carbon);}
+
+/* Toast */
+.toast{position:fixed;top:60px;left:50%;transform:translateX(-50%) translateY(-20px);background:var(--carbon);color:var(--white);padding:12px 20px;border-radius:50px;font-size:13px;font-weight:700;opacity:0;transition:all .3s;z-index:200;pointer-events:none;white-space:nowrap;}
+.toast.show{opacity:1;transform:translateX(-50%) translateY(0);}
+.toast.green{background:var(--green);}
+</style>
+</head>
+<body>
+
+<!-- ════════════ SPLASH ════════════ -->
+<div class="screen" id="splash">
+  <div class="splash-logo">
+    <svg width="64" height="58" viewBox="0 0 120 108" fill="none">
+      <path d="M8 8C18 8 30 20 42 44L60 80L78 44C90 20 102 8 112 8" stroke="white" stroke-width="20" stroke-linecap="round" stroke-linejoin="round"/>
+      <path d="M78 44C90 20 102 8 112 8" stroke="#3DBE5A" stroke-width="20" stroke-linecap="round"/>
+      <ellipse cx="60" cy="88" rx="10" ry="7" fill="#3DBE5A"/>
+    </svg>
+    <div>
+      <div class="splash-wordmark">Vanti<span class="dot"></span></div>
+      <p class="splash-tagline">O parceiro que conecta</p>
+    </div>
+    <div class="splash-bar"><div class="splash-fill"></div></div>
+  </div>
+</div>
+
+<!-- ════════════ LOGIN ════════════ -->
+<div class="screen hidden" id="login">
+  <div class="login-top">
+    <div class="login-icon">
+      <svg width="32" height="32" viewBox="0 0 120 108" fill="none">
+        <path d="M8 8C18 8 30 20 42 44L60 80L78 44C90 20 102 8 112 8" stroke="white" stroke-width="18" stroke-linecap="round"/>
+        <path d="M78 44C90 20 102 8 112 8" stroke="#3DBE5A" stroke-width="18" stroke-linecap="round"/>
+        <ellipse cx="60" cy="88" rx="9" ry="6" fill="#3DBE5A"/>
+      </svg>
+    </div>
+    <h1 class="login-title" id="loginTitle">Bienvenido a <span>Vanti</span></h1>
+    <p class="login-sub" id="loginSub">Encontrá tu próxima diária hoy.</p>
+  </div>
+
+  <div class="login-form">
+    <div class="error-msg" id="errorMsg"></div>
+
+    <!-- Register extra fields -->
+    <div class="input-wrap" id="nameWrap" style="display:none;">
+      <div class="input-label">Tu nombre</div>
+      <input class="input-field" id="nameInput" type="text" placeholder="Como quieres ser encontrado"/>
+    </div>
+
+    <div class="input-wrap">
+      <div class="input-label">Email</div>
+      <input class="input-field" id="emailInput" type="email" placeholder="tu@email.com" autocomplete="email"/>
+    </div>
+
+    <div class="input-wrap">
+      <div class="input-label">Contraseña</div>
+      <input class="input-field" id="passInput" type="password" placeholder="••••••••" autocomplete="current-password"/>
+    </div>
+
+    <button class="btn-primary" id="authBtn" onclick="handleAuth()">Entrar</button>
+
+    <div class="login-divider"><span>ou</span></div>
+
+    <p class="login-switch" id="switchText">
+      Não tem conta? <a onclick="toggleMode()">Criar agora</a>
+    </p>
+  </div>
+</div>
+
+<!-- ════════════ HOME ════════════ -->
+<div class="screen hidden" id="home">
+  <div class="home-scroll" id="homeScroll">
+
+    <!-- Header -->
+    <div class="home-header">
+      <div class="header-left">
+        <p id="greetTime">Bom dia</p>
+        <p id="userName">...</p>
+      </div>
+      <div class="header-right">
+        <div class="icon-btn" onclick="showToast('Notificações em breve')">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none"><path d="M12 3C12 3 7 6 7 13V18H17V13C17 6 12 3 12 3Z" stroke="#111110" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/><path d="M10 18C10 19.1 10.9 20 12 20C13.1 20 14 19.1 14 18" stroke="#111110" stroke-width="2" stroke-linecap="round"/></svg>
+          <div class="notif-dot"></div>
+        </div>
+        <div class="avatar-btn" onclick="showToast('Perfil em breve')">
+          <span id="userInitial">V</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Disponível -->
+    <div class="disponivel-wrap">
+      <div class="disponivel-card" id="dispCard" onclick="toggleDisp()">
+        <div class="disp-left">
+          <div class="disp-icon" id="dispIcon">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none"><path d="M12 2C8.1 2 5 5.1 5 9C5 14.2 12 22 12 22C12 22 19 14.2 19 9C19 5.1 15.9 2 12 2Z" fill="#3DBE5A"/><circle cx="12" cy="9" r="2.5" fill="white"/></svg>
+          </div>
+          <div>
+            <div class="disp-title" id="dispTitle">Modo disponível</div>
+            <div class="disp-sub" id="dispSub">Toque para ativar</div>
+          </div>
+        </div>
+        <div class="toggle" id="toggle"><div class="toggle-thumb"></div></div>
+      </div>
+    </div>
+
+    <!-- Stats -->
+    <div class="stats-wrap">
+      <div class="stat-card" style="background:#EDF9F0;border-color:rgba(61,190,90,.2);">
+        <div class="stat-val" style="color:var(--green);">0</div>
+        <div class="stat-label">Diárias feitas</div>
+      </div>
+      <div class="stat-card" style="background:#FFF0E0;border-color:rgba(255,125,0,.2);">
+        <div class="stat-val" style="color:var(--orange);">—</div>
+        <div class="stat-label">Avaliação</div>
+      </div>
+      <div class="stat-card" style="background:var(--gray3);">
+        <div class="stat-val" style="color:var(--carbon);">R$0</div>
+        <div class="stat-label">Este mês</div>
+      </div>
+    </div>
+
+    <!-- Categorias -->
+    <div class="sec-head"><p>Categorias</p></div>
+    <div class="cats-scroll" id="catsScroll"></div>
+
+    <!-- Diárias -->
+    <div class="sec-head">
+      <p>Diárias perto de você</p>
+      <a onclick="showToast('Ver todas em breve')">Ver todas</a>
+    </div>
+    <div class="diarias-wrap" id="diariasWrap"></div>
+
+    <!-- Comunidade -->
+    <div class="sec-head">
+      <p>Comunidade perto</p>
+      <a onclick="showToast('Ver todos em breve')">Ver todos</a>
+    </div>
+    <div class="comunidade-scroll" id="comunidadeScroll"></div>
+
+    <!-- Destaque banner -->
+    <div class="destaque-wrap">
+      <div class="destaque-card">
+        <div class="destaque-left">
+          <p>Destacar meu perfil</p>
+          <p>Apareça primeiro para<br/>empresas do seu bairro</p>
+        </div>
+        <button class="destaque-btn" onclick="showToast('Em breve!')">Ver planos</button>
+      </div>
+    </div>
+
+  </div><!-- /homeScroll -->
+
+  <!-- Bottom nav -->
+  <nav class="bottom-nav">
+    <button class="nav-btn active" onclick="setNav(this)">
+      <div class="nav-icon">
+        <svg width="22" height="22" viewBox="0 0 24 24" fill="none"><path d="M3 10.5L12 3L21 10.5V21H15.5V15H8.5V21H3V10.5Z" fill="#111110" opacity=".9"/></svg>
+      </div>
+      <span class="nav-label">Início</span>
+    </button>
+    <button class="nav-btn" onclick="setNav(this);showToast('Buscar em breve')">
+      <div class="nav-icon">
+        <svg width="22" height="22" viewBox="0 0 24 24" fill="none"><circle cx="10.5" cy="10.5" r="6.5" stroke="#C0C0BC" stroke-width="2"/><path d="M15.5 15.5L21 21" stroke="#C0C0BC" stroke-width="2.2" stroke-linecap="round"/></svg>
+      </div>
+      <span class="nav-label">Buscar</span>
+    </button>
+    <button class="nav-btn" onclick="setNav(this);showToast('Perto de você em breve')">
+      <div class="nav-icon">
+        <svg width="22" height="22" viewBox="0 0 24 24" fill="none"><path d="M12 2C8.1 2 5 5.1 5 9C5 14.2 12 22 12 22C12 22 19 14.2 19 9C19 5.1 15.9 2 12 2Z" stroke="#C0C0BC" stroke-width="2" stroke-linejoin="round"/><circle cx="12" cy="9" r="2.5" stroke="#C0C0BC" stroke-width="2"/></svg>
+      </div>
+      <span class="nav-label">Perto</span>
+    </button>
+    <button class="nav-btn" onclick="setNav(this);showToast('Alertas em breve')">
+      <div class="nav-icon">
+        <svg width="22" height="22" viewBox="0 0 24 24" fill="none"><path d="M12 3C12 3 7 6 7 13V18H17V13C17 6 12 3 12 3Z" stroke="#C0C0BC" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/><path d="M10 18C10 19.1 10.9 20 12 20C13.1 20 14 19.1 14 18" stroke="#C0C0BC" stroke-width="2" stroke-linecap="round"/></svg>
+      </div>
+      <span class="nav-label">Alertas</span>
+    </button>
+    <button class="nav-btn" onclick="setNav(this);showToast('Perfil em breve')">
+      <div class="nav-icon">
+        <svg width="22" height="22" viewBox="0 0 24 24" fill="none"><circle cx="12" cy="8" r="4.5" stroke="#C0C0BC" stroke-width="2"/><path d="M3.5 21C3.5 17 7.4 14 12 14C16.6 14 20.5 17 20.5 21" stroke="#C0C0BC" stroke-width="2" stroke-linecap="round"/></svg>
+      </div>
+      <span class="nav-label">Perfil</span>
+    </button>
+  </nav>
+</div>
+
+<div class="toast" id="toast"></div>
+
+<!-- ════════════ FIREBASE ════════════ -->
+<script type="module">
+import { initializeApp } from "https://www.gstatic.com/firebasejs/11.0.1/firebase-app.js";
+import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/11.0.1/firebase-auth.js";
+import { getFirestore, doc, setDoc, getDoc, serverTimestamp } from "https://www.gstatic.com/firebasejs/11.0.1/firebase-firestore.js";
+
+// ── FIREBASE CONFIG ──
+const firebaseConfig = {
+  apiKey: "AIzaSyCw4QhQ5fGYSv_QgfY-waAZuOhkfv1ej1s",
+  authDomain: "vanti-app-br.firebaseapp.com",
+  projectId: "vanti-app-br",
+  storageBucket: "vanti-app-br.firebasestorage.app",
+  messagingSenderId: "1028700458017",
+  appId: "1:1028700458017:web:6011fd81d09010e4f1e760"
+};
+
+const app = initializeApp(firebaseConfig);
+const auth = getAuth(app);
+const db = getFirestore(app);
+
+// ── AUTH STATE ──
+onAuthStateChanged(auth, async (user) => {
+  if (user) {
+    // Logged in
+    const snap = await getDoc(doc(db, "users", user.uid));
+    const data = snap.exists() ? snap.data() : {};
+    const name = data.name || user.email.split('@')[0];
+    showHome(name);
+  } else {
+    showLogin();
+  }
+});
+
+// ── AUTH HANDLER ──
+let isRegister = false;
+
+window.handleAuth = async () => {
+  const email = document.getElementById('emailInput').value.trim();
+  const pass  = document.getElementById('passInput').value;
+  const btn   = document.getElementById('authBtn');
+  const err   = document.getElementById('errorMsg');
+  err.classList.remove('show');
+
+  if (!email || !pass) {
+    showError('Preencha todos os campos');
+    return;
+  }
+  if (pass.length < 6) {
+    showError('A senha precisa ter pelo menos 6 caracteres');
+    return;
+  }
+
+  btn.disabled = true;
+  btn.textContent = 'Aguarde...';
+
+  try {
+    if (isRegister) {
+      const name = document.getElementById('nameInput').value.trim();
+      if (!name) { showError('Coloca seu nome'); btn.disabled=false; btn.textContent='Criar conta'; return; }
+      const cred = await createUserWithEmailAndPassword(auth, email, pass);
+      await setDoc(doc(db, "users", cred.user.uid), {
+        name, email,
+        role: 'worker',
+        disponivel: false,
+        diarias: 0,
+        createdAt: serverTimestamp()
+      });
+      showToast('Bem-vindo ao Vanti!', true);
+    } else {
+      await signInWithEmailAndPassword(auth, email, pass);
+      showToast('Bem-vindo de volta!', true);
+    }
+  } catch(e) {
+    const msgs = {
+      'auth/user-not-found': 'Email não encontrado',
+      'auth/wrong-password': 'Senha incorreta',
+      'auth/email-already-in-use': 'Email já cadastrado',
+      'auth/invalid-email': 'Email inválido',
+      'auth/invalid-credential': 'Email ou senha incorretos',
+    };
+    showError(msgs[e.code] || 'Algo deu errado. Tente novamente.');
+    btn.disabled = false;
+    btn.textContent = isRegister ? 'Criar conta' : 'Entrar';
+  }
+};
+
+window.toggleMode = () => {
+  isRegister = !isRegister;
+  document.getElementById('nameWrap').style.display = isRegister ? 'flex' : 'none';
+  document.getElementById('loginTitle').innerHTML = isRegister ? 'Criar sua conta <span>Vanti</span>' : 'Bienvenido a <span>Vanti</span>';
+  document.getElementById('loginSub').textContent = isRegister ? 'Comece a receber diárias hoje.' : 'Encontrá tu próxima diária hoy.';
+  document.getElementById('authBtn').textContent = isRegister ? 'Criar conta' : 'Entrar';
+  document.getElementById('switchText').innerHTML = isRegister
+    ? 'Já tem conta? <a onclick="toggleMode()">Entrar</a>'
+    : 'Não tem conta? <a onclick="toggleMode()">Criar agora</a>';
+  document.getElementById('errorMsg').classList.remove('show');
+};
+
+// ── UI HELPERS ──
+function showError(msg) {
+  const el = document.getElementById('errorMsg');
+  el.textContent = msg;
+  el.classList.add('show');
+}
+
+function showLogin() {
+  document.getElementById('splash').classList.add('hidden');
+  document.getElementById('home').classList.add('hidden');
+  document.getElementById('login').classList.remove('hidden');
+}
+
+function showHome(name) {
+  document.getElementById('splash').classList.add('hidden');
+  document.getElementById('login').classList.add('hidden');
+  document.getElementById('home').classList.remove('hidden');
+
+  // Greeting
+  const h = new Date().getHours();
+  const greet = h < 12 ? 'Bom dia' : h < 18 ? 'Boa tarde' : 'Boa noite';
+  document.getElementById('greetTime').textContent = greet + ' 👋';
+  document.getElementById('userName').textContent = name;
+  document.getElementById('userInitial').textContent = name[0].toUpperCase();
+
+  buildHome();
+}
+
+// ── BUILD HOME ──
+function buildHome() {
+  buildCats();
+  buildDiarias();
+  buildComunidade();
+}
+
+function buildCats() {
+  const cats = [
+    {label:'Todas', icon:'🔍', active:true},
+    {label:'Cozinha', icon:'🍳'},
+    {label:'Limpeza', icon:'🧹'},
+    {label:'Salão', icon:'🍽️'},
+    {label:'Pintura', icon:'🎨'},
+    {label:'Segurança', icon:'🛡️'},
+    {label:'Motorista', icon:'🚗'},
+    {label:'Elétrica', icon:'⚡'},
+  ];
+  const wrap = document.getElementById('catsScroll');
+  wrap.innerHTML = cats.map(c => `
+    <div class="cat-chip ${c.active?'active':''}" onclick="selectCat(this)">
+      <span style="font-size:14px;">${c.icon}</span>
+      <span>${c.label}</span>
+    </div>
+  `).join('');
+}
+
+function buildDiarias() {
+  const data = [
+    {title:'Garçom', company:'Restaurante Batel', km:'1,8 km', value:'R$180', time:'Hoje 18h', rating:'4.9', applicants:5, hot:true, verified:true},
+    {title:'Cozinheiro', company:'Bistrô Centro', km:'3,2 km', value:'R$220', time:'Amanhã 10h', rating:'4.7', hot:false, verified:true},
+    {title:'Auxiliar de Limpeza', company:'Hotel Bourbon', km:'2,1 km', value:'R$150', time:'Hoje 14h', rating:'4.8', hot:false, verified:false},
+  ];
+  const wrap = document.getElementById('diariasWrap');
+  wrap.innerHTML = data.map((d,i) => `
+    <div class="diaria-card ${d.hot?'hot':''}">
+      <div class="diaria-top">
+        <div class="diaria-info">
+          <div class="diaria-badges">
+            ${d.verified?'<span class="badge badge-green">✓ Verificado</span>':''}
+            ${d.hot?`<span class="badge badge-orange">🔥 Em alta</span>`:''}
+          </div>
+          <div class="diaria-title">${d.title}</div>
+          <div class="diaria-company">${d.company}</div>
+        </div>
+        <div style="text-align:right;margin-left:12px;">
+          <div class="diaria-value">${d.value}</div>
+          <div class="diaria-value-sub">por dia</div>
+        </div>
+      </div>
+      <div class="diaria-meta">
+        <div class="meta-item">📍 ${d.km}</div>
+        <div class="meta-item">🕐 ${d.time}</div>
+        <div class="meta-item">★ ${d.rating}</div>
+        ${d.applicants?`<div class="meta-item" style="color:var(--orange);font-weight:800;">${d.applicants} aplicaram</div>`:''}
+      </div>
+      <div class="diaria-actions">
+        <button class="btn-ghost-sm" onclick="showToast('Ver detalhes em breve')">Ver mais</button>
+        <button class="btn-apply" id="apply${i}" onclick="applyDiaria(${i}, this)">
+          <svg width="14" height="14" viewBox="0 0 20 20" fill="none"><path d="M2 9L10 2L18 9" stroke="white" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/><path d="M6.5 9.5C6.5 9.5 8 11.5 10 11.5C12 11.5 13.5 9.5 13.5 9.5" stroke="white" stroke-width="1.8" stroke-linecap="round"/></svg>
+          Aplicar
+        </button>
+      </div>
+    </div>
+  `).join('');
+}
+
+function buildComunidade() {
+  const workers = [
+    {name:'Carlos M.', role:'Cozinheiro', emoji:'👨🏽‍🍳', rating:'4.9', diarias:34, available:true},
+    {name:'Fernanda S.', role:'Garçonete', emoji:'👩🏻', rating:'4.8', diarias:21, available:false},
+    {name:'Roberto L.', role:'Limpeza', emoji:'🧹', rating:'5.0', diarias:18, available:true},
+    {name:'Ana C.', role:'Cozinheira', emoji:'👩🏽‍🍳', rating:'4.7', diarias:12, available:true},
+  ];
+  const wrap = document.getElementById('comunidadeScroll');
+  wrap.innerHTML = workers.map(w => `
+    <div class="worker-card">
+      <div class="worker-avatar" style="background:${w.available?'#EDF9F0':'#F0F0EE'};">
+        <span>${w.emoji}</span>
+        ${w.available?'<div class="worker-dot"></div>':''}
+      </div>
+      <div class="worker-name">${w.name}</div>
+      <div class="worker-role">${w.role}</div>
+      <div class="worker-stats">
+        <div class="worker-stat">★ <span>${w.rating}</span></div>
+        <div class="worker-stat"><span>${w.diarias}</span> diárias</div>
+      </div>
+    </div>
+  `).join('');
+}
+
+// ── INTERACTIONS ──
+window.toggleDisp = () => {
+  const card  = document.getElementById('dispCard');
+  const tog   = document.getElementById('toggle');
+  const title = document.getElementById('dispTitle');
+  const sub   = document.getElementById('dispSub');
+  const on    = card.classList.toggle('active');
+  tog.classList.toggle('on', on);
+  title.textContent = on ? 'Você está disponível' : 'Modo disponível';
+  sub.textContent   = on ? 'Empresas podem te encontrar' : 'Toque para ativar';
+  showToast(on ? 'Modo disponível ativado' : 'Modo disponível desativado', on);
+};
+
+window.selectCat = (el) => {
+  document.querySelectorAll('.cat-chip').forEach(c => c.classList.remove('active'));
+  el.classList.add('active');
+};
+
+window.applyDiaria = (idx, btn) => {
+  if (btn.classList.contains('applied')) return;
+  btn.classList.add('applied');
+  btn.innerHTML = '<svg width="13" height="13" viewBox="0 0 14 14" fill="none"><path d="M2 7L5 10L12 3" stroke="#3DBE5A" stroke-width="2" stroke-linecap="round"/></svg> Aplicado!';
+  showToast('Aplicação enviada com sucesso', true);
+};
+
+window.setNav = (btn) => {
+  document.querySelectorAll('.nav-btn').forEach(b => b.classList.remove('active'));
+  btn.classList.add('active');
+};
+
+window.showToast = (msg, green=false) => {
+  const t = document.getElementById('toast');
+  t.textContent = msg;
+  t.className = 'toast show' + (green?' green':'');
+  clearTimeout(window._toastTimer);
+  window._toastTimer = setTimeout(() => t.classList.remove('show'), 2500);
+};
+
+// Splash → login after 2s
+setTimeout(() => {
+  if (!auth.currentUser) showLogin();
+}, 2000);
+
+</script>
+</body>
+</html>
