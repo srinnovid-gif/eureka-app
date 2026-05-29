@@ -599,17 +599,42 @@ window.showToast = (msg, green=false) => {
   window._toastTimer = setTimeout(() => t.classList.remove('show'), 2500);
 };
 
-// Splash video ended → go to login
+// Splash video logic
+const splashVideo = document.getElementById('splashVideo');
+
+// When video ends naturally
+splashVideo.addEventListener('ended', () => {
+  if (!auth.currentUser) showLogin();
+});
+
+// When video can play — start it
+splashVideo.addEventListener('canplay', () => {
+  splashVideo.play().catch(() => {
+    // Autoplay blocked — show login after 3s
+    setTimeout(() => {
+      if (!auth.currentUser) showLogin();
+    }, 3000);
+  });
+});
+
+// If video fails to load at all
+splashVideo.addEventListener('error', () => {
+  setTimeout(() => {
+    if (!auth.currentUser) showLogin();
+  }, 1000);
+});
+
+// Hard fallback — max 10 seconds
+setTimeout(() => {
+  const splash = document.getElementById('splash');
+  if (splash && !splash.classList.contains('hidden')) {
+    if (!auth.currentUser) showLogin();
+  }
+}, 10000);
+
 window.splashDone = () => {
   if (!auth.currentUser) showLogin();
 };
-// Fallback if video fails to load
-setTimeout(() => {
-  const splash = document.getElementById('splash');
-  if (!splash.classList.contains('hidden')) {
-    if (!auth.currentUser) showLogin();
-  }
-}, 5000);
 
 </script>
 </body>
