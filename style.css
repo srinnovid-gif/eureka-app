@@ -37,17 +37,17 @@
 
 html {
   height: 100%;
-  height: 100dvh; /* dynamic viewport height para móvil */
+  height: 100dvh;
 }
 
 body {
   height: 100%;
   height: 100dvh;
   font-family: var(--font-main);
-  background: var(--orange);
+  background: var(--orange); /* mismo color que splash para evitar flash */
   color: var(--ink);
   -webkit-font-smoothing: antialiased;
-  /* NO overflow:hidden aquí — lo maneja #app */
+  overflow: hidden;
 }
 
 /* ─────────────────────────────────────────
@@ -56,18 +56,13 @@ body {
    Todo lo demás va dentro.
 ───────────────────────────────────────── */
 #app {
-  position: fixed; /* fixed es más confiable que absolute en móvil */
+  position: fixed;
   top: 0;
   left: 0;
-  right: 0;
-  bottom: 0;
+  width: 100%;
+  height: 100%;
   overflow: hidden;
   background: var(--orange);
-  /* Centrar en pantallas anchas (desktop) */
-  max-width: 480px;
-  margin: 0 auto;
-  /* En desktop, sombras laterales */
-  box-shadow: 0 0 0 100vw rgba(0,0,0,0.15);
 }
 
 /* ─────────────────────────────────────────
@@ -176,7 +171,7 @@ body {
    6. COMECAR
 ───────────────────────────────────────── */
 #comecar {
-  background: var(--white);
+  background: var(--orange);
 }
 
 .comecar-img-wrap {
@@ -503,7 +498,7 @@ body {
   left: 50%;
   transform: translateX(-50%);
   width: 100%;
-  max-width: 480px;
+  max-width: 100%;
   padding: 10px 22px 40px;
   background: linear-gradient(to top, #fff 60%, transparent 100%);
   display: none;
