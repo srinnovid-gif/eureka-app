@@ -8,47 +8,32 @@
   <meta name="apple-mobile-web-app-capable" content="yes" />
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
   <meta name="description" content="Eureka — Encontre trabalhos flexíveis perto de você" />
-
   <title>Eureka</title>
 
-  <!-- PWA -->
   <link rel="manifest" href="manifest.json" />
-  <link rel="apple-touch-icon" href="icon-192.png" />
-
-  <!-- Fontes -->
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Geologica:slnt,wght@-12..0,100..900&family=Glory:ital,wght@0,400;0,700;0,800;1,700;1,800&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet" />
-
-  <!-- Estilos -->
   <link rel="stylesheet" href="style.css" />
 </head>
 
 <body>
 <div id="app">
 
-  <!-- ═══════════════ SPLASH ═══════════════ -->
+  <!-- ═══ SPLASH ═══ -->
   <div id="splash" class="screen visible">
     <div class="splash-logo-wrap">
-      <img
-        class="splash-logo-img"
-        src="38551-removebg-preview.png"
-        alt="Eureka"
-        onerror="this.style.display='none';document.querySelector('.splash-logo-fallback').style.display='block';"
-      />
+      <img class="splash-logo-img" src="38551-removebg-preview.png" alt="Eureka"
+        onerror="this.style.display='none';document.querySelector('.splash-logo-fallback').style.display='block';" />
       <div class="splash-logo-fallback">eureka</div>
     </div>
   </div>
 
-  <!-- ═══════════════ COMECAR ═══════════════ -->
+  <!-- ═══ COMECAR ═══ -->
   <div id="comecar" class="screen oculto">
     <div class="comecar-img-wrap">
-      <img
-        class="comecar-img"
-        src="582818991.jpg"
-        alt="Trabalhadora usando Eureka"
-        onerror="this.parentElement.style.background='linear-gradient(160deg,#FFF5EE,#FFE8D6)';"
-      />
+      <img class="comecar-img" src="582818991.jpg" alt="Trabalhadora usando Eureka"
+        onerror="this.parentElement.style.background='linear-gradient(160deg,#FFF5EE,#FFE8D6)';" />
       <div class="badge-vagas">
         <div class="badge-dot-green"></div>
         <span class="badge-vagas-txt">+1.200 vagas hoje</span>
@@ -68,26 +53,21 @@
     </div>
   </div>
 
-  <!-- ═══════════════ LOGIN ═══════════════ -->
+  <!-- ═══ LOGIN ═══ -->
   <div id="login" class="screen oculto">
-
     <div class="blob blob-1"></div>
     <div class="blob blob-2"></div>
 
     <div class="login-hero">
-      <img
-        class="login-logo"
-        src="38551-removebg-preview.png"
-        alt="Eureka"
-        onerror="this.style.display='none';document.querySelector('.login-logo-fallback').style.display='block';"
-      />
+      <!-- Logo naranja sobre fondo blanco -->
+      <img class="login-logo" src="38551-removebg-preview.png" alt="Eureka"
+        onerror="this.style.display='none';document.querySelector('.login-logo-fallback').style.display='block';" />
       <div class="login-logo-fallback">eureka</div>
       <h1 class="login-titulo">Bem-vindo<br>de <span>volta!</span></h1>
       <p class="login-sub">Seu próximo trabalho está esperando você.</p>
     </div>
 
     <div class="login-form">
-
       <!-- Sociais -->
       <div class="social-row">
         <button class="social-btn" onclick="loginGoogle()">
@@ -160,11 +140,10 @@
           <path d="M5 12h14M12 5l7 7-7 7"/>
         </svg>
       </button>
-
     </div>
   </div>
 
-  <!-- ═══════════════ BOTÃO FLUTUANTE CADASTRO ═══════════════ -->
+  <!-- ═══ BOTÃO FLUTUANTE CADASTRO ═══ -->
   <div class="cadastro-float" id="cadastro-float">
     <div class="float-divider">
       <div class="float-divider-line"></div>
@@ -182,7 +161,7 @@
     </button>
   </div>
 
-  <!-- ═══════════════ MODAL CELULAR ═══════════════ -->
+  <!-- ═══ MODAL CELULAR ═══ -->
   <div id="modal-celular" role="dialog" aria-modal="true" onclick="fecharSeClicarFora(event)">
     <div class="modal-sheet">
       <div class="modal-handle"></div>
@@ -204,7 +183,7 @@
         <div class="campo" style="margin-top:4px;">
           <label class="campo-label" for="campo-codigo">Código SMS</label>
           <div class="campo-wrap">
-            <input class="campo-input" type="number" id="campo-codigo" placeholder="000000" inputmode="numeric" maxlength="6" style="padding-left:16px;letter-spacing:0.25em;font-size:22px;text-align:center;" />
+            <input class="campo-input" type="number" id="campo-codigo" placeholder="000000" inputmode="numeric" style="padding-left:16px;letter-spacing:0.25em;font-size:22px;text-align:center;" />
           </div>
         </div>
         <button class="btn-entrar" style="margin-top:8px;" onclick="verificarCodigo()">Confirmar e entrar</button>
@@ -217,9 +196,12 @@
 
 </div><!-- /app -->
 
-<!-- Scripts — orden importa -->
-<script src="app.js" type="module"></script>
-<script src="auth.js" defer></script>
+<!-- ═══ SCRIPTS ═══
+     app.js como módulo (maneja Firebase + router)
+     auth.js también como módulo (usa import de Firebase)
+-->
+<script type="module" src="app.js"></script>
+<script type="module" src="auth.js"></script>
 
 </body>
 </html>
