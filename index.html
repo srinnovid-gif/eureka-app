@@ -6,8 +6,7 @@
   <meta name="theme-color" content="#FF4D20" />
   <meta name="mobile-web-app-capable" content="yes" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
-  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
-  <title>Eureka</title>
+  <title>Eureka — Cadastro</title>
 
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
@@ -25,6 +24,7 @@
       --border:      #F0EDE8;
       --white:       #FFFFFF;
       --surface:     #FFF5EE;
+      --green:       #1FAD6B;
     }
 
     *, *::before, *::after {
@@ -33,324 +33,239 @@
     }
 
     html, body {
-      height: 100%; overflow: hidden;
+      height: 100%;
       font-family: "Geologica", sans-serif;
-      background: var(--orange);
+      background: var(--white);
+      color: var(--ink);
       -webkit-font-smoothing: antialiased;
-    }
-
-    #app { width: 100%; height: 100%; position: relative; overflow: hidden; }
-
-    /* ═══════════════════════════════════════
-       SISTEMA DE PANTALLAS
-    ═══════════════════════════════════════ */
-    .screen {
-      position: absolute;
-      inset: 0;
-      display: flex;
-      flex-direction: column;
-      transition: opacity 0.55s ease, transform 0.55s ease;
-    }
-
-    .screen.oculto       { opacity: 0; pointer-events: none; transform: translateX(40px); }
-    .screen.saliendo     { opacity: 0; transform: scale(1.04); pointer-events: none; }
-    .screen.visible      { opacity: 1; transform: translateX(0) scale(1); pointer-events: all; }
-
-    /* ═══════════════════════════════════════
-       SPLASH
-    ═══════════════════════════════════════ */
-    #splash {
-      background: var(--orange);
-      align-items: center;
-      justify-content: center;
       overflow: hidden;
     }
 
-    /* Círculos decorativos */
-    #splash::before {
+    #app {
+      height: 100%;
+      display: flex;
+      flex-direction: column;
+      position: relative;
+      max-width: 480px;
+      margin: 0 auto;
+    }
+
+    /* ═══════════════════════════════════════
+       HEADER NARANJA
+    ═══════════════════════════════════════ */
+    .header {
+      flex-shrink: 0;
+      background: var(--orange);
+      padding: 52px 24px 28px;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .header::before {
       content: "";
       position: absolute;
-      width: 560px; height: 560px;
+      width: 280px; height: 280px;
       border-radius: 50%;
       background: rgba(255,255,255,0.07);
-      top: -180px; right: -160px;
+      top: -100px; right: -80px;
+      pointer-events: none;
     }
 
-    #splash::after {
+    .header::after {
       content: "";
       position: absolute;
-      width: 360px; height: 360px;
+      width: 160px; height: 160px;
       border-radius: 50%;
-      background: rgba(255,255,255,0.04);
-      bottom: -120px; left: -100px;
+      background: rgba(255,255,255,0.05);
+      bottom: -60px; left: -40px;
+      pointer-events: none;
     }
 
-    .splash-logo-wrap {
+    /* Botão voltar */
+    .btn-voltar {
       position: relative;
       z-index: 2;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      animation: splashPop 0.8s cubic-bezier(0.34,1.56,0.64,1) both;
+      width: 36px; height: 36px;
+      background: rgba(255,255,255,0.2);
+      border: none; border-radius: 50%;
+      display: flex; align-items: center; justify-content: center;
+      cursor: pointer; margin-bottom: 20px;
+      backdrop-filter: blur(8px);
+      transition: background 0.15s;
     }
 
-    /* ──── LOGO GRANDE ──── */
-    .splash-logo-img {
-      /* 80vw garantiza que sea enorme en cualquier celular */
-      width: 80vw;
-      max-width: 340px;
-      height: auto;
+    .btn-voltar:active { background: rgba(255,255,255,0.3); }
+    .btn-voltar svg { width: 16px; height: 16px; stroke: white; fill: none; }
+
+    /* Logo branco no header */
+    .header-logo {
+      position: relative;
+      z-index: 2;
+      height: 30px;
+      width: auto;
       display: block;
       filter: brightness(0) invert(1);
       object-fit: contain;
-    }
-
-    .splash-logo-fallback {
-      font-family: "Geologica", sans-serif;
-      font-weight: 900;
-      font-size: 80px;
-      color: white;
-      letter-spacing: -0.05em;
-      line-height: 1;
-      display: none;
-    }
-
-    /* ═══════════════════════════════════════
-       COMECAR (Vamos começar)
-    ═══════════════════════════════════════ */
-    #comecar {
-      background: var(--white);
-      overflow: hidden;
-    }
-
-    /* Imagen ocupa ~72% de la pantalla */
-    .comecar-img-wrap {
-      flex: 1;
-      position: relative;
-      overflow: hidden;
-      background: #F8F6F3;
-      min-height: 0;
-    }
-
-    .comecar-img {
-      width: 100%;
-      height: 100%;
-      object-fit: cover;
-      object-position: center center;
-      display: block;
-    }
-
-    /* Badge flotante — vagas */
-    .badge-vagas {
-      position: absolute;
-      top: 28px;
-      right: 20px;
-      background: white;
-      border-radius: 50px;
-      padding: 9px 16px;
-      display: flex;
-      align-items: center;
-      gap: 7px;
-      box-shadow: 0 6px 24px rgba(0,0,0,0.12);
-      animation: floatA 3.5s ease-in-out infinite, fadeUp 0.6s 0.4s ease both;
-    }
-
-    .badge-dot-green {
-      width: 9px; height: 9px;
-      border-radius: 50%;
-      background: #1FAD6B;
-      flex-shrink: 0;
-      box-shadow: 0 0 0 3px rgba(31,173,107,0.2);
-    }
-
-    .badge-vagas-txt {
-      font-family: "Geologica", sans-serif;
-      font-size: 12px;
-      font-weight: 700;
-      color: var(--ink);
-      white-space: nowrap;
-    }
-
-    /* Badge flotante — salário */
-    .badge-salario {
-      position: absolute;
-      bottom: 24px;
-      left: 20px;
-      background: white;
-      border-radius: 18px;
-      padding: 12px 16px;
-      box-shadow: 0 6px 24px rgba(0,0,0,0.12);
-      animation: floatB 4s ease-in-out infinite, fadeUp 0.6s 0.6s ease both;
-    }
-
-    .badge-salario-label {
-      font-family: "DM Mono", monospace;
-      font-size: 9px;
-      color: var(--ink3);
-      letter-spacing: 0.08em;
-      text-transform: uppercase;
-    }
-
-    .badge-salario-val {
-      font-family: "Geologica", sans-serif;
-      font-size: 22px;
-      font-weight: 900;
-      color: var(--orange);
-      line-height: 1.2;
-      margin-top: 2px;
-    }
-
-    /* Panel inferior — solo botón */
-    .comecar-panel {
-      flex-shrink: 0;
-      background: var(--white);
-      padding: 24px 24px 48px;
-    }
-
-    .btn-continuar {
-      width: 100%;
-      padding: 18px;
-      border-radius: 16px;
-      background: var(--orange);
-      color: white;
-      font-family: "Geologica", sans-serif;
-      font-weight: 800;
-      font-size: 17px;
-      border: none;
-      cursor: pointer;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      gap: 10px;
-      box-shadow: 0 10px 28px rgba(255,77,32,0.32);
-      animation: pulseCTA 3s ease-in-out infinite;
-      transition: transform 0.12s;
-    }
-
-    .btn-continuar:active { transform: scale(0.98); }
-
-    /* ═══════════════════════════════════════
-       LOGIN
-    ═══════════════════════════════════════ */
-    #login {
-      background: var(--white);
-      overflow-y: auto;
-      overflow-x: hidden;
-    }
-
-    .blob {
-      position: absolute;
-      border-radius: 50%;
-      pointer-events: none;
-      z-index: 0;
-    }
-
-    .blob-1 {
-      width: 300px; height: 300px;
-      background: radial-gradient(circle, rgba(255,77,32,0.08) 0%, transparent 70%);
-      top: -80px; right: -60px;
-    }
-
-    .blob-2 {
-      width: 200px; height: 200px;
-      background: radial-gradient(circle, rgba(255,77,32,0.05) 0%, transparent 70%);
-      top: 280px; left: -60px;
-    }
-
-    .login-hero {
-      padding: 64px 28px 24px;
-      position: relative;
-      z-index: 1;
-      flex-shrink: 0;
-    }
-
-    .login-logo {
-      height: 44px;
-      width: auto;
-      display: block;
-      margin-bottom: 24px;
-      object-fit: contain;
       object-position: left;
+      margin-bottom: 14px;
     }
 
-    .login-logo-fallback {
+    .header-logo-fallback {
       font-family: "Geologica", sans-serif;
       font-weight: 900;
-      font-size: 42px;
-      color: var(--orange);
+      font-size: 28px;
+      color: white;
       letter-spacing: -0.04em;
       line-height: 1;
-      margin-bottom: 24px;
+      margin-bottom: 14px;
       display: none;
+      position: relative;
+      z-index: 2;
     }
 
-    .login-titulo {
+    .header-titulo {
       font-family: "Glory", sans-serif;
       font-style: italic;
       font-weight: 800;
-      font-size: 34px;
-      color: var(--ink);
+      font-size: 28px;
+      color: white;
       letter-spacing: -0.02em;
-      line-height: 1.08;
+      line-height: 1.1;
+      position: relative;
+      z-index: 2;
+    }
+
+    .header-sub {
+      font-size: 13px;
+      color: rgba(255,255,255,0.75);
+      margin-top: 6px;
+      line-height: 1.5;
+      position: relative;
+      z-index: 2;
+    }
+
+    /* ═══════════════════════════════════════
+       BARRA DE PROGRESO (3 pasos)
+    ═══════════════════════════════════════ */
+    .progreso-wrap {
+      flex-shrink: 0;
+      padding: 16px 24px 0;
+      background: var(--white);
+    }
+
+    .progreso-labels {
+      display: flex;
+      justify-content: space-between;
       margin-bottom: 8px;
     }
 
-    .login-titulo span { color: var(--orange); }
-    .login-sub { font-size: 14px; color: var(--ink2); line-height: 1.55; }
+    .progreso-label {
+      font-family: "DM Mono", monospace;
+      font-size: 9px;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: var(--ink3);
+      transition: color 0.3s;
+    }
 
-    .login-form {
+    .progreso-label.ativo { color: var(--orange); font-weight: 500; }
+
+    .progreso-bar {
+      display: flex;
+      gap: 6px;
+    }
+
+    .progreso-seg {
       flex: 1;
-      padding: 4px 28px 48px;
+      height: 3px;
+      border-radius: 2px;
+      background: var(--border);
+      transition: background 0.4s ease;
+      overflow: hidden;
+      position: relative;
+    }
+
+    .progreso-seg.ativo {
+      background: var(--border);
+    }
+
+    .progreso-seg.ativo::after {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background: var(--orange);
+      border-radius: 2px;
+      animation: barraEntrar 0.4s ease both;
+    }
+
+    .progreso-seg.completo { background: var(--orange); }
+
+    @keyframes barraEntrar {
+      from { transform: scaleX(0); transform-origin: left; }
+      to   { transform: scaleX(1); transform-origin: left; }
+    }
+
+    /* ═══════════════════════════════════════
+       PASOS
+    ═══════════════════════════════════════ */
+    .pasos-wrap {
+      flex: 1;
+      overflow: hidden;
+      position: relative;
+    }
+
+    .paso {
+      position: absolute;
+      inset: 0;
+      padding: 20px 24px 32px;
+      overflow-y: auto;
       display: flex;
       flex-direction: column;
       gap: 14px;
-      position: relative;
-      z-index: 1;
+      opacity: 0;
+      transform: translateX(40px);
+      pointer-events: none;
+      transition: opacity 0.35s ease, transform 0.35s ease;
     }
 
-    /* Sociais */
-    .social-row { display: flex; gap: 10px; }
+    .paso.visible {
+      opacity: 1;
+      transform: translateX(0);
+      pointer-events: all;
+    }
 
-    .social-btn {
-      flex: 1;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      gap: 7px;
-      padding: 13px 8px;
-      border-radius: 16px;
-      border: 1.5px solid var(--border);
-      background: var(--white);
-      cursor: pointer;
-      font-family: "Geologica", sans-serif;
-      font-weight: 600;
-      font-size: 12.5px;
+    .paso.saliendo-izq {
+      opacity: 0;
+      transform: translateX(-40px);
+      pointer-events: none;
+    }
+
+    /* Título del paso */
+    .paso-titulo {
+      font-weight: 700;
+      font-size: 15px;
       color: var(--ink);
-      transition: background 0.15s, transform 0.1s;
+      letter-spacing: -0.01em;
     }
 
-    .social-btn:active { background: var(--surface); transform: scale(0.96); }
-
-    /* Divisor */
-    .divider { display: flex; align-items: center; gap: 12px; }
-    .divider-line { flex: 1; height: 1px; background: var(--border); }
-    .divider-txt {
-      font-family: "DM Mono", monospace;
-      font-size: 10px;
-      letter-spacing: 0.1em;
-      text-transform: uppercase;
-      color: var(--ink3);
-      white-space: nowrap;
-    }
-
-    /* Campos */
+    /* ═══════════════════════════════════════
+       CAMPOS
+    ═══════════════════════════════════════ */
     .campo { display: flex; flex-direction: column; gap: 6px; }
-    .campo-label { font-weight: 600; font-size: 12px; color: var(--ink2); padding-left: 2px; }
+
+    .campo-label {
+      font-weight: 600;
+      font-size: 12px;
+      color: var(--ink2);
+      letter-spacing: 0.02em;
+      padding-left: 2px;
+    }
+
     .campo-wrap { position: relative; }
 
     .campo-input {
       width: 100%;
-      padding: 14px 48px 14px 46px;
+      padding: 14px 44px 14px 46px;
       border-radius: 16px;
       border: 1.5px solid var(--border);
       background: var(--surface);
@@ -362,11 +277,25 @@
       transition: border-color 0.2s, background 0.2s, box-shadow 0.2s;
     }
 
+    .campo-input.sin-icono {
+      padding-left: 16px;
+    }
+
     .campo-input::placeholder { color: var(--ink3); font-size: 14px; }
+
     .campo-input:focus {
       border-color: var(--orange);
       background: #FFFAF7;
       box-shadow: 0 0 0 3px rgba(255,77,32,0.08);
+    }
+
+    .campo-input.valido {
+      border-color: var(--green);
+    }
+
+    .campo-input.error {
+      border-color: #FF6B6B;
+      background: #FFF5F5;
     }
 
     .campo-icone {
@@ -378,23 +307,221 @@
     }
 
     .campo-wrap:has(.campo-input:focus) .campo-icone { color: var(--orange); }
+    .campo-wrap:has(.campo-input.valido) .campo-icone { color: var(--green); }
 
-    .btn-olho {
+    /* Check de validación */
+    .campo-check {
       position: absolute; right: 14px; top: 50%;
       transform: translateY(-50%);
-      background: none; border: none; padding: 4px;
-      cursor: pointer; color: var(--ink3);
-      display: flex; align-items: center; justify-content: center;
+      width: 18px; height: 18px;
+      color: var(--green);
+      opacity: 0;
+      transition: opacity 0.2s;
+      pointer-events: none;
     }
 
-    .esqueci-row { display: flex; justify-content: flex-end; margin-top: -6px; }
-    .btn-esqueci {
-      background: none; border: none;
+    .campo-input.valido ~ .campo-check { opacity: 1; }
+
+    /* Helper text */
+    .campo-helper {
+      font-size: 11.5px;
+      color: var(--ink3);
+      padding-left: 2px;
+      line-height: 1.4;
+    }
+
+    .campo-helper.error-txt { color: #E05252; }
+
+    /* Fila de dos campos */
+    .fila-2 { display: flex; gap: 10px; }
+    .fila-2 .campo { flex: 1; }
+
+    /* ═══════════════════════════════════════
+       SELECT CIUDAD
+    ═══════════════════════════════════════ */
+    .select-ciudad {
+      width: 100%;
+      padding: 14px 44px 14px 46px;
+      border-radius: 16px;
+      border: 1.5px solid var(--border);
+      background: var(--surface);
       font-family: "Geologica", sans-serif;
-      font-size: 13px; font-weight: 600;
-      color: var(--orange); cursor: pointer; padding: 0;
+      font-size: 15px;
+      color: var(--ink);
+      outline: none;
+      -webkit-appearance: none;
+      appearance: none;
+      cursor: pointer;
+      transition: border-color 0.2s, background 0.2s, box-shadow 0.2s;
     }
 
+    .select-ciudad:focus {
+      border-color: var(--orange);
+      background: #FFFAF7;
+      box-shadow: 0 0 0 3px rgba(255,77,32,0.08);
+    }
+
+    .select-ciudad option { color: var(--ink); }
+
+    /* Flecha del select */
+    .campo-arrow {
+      position: absolute; right: 14px; top: 50%;
+      transform: translateY(-50%);
+      width: 18px; height: 18px;
+      color: var(--ink3); pointer-events: none;
+    }
+
+    /* ═══════════════════════════════════════
+       FUERZA DE CONTRASEÑA
+    ═══════════════════════════════════════ */
+    .fuerza-wrap {
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+    }
+
+    .fuerza-bar {
+      display: flex;
+      gap: 4px;
+    }
+
+    .fuerza-seg {
+      flex: 1;
+      height: 3px;
+      border-radius: 2px;
+      background: var(--border);
+      transition: background 0.3s;
+    }
+
+    .fuerza-seg.fraca  { background: #FF6B6B; }
+    .fuerza-seg.media  { background: #FFB800; }
+    .fuerza-seg.forte  { background: var(--green); }
+
+    .fuerza-txt {
+      font-size: 11px;
+      color: var(--ink3);
+      font-weight: 500;
+    }
+
+    .fuerza-txt.fraca  { color: #E05252; }
+    .fuerza-txt.media  { color: #B07C00; }
+    .fuerza-txt.forte  { color: var(--green); }
+
+    /* ═══════════════════════════════════════
+       TÉRMINOS
+    ═══════════════════════════════════════ */
+    .termos-row {
+      display: flex;
+      align-items: flex-start;
+      gap: 10px;
+      padding: 4px 0;
+    }
+
+    .termos-check-wrap {
+      flex-shrink: 0;
+      margin-top: 1px;
+    }
+
+    .termos-checkbox {
+      display: none;
+    }
+
+    .termos-box {
+      width: 20px; height: 20px;
+      border-radius: 6px;
+      border: 2px solid var(--border);
+      background: var(--white);
+      display: flex; align-items: center; justify-content: center;
+      cursor: pointer;
+      transition: border-color 0.2s, background 0.2s;
+    }
+
+    .termos-checkbox:checked + .termos-box {
+      border-color: var(--orange);
+      background: var(--orange-pale);
+    }
+
+    .termos-box svg {
+      width: 11px; height: 11px;
+      stroke: var(--orange); fill: none; stroke-width: 2.5;
+      opacity: 0;
+      transition: opacity 0.2s;
+    }
+
+    .termos-checkbox:checked + .termos-box svg { opacity: 1; }
+
+    .termos-txt {
+      font-size: 12.5px;
+      color: var(--ink2);
+      line-height: 1.55;
+    }
+
+    .termos-txt a {
+      color: var(--orange);
+      font-weight: 600;
+      text-decoration: none;
+    }
+
+    /* ═══════════════════════════════════════
+       BOTTOM BAR (botones nav)
+    ═══════════════════════════════════════ */
+    .bottom-bar {
+      flex-shrink: 0;
+      padding: 16px 24px 40px;
+      background: var(--white);
+      border-top: 1px solid var(--border);
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+
+    .btn-proximo {
+      width: 100%;
+      padding: 17px;
+      border-radius: 16px;
+      background: var(--orange);
+      color: white;
+      font-family: "Geologica", sans-serif;
+      font-weight: 800;
+      font-size: 16px;
+      border: none;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      box-shadow: 0 8px 24px rgba(255,77,32,0.28);
+      animation: pulseCTA 3s ease-in-out infinite;
+      transition: transform 0.12s, opacity 0.2s;
+    }
+
+    .btn-proximo:active { transform: scale(0.98); }
+    .btn-proximo:disabled { opacity: 0.5; animation: none; cursor: not-allowed; }
+
+    #spinner {
+      display: none;
+      width: 18px; height: 18px;
+      border: 2.5px solid rgba(255,255,255,0.35);
+      border-top-color: white;
+      border-radius: 50%;
+      animation: girar 0.7s linear infinite;
+    }
+
+    .link-login {
+      text-align: center;
+      font-size: 13.5px;
+      color: var(--ink2);
+    }
+
+    .link-login a {
+      color: var(--orange);
+      font-weight: 700;
+      text-decoration: none;
+    }
+
+    /* ═══════════════════════════════════════
+       ERROR GLOBAL
+    ═══════════════════════════════════════ */
     #msg-erro {
       display: none;
       background: #FFF0EE;
@@ -405,112 +532,60 @@
       color: var(--orange-dark);
       font-weight: 500;
       text-align: center;
+      margin: 0 24px;
+      flex-shrink: 0;
     }
-
-    .btn-entrar {
-      width: 100%; padding: 17px;
-      border-radius: 16px;
-      background: var(--orange); color: white;
-      font-family: "Geologica", sans-serif;
-      font-weight: 800; font-size: 16px;
-      border: none; cursor: pointer;
-      display: flex; align-items: center;
-      justify-content: center; gap: 8px;
-      box-shadow: 0 8px 24px rgba(255,77,32,0.30);
-      animation: pulseCTA 3s ease-in-out infinite;
-      transition: transform 0.12s;
-    }
-
-    .btn-entrar:active { transform: scale(0.98); }
-    .btn-entrar:disabled { opacity: 0.65; animation: none; }
-
-    #spinner {
-      display: none; width: 18px; height: 18px;
-      border: 2.5px solid rgba(255,255,255,0.35);
-      border-top-color: white; border-radius: 50%;
-      animation: girar 0.7s linear infinite;
-    }
-
-    .cadastro-row { display: flex; justify-content: center; align-items: center; gap: 6px; }
-    .cadastro-row span { font-size: 14px; color: var(--ink2); }
-    .link-cadastro { font-size: 14px; font-weight: 700; color: var(--orange); text-decoration: none; }
 
     /* ═══════════════════════════════════════
-       MODAL CELULAR
+       PASO 3 — CONFIRMACIÓN
     ═══════════════════════════════════════ */
-    #modal-celular {
-      display: none; position: fixed; inset: 0;
-      background: rgba(17,16,16,0.55); z-index: 50;
-      align-items: flex-end; justify-content: center;
-      backdrop-filter: blur(6px);
+    .confirmacion-card {
+      background: var(--surface);
+      border-radius: 20px;
+      border: 1px solid var(--border);
+      overflow: hidden;
     }
 
-    #modal-celular.ativo { display: flex; animation: fadeIn 0.2s ease both; }
-
-    .modal-sheet {
-      background: var(--white);
-      border-radius: 28px 28px 0 0;
-      padding: 20px 28px 52px;
-      width: 100%; max-width: 480px;
-      display: flex; flex-direction: column; gap: 16px;
-      animation: slideUp 0.35s cubic-bezier(0.34,1.1,0.64,1) both;
+    .conf-row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 14px 18px;
+      border-bottom: 1px solid var(--border);
     }
 
-    .modal-handle {
-      width: 40px; height: 4px;
-      background: var(--border); border-radius: 2px; margin: 0 auto 4px;
+    .conf-row:last-child { border-bottom: none; }
+
+    .conf-label {
+      font-family: "DM Mono", monospace;
+      font-size: 10px;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: var(--ink3);
     }
 
-    .modal-titulo {
-      font-family: "Glory", sans-serif;
-      font-style: italic; font-weight: 800;
-      font-size: 26px; color: var(--ink);
-      letter-spacing: -0.02em; line-height: 1.1;
+    .conf-valor {
+      font-size: 14px;
+      font-weight: 600;
+      color: var(--ink);
+      text-align: right;
+      max-width: 60%;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
     }
-
-    .modal-titulo span { color: var(--orange); }
-    .modal-sub { font-size: 13.5px; color: var(--ink2); margin-top: -8px; line-height: 1.5; }
-    #etapa-codigo { display: none; }
-
-    .btn-cancelar {
-      width: 100%; background: none; border: none;
-      font-family: "Geologica", sans-serif;
-      font-size: 14px; color: var(--ink2); cursor: pointer; padding: 10px;
-    }
-
-    #recaptcha-container { display: none; }
 
     /* ═══════════════════════════════════════
        ANIMACIONES
     ═══════════════════════════════════════ */
-    @keyframes splashPop {
-      from { opacity: 0; transform: scale(0.75); }
-      to   { opacity: 1; transform: scale(1); }
-    }
     @keyframes fadeUp {
       from { opacity: 0; transform: translateY(16px); }
       to   { opacity: 1; transform: translateY(0); }
     }
-    @keyframes fadeIn {
-      from { opacity: 0; } to { opacity: 1; }
-    }
-    @keyframes slideUp {
-      from { transform: translateY(100%); } to { transform: translateY(0); }
-    }
-    @keyframes girar {
-      to { transform: rotate(360deg); }
-    }
+    @keyframes girar { to { transform: rotate(360deg); } }
     @keyframes pulseCTA {
-      0%,100% { box-shadow: 0 10px 28px rgba(255,77,32,0.32); }
-      50%      { box-shadow: 0 10px 40px rgba(255,77,32,0.54); }
-    }
-    @keyframes floatA {
-      0%,100% { transform: translateY(0px); }
-      50%      { transform: translateY(-7px); }
-    }
-    @keyframes floatB {
-      0%,100% { transform: translateY(0px); }
-      50%      { transform: translateY(-5px); }
+      0%,100% { box-shadow: 0 8px 24px rgba(255,77,32,0.28); }
+      50%      { box-shadow: 0 8px 36px rgba(255,77,32,0.50); }
     }
   </style>
 </head>
@@ -518,127 +593,161 @@
 <body>
 <div id="app">
 
-  <!-- ═══════════════ SPLASH ═══════════════ -->
-  <div id="splash" class="screen visible">
+  <!-- ═══════════════ HEADER ═══════════════ -->
+  <div class="header">
+    <button class="btn-voltar" onclick="voltarOuSair()" aria-label="Voltar">
+      <svg viewBox="0 0 24 24" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+        <path d="M19 12H5M12 19l-7-7 7-7"/>
+      </svg>
+    </button>
 
-    <div class="splash-logo-wrap">
-      <!--
-        Logo enorme — 80vw de ancho, filtro CSS lo convierte a blanco.
-        Cambia el src si mueves el archivo a otra carpeta.
-      -->
-      <img
-        class="splash-logo-img"
-        src="38551-removebg-preview.png"
-        alt="Eureka"
-        onerror="this.style.display='none';document.querySelector('.splash-logo-fallback').style.display='block';"
-      />
-      <div class="splash-logo-fallback">eureka</div>
-    </div>
+    <img
+      class="header-logo"
+      src="38551-removebg-preview.png"
+      alt="Eureka"
+      onerror="this.style.display='none';document.querySelector('.header-logo-fallback').style.display='block';"
+    />
+    <div class="header-logo-fallback">eureka</div>
 
+    <h1 class="header-titulo">Crie sua conta</h1>
+    <p class="header-sub">Rápido, grátis e sem burocracia.</p>
   </div>
 
-  <!-- ═══════════════ VAMOS COMEÇAR ═══════════════ -->
-  <div id="comecar" class="screen oculto">
-
-    <!-- Imagen ilustración — ocupa casi toda la pantalla -->
-    <div class="comecar-img-wrap">
-      <!--
-        🔧 Cuando vuelvas a subir la ilustración aquí en el chat,
-           yo la embeberé como base64 en este img.
-           Por ahora usa el archivo directamente si está en el repo.
-           Cambia el src por el nombre real del archivo.
-      -->
-      <img
-        class="comecar-img"
-        src="ilustracion-eureka.jpg"
-        alt="Trabalhadora usando Eureka"
-        onerror="this.style.background='linear-gradient(160deg,#FFF5EE,#FFE8D6)';this.style.display='none';"
-      />
-
-      <!-- Badge: vagas disponíveis -->
-      <div class="badge-vagas">
-        <div class="badge-dot-green"></div>
-        <span class="badge-vagas-txt">+1.200 vagas hoje</span>
-      </div>
-
-      <!-- Badge: salário médio -->
-      <div class="badge-salario">
-        <div class="badge-salario-label">ganho médio</div>
-        <div class="badge-salario-val">R$270/dia</div>
-      </div>
+  <!-- ═══════════════ PROGRESO ═══════════════ -->
+  <div class="progreso-wrap">
+    <div class="progreso-labels">
+      <span class="progreso-label ativo" id="lbl-0">Dados pessoais</span>
+      <span class="progreso-label" id="lbl-1">Acesso</span>
+      <span class="progreso-label" id="lbl-2">Confirmação</span>
     </div>
-
-    <!-- Panel inferior — solo botón Continuar -->
-    <div class="comecar-panel">
-      <button class="btn-continuar" onclick="irParaLogin()">
-        Continuar
-        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
-          <path d="M5 12h14M12 5l7 7-7 7"/>
-        </svg>
-      </button>
+    <div class="progreso-bar">
+      <div class="progreso-seg ativo" id="seg-0"></div>
+      <div class="progreso-seg" id="seg-1"></div>
+      <div class="progreso-seg" id="seg-2"></div>
     </div>
-
   </div>
 
-  <!-- ═══════════════ LOGIN ═══════════════ -->
-  <div id="login" class="screen oculto">
+  <!-- ═══════════════ ERROR GLOBAL ═══════════════ -->
+  <div id="msg-erro" role="alert"></div>
 
-    <div class="blob blob-1"></div>
-    <div class="blob blob-2"></div>
+  <!-- ═══════════════ PASOS ═══════════════ -->
+  <div class="pasos-wrap">
 
-    <div class="login-hero">
-      <img
-        class="login-logo"
-        src="38551-removebg-preview.png"
-        alt="Eureka"
-        onerror="this.style.display='none';document.querySelector('.login-logo-fallback').style.display='block';"
-      />
-      <div class="login-logo-fallback">eureka</div>
-      <h1 class="login-titulo">Bem-vindo<br>de <span>volta!</span></h1>
-      <p class="login-sub">Seu próximo trabalho está esperando você.</p>
-    </div>
+    <!-- ── PASO 1: Dados pessoais ── -->
+    <div class="paso visible" id="paso-0">
 
-    <div class="login-form">
+      <p class="paso-titulo">Como podemos te chamar? 👋</p>
 
-      <div class="social-row">
-        <button class="social-btn" onclick="loginGoogle()">
-          <svg width="18" height="18" viewBox="0 0 24 24" fill="none">
-            <path d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z" fill="#4285F4"/>
-            <path d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z" fill="#34A853"/>
-            <path d="M5.84 14.1c-.22-.66-.35-1.36-.35-2.1s.13-1.44.35-2.1V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l3.66-2.83z" fill="#FBBC05"/>
-            <path d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.83c.87-2.6 3.3-4.52 6.16-4.52z" fill="#EA4335"/>
-          </svg>
-          Google
-        </button>
+      <div class="fila-2">
+        <div class="campo">
+          <label class="campo-label" for="nome">Nome</label>
+          <div class="campo-wrap">
+            <input class="campo-input" type="text" id="nome" placeholder="João" autocomplete="given-name" />
+            <svg class="campo-icone" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M20 21v-2a4 4 0 00-4-4H8a4 4 0 00-4 4v2"/>
+              <circle cx="12" cy="7" r="4"/>
+            </svg>
+            <svg class="campo-check" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+              <polyline points="20,6 9,17 4,12"/>
+            </svg>
+          </div>
+        </div>
 
-        <button class="social-btn" onclick="abrirModalCelular()">
-          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <div class="campo">
+          <label class="campo-label" for="sobrenome">Sobrenome</label>
+          <div class="campo-wrap">
+            <input class="campo-input sin-icono" type="text" id="sobrenome" placeholder="Silva" autocomplete="family-name" style="padding-left:16px;" />
+            <svg class="campo-check" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+              <polyline points="20,6 9,17 4,12"/>
+            </svg>
+          </div>
+        </div>
+      </div>
+
+      <div class="campo">
+        <label class="campo-label" for="celular">Celular</label>
+        <div class="campo-wrap">
+          <input class="campo-input" type="tel" id="celular" placeholder="(11) 99999-9999" inputmode="tel" autocomplete="tel" />
+          <svg class="campo-icone" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
             <path d="M22 16.92v3a2 2 0 01-2.18 2 19.79 19.79 0 01-8.63-3.07A19.5 19.5 0 013.07 9.81 19.79 19.79 0 01.9 3.18 2 2 0 012.88 1h3a2 2 0 012 1.72 12.84 12.84 0 00.7 2.81 2 2 0 01-.45 2.11L7.09 8.91a16 16 0 006 6l1.27-1.27a2 2 0 012.11-.45 12.84 12.84 0 002.81.7A2 2 0 0122 16.92z"/>
           </svg>
-          Celular
-        </button>
-
-        <button class="social-btn" onclick="loginApple()">
-          <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor">
-            <path d="M18.71 19.5c-.83 1.24-1.71 2.45-3.05 2.47-1.34.03-1.77-.79-3.29-.79-1.53 0-2 .77-3.27.82-1.31.05-2.3-1.32-3.14-2.53C4.25 17 2.94 12.45 4.7 9.39c.87-1.52 2.43-2.48 4.12-2.51 1.28-.02 2.5.87 3.29.87.78 0 2.26-1.07 3.8-.91.65.03 2.47.26 3.64 1.98-.09.06-2.17 1.28-2.15 3.81.03 3.02 2.65 4.03 2.68 4.04-.03.07-.42 1.44-1.38 2.83M13 3.5c.73-.83 1.94-1.46 2.94-1.5.13 1.17-.34 2.35-1.04 3.19-.69.85-1.83 1.51-2.95 1.42-.15-1.15.41-2.35 1.05-3.11z"/>
+          <svg class="campo-check" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+            <polyline points="20,6 9,17 4,12"/>
           </svg>
-          Apple
-        </button>
+        </div>
+        <span class="campo-helper">Vamos usar para confirmar sua identidade</span>
       </div>
 
-      <div class="divider">
-        <div class="divider-line"></div>
-        <span class="divider-txt">ou entre com email</span>
-        <div class="divider-line"></div>
+      <div class="campo">
+        <label class="campo-label" for="cidade">Cidade</label>
+        <div class="campo-wrap">
+          <svg class="campo-icone" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0118 0z"/>
+            <circle cx="12" cy="10" r="3"/>
+          </svg>
+          <select class="select-ciudad" id="cidade">
+            <option value="" disabled selected>Selecione sua cidade</option>
+            <optgroup label="São Paulo">
+              <option value="sao-paulo-sp">São Paulo</option>
+              <option value="campinas-sp">Campinas</option>
+              <option value="santos-sp">Santos</option>
+              <option value="ribeirao-preto-sp">Ribeirão Preto</option>
+            </optgroup>
+            <optgroup label="Rio de Janeiro">
+              <option value="rio-de-janeiro-rj">Rio de Janeiro</option>
+              <option value="niteroi-rj">Niterói</option>
+              <option value="petropolis-rj">Petrópolis</option>
+            </optgroup>
+            <optgroup label="Paraná">
+              <option value="curitiba-pr">Curitiba</option>
+              <option value="londrina-pr">Londrina</option>
+              <option value="maringa-pr">Maringá</option>
+            </optgroup>
+            <optgroup label="Minas Gerais">
+              <option value="belo-horizonte-mg">Belo Horizonte</option>
+              <option value="uberlandia-mg">Uberlândia</option>
+            </optgroup>
+            <optgroup label="Bahia">
+              <option value="salvador-ba">Salvador</option>
+              <option value="feira-de-santana-ba">Feira de Santana</option>
+            </optgroup>
+            <optgroup label="Rio Grande do Sul">
+              <option value="porto-alegre-rs">Porto Alegre</option>
+              <option value="caxias-do-sul-rs">Caxias do Sul</option>
+            </optgroup>
+            <optgroup label="Outros estados">
+              <option value="brasilia-df">Brasília (DF)</option>
+              <option value="fortaleza-ce">Fortaleza</option>
+              <option value="recife-pe">Recife</option>
+              <option value="manaus-am">Manaus</option>
+              <option value="belem-pa">Belém</option>
+              <option value="goiania-go">Goiânia</option>
+              <option value="florianopolis-sc">Florianópolis</option>
+            </optgroup>
+          </select>
+          <svg class="campo-arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <polyline points="6,9 12,15 18,9"/>
+          </svg>
+        </div>
       </div>
+
+    </div><!-- /paso-0 -->
+
+    <!-- ── PASO 2: Acesso ── -->
+    <div class="paso" id="paso-1">
+
+      <p class="paso-titulo">Crie seu acesso 🔐</p>
 
       <div class="campo">
         <label class="campo-label" for="email">Email</label>
         <div class="campo-wrap">
-          <input class="campo-input" type="email" id="email" placeholder="seu@email.com" autocomplete="email" inputmode="email" />
+          <input class="campo-input" type="email" id="email" placeholder="seu@email.com" inputmode="email" autocomplete="email" />
           <svg class="campo-icone" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
             <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/>
             <polyline points="22,6 12,13 2,6"/>
+          </svg>
+          <svg class="campo-check" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+            <polyline points="20,6 9,17 4,12"/>
           </svg>
         </div>
       </div>
@@ -646,87 +755,128 @@
       <div class="campo">
         <label class="campo-label" for="senha">Senha</label>
         <div class="campo-wrap">
-          <input class="campo-input" type="password" id="senha" placeholder="••••••••" autocomplete="current-password" />
+          <input class="campo-input" type="password" id="senha" placeholder="Mínimo 6 caracteres" autocomplete="new-password" oninput="verificarFuerza(this.value)" />
           <svg class="campo-icone" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
             <rect x="3" y="11" width="18" height="11" rx="2" ry="2"/>
             <path d="M7 11V7a5 5 0 0110 0v4"/>
           </svg>
-          <button class="btn-olho" type="button" onclick="toggleSenha()">
-            <svg id="icone-olho" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <button type="button" class="btn-olho" onclick="toggleSenha('senha', 'olho-senha')" style="position:absolute;right:14px;top:50%;transform:translateY(-50%);background:none;border:none;padding:4px;cursor:pointer;color:var(--ink3);display:flex;align-items:center;">
+            <svg id="olho-senha" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
               <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/>
               <circle cx="12" cy="12" r="3"/>
             </svg>
           </button>
         </div>
+
+        <!-- Fuerza contraseña -->
+        <div class="fuerza-wrap" id="fuerza-wrap" style="display:none;">
+          <div class="fuerza-bar">
+            <div class="fuerza-seg" id="f1"></div>
+            <div class="fuerza-seg" id="f2"></div>
+            <div class="fuerza-seg" id="f3"></div>
+          </div>
+          <span class="fuerza-txt" id="fuerza-txt"></span>
+        </div>
       </div>
 
-      <div class="esqueci-row">
-        <button class="btn-esqueci" onclick="esqueceuSenha()">Esqueci a senha</button>
+      <div class="campo">
+        <label class="campo-label" for="confirmar-senha">Confirmar senha</label>
+        <div class="campo-wrap">
+          <input class="campo-input" type="password" id="confirmar-senha" placeholder="Repita a senha" autocomplete="new-password" />
+          <svg class="campo-icone" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <rect x="3" y="11" width="18" height="11" rx="2" ry="2"/>
+            <path d="M7 11V7a5 5 0 0110 0v4"/>
+          </svg>
+          <button type="button" onclick="toggleSenha('confirmar-senha', 'olho-confirmar')" style="position:absolute;right:14px;top:50%;transform:translateY(-50%);background:none;border:none;padding:4px;cursor:pointer;color:var(--ink3);display:flex;align-items:center;">
+            <svg id="olho-confirmar" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/>
+              <circle cx="12" cy="12" r="3"/>
+            </svg>
+          </button>
+        </div>
+        <span class="campo-helper" id="helper-confirmar"></span>
       </div>
 
-      <div id="msg-erro" role="alert"></div>
-
-      <button class="btn-entrar" id="btn-entrar" onclick="loginEmail(event)">
-        <span id="spinner" role="status"></span>
-        Entrar
-        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
-          <path d="M5 12h14M12 5l7 7-7 7"/>
-        </svg>
-      </button>
-
-      <div class="cadastro-row">
-        <span>Ainda não tem conta?</span>
-        <a class="link-cadastro" href="cadastro.html">Cadastre-se grátis</a>
+      <!-- Termos -->
+      <div class="termos-row">
+        <div class="termos-check-wrap">
+          <input type="checkbox" class="termos-checkbox" id="termos" />
+          <label class="termos-box" for="termos">
+            <svg viewBox="0 0 12 12">
+              <polyline points="2,6 5,9 10,3"/>
+            </svg>
+          </label>
+        </div>
+        <p class="termos-txt">
+          Li e aceito os <a href="#">Termos de Uso</a> e a <a href="#">Política de Privacidade</a> da Eureka
+        </p>
       </div>
 
-    </div>
+    </div><!-- /paso-1 -->
+
+    <!-- ── PASO 3: Confirmação ── -->
+    <div class="paso" id="paso-2">
+
+      <p class="paso-titulo">Confirme seus dados ✅</p>
+
+      <div class="confirmacion-card">
+        <div class="conf-row">
+          <span class="conf-label">Nome</span>
+          <span class="conf-valor" id="conf-nome">—</span>
+        </div>
+        <div class="conf-row">
+          <span class="conf-label">Celular</span>
+          <span class="conf-valor" id="conf-celular">—</span>
+        </div>
+        <div class="conf-row">
+          <span class="conf-label">Email</span>
+          <span class="conf-valor" id="conf-email">—</span>
+        </div>
+        <div class="conf-row">
+          <span class="conf-label">Cidade</span>
+          <span class="conf-valor" id="conf-cidade">—</span>
+        </div>
+      </div>
+
+      <!-- Termos visible en confirmación -->
+      <p style="font-size:12px;color:var(--ink3);text-align:center;line-height:1.5;">
+        Ao criar sua conta você concorda com os nossos<br>
+        <a href="#" style="color:var(--orange);font-weight:600;text-decoration:none;">Termos de Uso</a> e
+        <a href="#" style="color:var(--orange);font-weight:600;text-decoration:none;">Política de Privacidade</a>
+      </p>
+
+    </div><!-- /paso-2 -->
+
+  </div><!-- /pasos-wrap -->
+
+  <!-- ═══════════════ BOTTOM BAR ═══════════════ -->
+  <div class="bottom-bar">
+    <button class="btn-proximo" id="btn-proximo" onclick="proximoPaso()">
+      <span id="spinner" role="status"></span>
+      <span id="btn-txt">Próximo</span>
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+        <path d="M5 12h14M12 5l7 7-7 7"/>
+      </svg>
+    </button>
+    <p class="link-login">Já tem conta? <a href="index.html">Entrar</a></p>
   </div>
 
-  <!-- ═══════════════ MODAL CELULAR ═══════════════ -->
-  <div id="modal-celular" role="dialog" aria-modal="true" onclick="fecharSeClicarFora(event)">
-    <div class="modal-sheet">
-      <div class="modal-handle"></div>
-
-      <div id="etapa-numero">
-        <h2 class="modal-titulo">Entre com seu<br><span>celular</span></h2>
-        <p class="modal-sub">Vamos enviar um código SMS para confirmar.</p>
-        <div class="campo" style="margin-top:4px;">
-          <label class="campo-label" for="campo-numero">Número com DDD</label>
-          <div class="campo-wrap">
-            <input class="campo-input" type="tel" id="campo-numero" placeholder="(11) 99999-9999" inputmode="tel" style="padding-left:16px;" />
-          </div>
-        </div>
-        <button class="btn-entrar" style="margin-top:8px;" onclick="enviarSMS()">Enviar código SMS</button>
-        <button class="btn-cancelar" onclick="fecharModalCelular()">Cancelar</button>
-      </div>
-
-      <div id="etapa-codigo">
-        <h2 class="modal-titulo">Digite o<br><span>código</span></h2>
-        <p class="modal-sub">Enviamos 6 dígitos por SMS.</p>
-        <div class="campo" style="margin-top:4px;">
-          <label class="campo-label" for="campo-codigo">Código SMS</label>
-          <div class="campo-wrap">
-            <input class="campo-input" type="number" id="campo-codigo" placeholder="000000" inputmode="numeric" maxlength="6" style="padding-left:16px;letter-spacing:0.25em;font-size:22px;text-align:center;" />
-          </div>
-        </div>
-        <button class="btn-entrar" style="margin-top:8px;" onclick="verificarCodigo()">Confirmar e entrar</button>
-        <button class="btn-cancelar" onclick="fecharModalCelular()">Cancelar</button>
-      </div>
-    </div>
-  </div>
-
-  <div id="recaptcha-container"></div>
-
-</div>
+</div><!-- /app -->
 
 <!-- ═══════════════ FIREBASE ═══════════════ -->
 <script type="module">
   import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
   import {
-    getAuth, signInWithEmailAndPassword, signInWithPopup,
-    GoogleAuthProvider, OAuthProvider, RecaptchaVerifier,
-    signInWithPhoneNumber, onAuthStateChanged
+    getAuth,
+    createUserWithEmailAndPassword,
+    updateProfile
   } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js";
+  import {
+    getFirestore,
+    doc,
+    setDoc,
+    serverTimestamp
+  } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
 
   const firebaseConfig = {
     apiKey:            "AIzaSyCw4QhQ5fGYSv_QgfY-waAZuOhkfv1ej1s",
@@ -737,114 +887,54 @@
     appId:             "1:1028700458017:web:6011fd81d09010e4f1e760"
   };
 
-  const app            = initializeApp(firebaseConfig);
-  const auth           = getAuth(app);
-  const providerGoogle = new GoogleAuthProvider();
+  const app  = initializeApp(firebaseConfig);
+  const auth = getAuth(app);
+  const db   = getFirestore(app);
 
-  /* ── TRANSICIÓN ENTRE PANTALLAS ── */
-  function mostrarPantalla(idAnterior, idSiguiente) {
-    const anterior  = document.getElementById(idAnterior);
-    const siguiente = document.getElementById(idSiguiente);
-    anterior.classList.add("saliendo");
-    anterior.classList.remove("visible");
-    setTimeout(() => {
-      anterior.classList.add("oculto");
-      anterior.classList.remove("saliendo");
-      siguiente.classList.remove("oculto");
-      requestAnimationFrame(() => {
-        requestAnimationFrame(() => siguiente.classList.add("visible"));
+  /* ── CREAR CUENTA ── */
+  window.criarConta = async function() {
+    const nome     = document.getElementById("nome").value.trim();
+    const sobre    = document.getElementById("sobrenome").value.trim();
+    const celular  = document.getElementById("celular").value.trim();
+    const cidade   = document.getElementById("cidade").value;
+    const email    = document.getElementById("email").value.trim();
+    const senha    = document.getElementById("senha").value;
+
+    setCarregando(true);
+    try {
+      // 1. Criar usuário no Firebase Auth
+      const cred = await createUserWithEmailAndPassword(auth, email, senha);
+      const uid  = cred.user.uid;
+
+      // 2. Atualizar displayName
+      await updateProfile(cred.user, { displayName: `${nome} ${sobre}` });
+
+      // 3. Salvar dados no Firestore
+      await setDoc(doc(db, "usuarios", uid), {
+        nome,
+        sobrenome: sobre,
+        nomeCompleto: `${nome} ${sobre}`,
+        celular,
+        cidade,
+        email,
+        uid,
+        criadoEm:  serverTimestamp(),
+        perfilCompleto: false,
+        status: "ativo"
       });
-    }, 560);
-  }
 
-  /* ── SPLASH 1.5s → COMECAR ── */
-  onAuthStateChanged(auth, (user) => {
-    if (user) {
-      window.location.href = "home.html";
-    } else {
-      setTimeout(() => mostrarPantalla("splash", "comecar"), 1500);
-    }
-  });
+      // 4. Ir para onboarding
+      window.location.href = "onboarding.html";
 
-  /* ── COMECAR → LOGIN ── */
-  window.irParaLogin = function() {
-    mostrarPantalla("comecar", "login");
-  };
-
-  /* ── LOGIN GOOGLE ── */
-  window.loginGoogle = async function() {
-    setCarregando(true);
-    try {
-      await signInWithPopup(auth, providerGoogle);
-      window.location.href = "home.html";
-    } catch(err) { mostrarErro(traduzir(err.code)); }
-    finally { setCarregando(false); }
-  };
-
-  /* ── LOGIN APPLE ── */
-  window.loginApple = async function() {
-    const p = new OAuthProvider("apple.com");
-    setCarregando(true);
-    try {
-      await signInWithPopup(auth, p);
-      window.location.href = "home.html";
-    } catch(err) { mostrarErro(traduzir(err.code)); }
-    finally { setCarregando(false); }
-  };
-
-  /* ── LOGIN EMAIL ── */
-  window.loginEmail = async function(e) {
-    e.preventDefault();
-    const email = document.getElementById("email").value.trim();
-    const senha = document.getElementById("senha").value;
-    if (!email || !senha) { mostrarErro("Preencha seu email e senha."); return; }
-    setCarregando(true);
-    try {
-      await signInWithEmailAndPassword(auth, email, senha);
-      window.location.href = "home.html";
-    } catch(err) { mostrarErro(traduzir(err.code)); }
-    finally { setCarregando(false); }
-  };
-
-  /* ── CELULAR ── */
-  window.abrirModalCelular = function() {
-    document.getElementById("modal-celular").classList.add("ativo");
-    if (!window.recaptchaVerifier) {
-      window.recaptchaVerifier = new RecaptchaVerifier(auth, "recaptcha-container", { size: "invisible" });
+    } catch(err) {
+      mostrarErro(traduzir(err.code));
+    } finally {
+      setCarregando(false);
     }
   };
 
-  window.fecharModalCelular = function() {
-    document.getElementById("modal-celular").classList.remove("ativo");
-    document.getElementById("etapa-numero").style.display = "block";
-    document.getElementById("etapa-codigo").style.display = "none";
-    document.getElementById("campo-numero").value = "";
-    document.getElementById("campo-codigo").value = "";
-  };
-
-  window.enviarSMS = async function() {
-    const n = document.getElementById("campo-numero").value.trim();
-    if (!n) { mostrarErro("Digite seu número."); return; }
-    const fmt = n.startsWith("+") ? n : "+55" + n.replace(/\D/g, "");
-    try {
-      window.confirmationResult = await signInWithPhoneNumber(auth, fmt, window.recaptchaVerifier);
-      document.getElementById("etapa-numero").style.display = "none";
-      document.getElementById("etapa-codigo").style.display = "block";
-    } catch(err) { mostrarErro(traduzir(err.code)); }
-  };
-
-  window.verificarCodigo = async function() {
-    const c = document.getElementById("campo-codigo").value.trim();
-    if (!c || c.length < 6) { mostrarErro("Digite o código de 6 dígitos."); return; }
-    try {
-      await window.confirmationResult.confirm(c);
-      window.location.href = "home.html";
-    } catch(err) { mostrarErro("Código incorreto. Tente novamente."); }
-  };
-
-  /* ── UTILIDADES ── */
   function setCarregando(v) {
-    const btn  = document.getElementById("btn-entrar");
+    const btn  = document.getElementById("btn-proximo");
     const spin = document.getElementById("spinner");
     btn.disabled       = v;
     spin.style.display = v ? "block" : "none";
@@ -854,53 +944,219 @@
     const el = document.getElementById("msg-erro");
     el.textContent   = msg;
     el.style.display = "block";
-    setTimeout(() => el.style.display = "none", 4500);
+    setTimeout(() => el.style.display = "none", 5000);
   }
 
   window.mostrarErro = mostrarErro;
 
   function traduzir(code) {
     return ({
-      "auth/user-not-found":         "Não encontramos uma conta com este email.",
-      "auth/wrong-password":         "Senha incorreta. Tente novamente.",
-      "auth/invalid-email":          "Email inválido.",
-      "auth/too-many-requests":      "Muitas tentativas. Aguarde um momento.",
-      "auth/network-request-failed": "Sem conexão. Verifique sua internet.",
-      "auth/popup-closed-by-user":   "Login cancelado.",
-      "auth/invalid-credential":     "Credenciais inválidas. Tente novamente.",
+      "auth/email-already-in-use":    "Este email já está cadastrado. Tente fazer login.",
+      "auth/invalid-email":           "Email inválido.",
+      "auth/weak-password":           "Senha muito fraca. Use pelo menos 6 caracteres.",
+      "auth/network-request-failed":  "Sem conexão. Verifique sua internet.",
+      "auth/too-many-requests":       "Muitas tentativas. Aguarde um momento.",
     })[code] || "Algo deu errado. Tente novamente.";
   }
 </script>
 
 <!-- ═══════════════ UI SCRIPTS ═══════════════ -->
 <script>
-  function toggleSenha() {
-    const input = document.getElementById("senha");
-    const icone = document.getElementById("icone-olho");
-    input.type          = input.type === "password" ? "text" : "password";
+  let pasoActual = 0;
+  const totalPasos = 3;
+
+  /* ── NAVEGACIÓN ENTRE PASOS ── */
+  function proximoPaso() {
+    if (pasoActual === 0) {
+      if (!validarPaso0()) return;
+      preencherConfirmacion();
+      irAPaso(1);
+    } else if (pasoActual === 1) {
+      if (!validarPaso1()) return;
+      preencherConfirmacion();
+      irAPaso(2);
+      document.getElementById("btn-txt").textContent = "Criar minha conta";
+    } else if (pasoActual === 2) {
+      criarConta();
+    }
+  }
+
+  function irAPaso(n) {
+    const anterior = document.getElementById(`paso-${pasoActual}`);
+    const siguiente = document.getElementById(`paso-${n}`);
+
+    anterior.classList.remove("visible");
+    anterior.classList.add("saliendo-izq");
+
+    setTimeout(() => {
+      anterior.classList.remove("saliendo-izq");
+      anterior.classList.add("oculto-pos");
+      siguiente.classList.add("visible");
+
+      // Actualizar progreso
+      atualizarProgreso(n);
+      pasoActual = n;
+    }, 360);
+  }
+
+  function voltarOuSair() {
+    if (pasoActual === 0) {
+      window.location.href = "index.html";
+    } else {
+      const anterior = document.getElementById(`paso-${pasoActual}`);
+      const n = pasoActual - 1;
+      const prev = document.getElementById(`paso-${n}`);
+
+      anterior.classList.remove("visible");
+      setTimeout(() => {
+        anterior.classList.add("oculto-pos");
+        prev.classList.remove("oculto-pos");
+        prev.classList.add("visible");
+        atualizarProgreso(n);
+        pasoActual = n;
+
+        if (n < 2) {
+          document.getElementById("btn-txt").textContent = "Próximo";
+        }
+      }, 360);
+    }
+  }
+
+  function atualizarProgreso(n) {
+    for (let i = 0; i < totalPasos; i++) {
+      const seg = document.getElementById(`seg-${i}`);
+      const lbl = document.getElementById(`lbl-${i}`);
+      seg.className = "progreso-seg";
+      lbl.className = "progreso-label";
+      if (i < n)      { seg.classList.add("completo"); }
+      else if (i === n) { seg.classList.add("ativo"); lbl.classList.add("ativo"); }
+    }
+  }
+
+  /* ── VALIDACIONES ── */
+  function validarPaso0() {
+    const nome    = document.getElementById("nome").value.trim();
+    const sobre   = document.getElementById("sobrenome").value.trim();
+    const celular = document.getElementById("celular").value.trim();
+    const cidade  = document.getElementById("cidade").value;
+
+    if (!nome) { window.mostrarErro("Digite seu nome."); return false; }
+    if (!sobre) { window.mostrarErro("Digite seu sobrenome."); return false; }
+    if (!celular || celular.replace(/\D/g,"").length < 10) {
+      window.mostrarErro("Digite um celular válido com DDD.");
+      return false;
+    }
+    if (!cidade) { window.mostrarErro("Selecione sua cidade."); return false; }
+    return true;
+  }
+
+  function validarPaso1() {
+    const email    = document.getElementById("email").value.trim();
+    const senha    = document.getElementById("senha").value;
+    const confirmar = document.getElementById("confirmar-senha").value;
+    const termos   = document.getElementById("termos").checked;
+
+    if (!email || !email.includes("@")) {
+      window.mostrarErro("Digite um email válido."); return false;
+    }
+    if (senha.length < 6) {
+      window.mostrarErro("A senha deve ter pelo menos 6 caracteres."); return false;
+    }
+    if (senha !== confirmar) {
+      window.mostrarErro("As senhas não coincidem.");
+      document.getElementById("helper-confirmar").textContent = "As senhas não coincidem.";
+      document.getElementById("helper-confirmar").className = "campo-helper error-txt";
+      document.getElementById("confirmar-senha").classList.add("error");
+      return false;
+    }
+    if (!termos) {
+      window.mostrarErro("Aceite os Termos de Uso para continuar."); return false;
+    }
+    return true;
+  }
+
+  /* ── CONFIRMACIÓN ── */
+  function preencherConfirmacion() {
+    const nome    = document.getElementById("nome").value.trim();
+    const sobre   = document.getElementById("sobrenome").value.trim();
+    const celular = document.getElementById("celular").value.trim();
+    const email   = document.getElementById("email").value.trim();
+    const cidadeEl = document.getElementById("cidade");
+    const cidadeTxt = cidadeEl.options[cidadeEl.selectedIndex]?.text || "—";
+
+    document.getElementById("conf-nome").textContent    = `${nome} ${sobre}`.trim() || "—";
+    document.getElementById("conf-celular").textContent = celular || "—";
+    document.getElementById("conf-email").textContent   = email   || "—";
+    document.getElementById("conf-cidade").textContent  = cidadeTxt;
+  }
+
+  /* ── FUERZA CONTRASEÑA ── */
+  function verificarFuerza(val) {
+    const wrap = document.getElementById("fuerza-wrap");
+    const txt  = document.getElementById("fuerza-txt");
+    const segs = [document.getElementById("f1"), document.getElementById("f2"), document.getElementById("f3")];
+
+    if (!val) { wrap.style.display = "none"; return; }
+    wrap.style.display = "flex";
+
+    let pts = 0;
+    if (val.length >= 6)  pts++;
+    if (val.length >= 10) pts++;
+    if (/[A-Z]/.test(val) || /[0-9]/.test(val) || /[^a-zA-Z0-9]/.test(val)) pts++;
+
+    segs.forEach(s => s.className = "fuerza-seg");
+    txt.className = "fuerza-txt";
+
+    if (pts === 1) {
+      segs[0].classList.add("fraca");
+      txt.classList.add("fraca"); txt.textContent = "Fraca";
+    } else if (pts === 2) {
+      segs[0].classList.add("media"); segs[1].classList.add("media");
+      txt.classList.add("media"); txt.textContent = "Média";
+    } else {
+      segs.forEach(s => s.classList.add("forte"));
+      txt.classList.add("forte"); txt.textContent = "Forte 💪";
+    }
+  }
+
+  /* ── MOSTRAR/OCULTAR SENHA ── */
+  function toggleSenha(inputId, iconId) {
+    const input = document.getElementById(inputId);
+    const icone = document.getElementById(iconId);
+    input.type = input.type === "password" ? "text" : "password";
     icone.style.opacity = input.type === "text" ? "0.35" : "1";
   }
 
-  function esqueceuSenha() {
-    const email = document.getElementById("email").value.trim();
-    if (!email) {
-      window.mostrarErro && window.mostrarErro("Digite seu email primeiro.");
-      document.getElementById("email").focus();
-      return;
+  /* ── MÁSCARAS ── */
+  document.getElementById("celular").addEventListener("input", function() {
+    let v = this.value.replace(/\D/g,"");
+    if (v.length <= 11) {
+      v = v.replace(/^(\d{2})(\d)/,"($1) $2");
+      v = v.replace(/(\d{5})(\d)/,"$1-$2");
     }
-    window.location.href = "recuperar-senha.html?email=" + encodeURIComponent(email);
-  }
+    this.value = v;
+  });
 
-  function fecharSeClicarFora(e) {
-    if (e.target === document.getElementById("modal-celular")) fecharModalCelular();
-  }
+  /* ── VALIDACIÓN EN TIEMPO REAL ── */
+  document.getElementById("confirmar-senha").addEventListener("input", function() {
+    const senha    = document.getElementById("senha").value;
+    const helper   = document.getElementById("helper-confirmar");
+    if (this.value && this.value !== senha) {
+      helper.textContent = "As senhas não coincidem.";
+      helper.className   = "campo-helper error-txt";
+      this.classList.add("error");
+      this.classList.remove("valido");
+    } else if (this.value && this.value === senha) {
+      helper.textContent = "";
+      this.classList.remove("error");
+      this.classList.add("valido");
+    }
+  });
 
-  document.addEventListener("DOMContentLoaded", () => {
-    document.getElementById("senha").addEventListener("keydown", e => {
-      if (e.key === "Enter") loginEmail(e);
-    });
-    document.getElementById("email").addEventListener("keydown", e => {
-      if (e.key === "Enter") document.getElementById("senha").focus();
+  /* Enter avanza al siguiente campo */
+  ["nome","sobrenome","celular"].forEach(id => {
+    document.getElementById(id).addEventListener("keydown", e => {
+      if (e.key === "Enter") proximoPaso();
     });
   });
 </script>
