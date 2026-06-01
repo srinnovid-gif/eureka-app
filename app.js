@@ -1,11 +1,11 @@
 /* ═══════════════════════════════════════════════════════════
-   EUREKA — app.js
+   EUREKA — app.js v3
    Firebase init + router de pantallas + SW
 ═══════════════════════════════════════════════════════════ */
 
-import { initializeApp }             from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
+import { initializeApp }              from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
 import { getAuth, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js";
-import { getFirestore }               from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
+import { getFirestore }                from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
 
 /* ── CONFIG FIREBASE ── */
 const firebaseConfig = {
@@ -19,57 +19,60 @@ const firebaseConfig = {
 
 /* ── INICIALIZAR ── */
 const app = initializeApp(firebaseConfig);
-
-/* Exponer en window para que auth.js los use sin necesidad de importar */
 window._eurekaAuth = getAuth(app);
 window._eurekaDb   = getFirestore(app);
 
-
-/* ── ROUTER DE PANTALLAS ── */
+/* ── ROUTER: transición entre pantallas ── */
 window.mostrarPantalla = function(de, para) {
   const anterior  = document.getElementById(de);
   const siguiente = document.getElementById(para);
   if (!anterior || !siguiente) return;
 
-  anterior.classList.add("saliendo");
+  // Ocultar la pantalla actual
   anterior.classList.remove("visible");
+  anterior.classList.add("oculto");
 
-  setTimeout(() => {
-    anterior.classList.add("oculto");
-    anterior.classList.remove("saliendo");
-    siguiente.classList.remove("oculto");
+  // Mostrar la siguiente
+  siguiente.classList.remove("oculto");
+  requestAnimationFrame(() => {
     requestAnimationFrame(() => {
-      requestAnimationFrame(() => siguiente.classList.add("visible"));
+      siguiente.classList.add("visible");
     });
-  }, 560);
+  });
 };
 
-
-/* ── FLUJO: Splash → Comecar o Home ── */
+/* ── FLUJO PRINCIPAL ──
+   1. Splash se muestra inmediatamente (class="screen visible" en HTML)
+   2. Después de 1.5s: si logado → home.html, si no → comecar
+   3. Botón Continuar → login
+── */
 onAuthStateChanged(window._eurekaAuth, (user) => {
   if (user) {
+    // Ya logado — saltar todo y ir a home
     window.location.href = "home.html";
   } else {
-    setTimeout(() => window.mostrarPantalla("splash", "comecar"), 1500);
+    // Sin sesión — esperar 1.5s y mostrar comecar
+    setTimeout(() => {
+      window.mostrarPantalla("splash", "comecar");
+    }, 1500);
   }
 });
 
-
-/* ── NAVEGACIÓN GLOBAL ── */
+/* ── NAVEGACIÓN ── */
 window.irParaLogin = function() {
   window.mostrarPantalla("comecar", "login");
+  // Botón flotante de cadastro aparece con delay
   setTimeout(() => {
     const f = document.getElementById("cadastro-float");
     if (f) f.classList.add("visivel");
   }, 400);
 };
 
-
 /* ── SERVICE WORKER ── */
 if ("serviceWorker" in navigator) {
   window.addEventListener("load", () => {
     navigator.serviceWorker.register("sw.js")
-      .then(() => console.log("[SW] Registrado ✅"))
+      .then(() => console.log("[SW] ✅"))
       .catch(err => console.warn("[SW] Error:", err));
   });
 }
