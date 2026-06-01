@@ -1,641 +1,1120 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
-<meta charset="UTF-8"/>
-<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"/>
-<meta name="theme-color" content="#111110"/>
-<title>Vanti</title>
-<link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&display=swap" rel="stylesheet"/>
-<style>
-:root {
-  --green:#3DBE5A; --carbon:#111110; --orange:#FF7D00;
-  --white:#FFFFFF; --warm:#F7F7F6; --gray:#6B6B68;
-  --gray2:#E2E2DF; --gray3:#F0F0EE;
-}
-*{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent;}
-html,body{height:100%;font-family:'Nunito',sans-serif;background:var(--warm);overflow:hidden;}
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+  <meta name="theme-color" content="#FF4D20" />
+  <meta name="mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+  <title>Eureka</title>
 
-/* ── SCREENS ── */
-.screen{position:fixed;inset:0;display:flex;flex-direction:column;transition:opacity .35s ease,transform .35s cubic-bezier(.22,.68,0,1.1);will-change:transform,opacity;}
-.screen.hidden{opacity:0;pointer-events:none;transform:translateY(24px);}
+  <!-- ═══════════════════════════════════════════
+       FONTES
+  ═══════════════════════════════════════════ -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Geologica:slnt,wght@-12..0,100..900&family=Glory:ital,wght@0,400;0,700;0,800;1,700;1,800&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet" />
 
-/* ══════════════════════════════
-   SPLASH
-══════════════════════════════ */
-#splash{background:var(--carbon);align-items:center;justify-content:center;z-index:100;}
-.splash-logo{display:flex;flex-direction:column;align-items:center;gap:20px;}
-.splash-wordmark{font-weight:900;font-size:52px;color:var(--white);letter-spacing:-.04em;position:relative;display:inline-block;}
-.splash-wordmark .dot{position:absolute;top:-4px;right:4px;width:11px;height:11px;border-radius:50%;background:var(--green);}
-.splash-tagline{font-size:14px;color:rgba(255,255,255,.4);font-weight:600;letter-spacing:.04em;}
-.splash-bar{width:48px;height:3px;background:rgba(255,255,255,.1);border-radius:3px;overflow:hidden;margin-top:8px;}
-.splash-fill{height:100%;background:var(--green);border-radius:3px;animation:load 1.8s ease forwards;}
-@keyframes load{from{width:0}to{width:100%}}
-
-/* ══════════════════════════════
-   LOGIN
-══════════════════════════════ */
-#login{background:var(--carbon);overflow-y:auto;}
-.login-top{flex:0 0 auto;padding:60px 32px 32px;display:flex;flex-direction:column;align-items:center;text-align:center;}
-.login-icon{width:72px;height:72px;border-radius:22px;background:rgba(61,190,90,.12);border:1.5px solid rgba(61,190,90,.25);display:flex;align-items:center;justify-content:center;margin-bottom:24px;}
-.login-title{font-weight:900;font-size:28px;color:var(--white);letter-spacing:-.02em;line-height:1.15;}
-.login-title span{color:var(--green);}
-.login-sub{font-size:13px;color:rgba(255,255,255,.4);margin-top:8px;line-height:1.6;}
-.login-form{flex:1;padding:8px 28px 40px;display:flex;flex-direction:column;gap:14px;}
-.input-wrap{display:flex;flex-direction:column;gap:6px;}
-.input-label{font-size:11px;font-weight:800;color:rgba(255,255,255,.4);letter-spacing:.06em;text-transform:uppercase;}
-.input-field{background:rgba(255,255,255,.06);border:1.5px solid rgba(255,255,255,.1);border-radius:16px;padding:16px 18px;font-family:'Nunito',sans-serif;font-size:15px;font-weight:600;color:var(--white);outline:none;transition:border .2s;}
-.input-field::placeholder{color:rgba(255,255,255,.25);}
-.input-field:focus{border-color:rgba(61,190,90,.5);background:rgba(61,190,90,.05);}
-.btn-primary{background:var(--green);border:none;border-radius:50px;padding:17px;font-family:'Nunito',sans-serif;font-weight:900;font-size:16px;color:var(--white);cursor:pointer;box-shadow:0 6px 24px rgba(61,190,90,.35);transition:transform .1s,box-shadow .1s;margin-top:4px;}
-.btn-primary:active{transform:scale(.97);box-shadow:0 3px 12px rgba(61,190,90,.25);}
-.btn-primary:disabled{opacity:.5;cursor:default;}
-.btn-ghost{background:none;border:1.5px solid rgba(255,255,255,.12);border-radius:50px;padding:15px;font-family:'Nunito',sans-serif;font-weight:700;font-size:14px;color:rgba(255,255,255,.5);cursor:pointer;transition:border .2s;}
-.login-divider{display:flex;align-items:center;gap:12px;margin:4px 0;}
-.login-divider::before,.login-divider::after{content:'';flex:1;height:1px;background:rgba(255,255,255,.08);}
-.login-divider span{font-size:11px;color:rgba(255,255,255,.25);font-weight:700;}
-.login-switch{text-align:center;font-size:13px;color:rgba(255,255,255,.4);}
-.login-switch a{color:var(--green);font-weight:800;text-decoration:none;cursor:pointer;}
-.error-msg{background:rgba(229,62,62,.1);border:1px solid rgba(229,62,62,.25);border-radius:12px;padding:12px 14px;font-size:12px;color:#FC8181;font-weight:700;display:none;}
-.error-msg.show{display:block;}
-
-/* ══════════════════════════════
-   HOME
-══════════════════════════════ */
-#home{background:var(--warm);overflow:hidden;}
-.home-scroll{flex:1;overflow-y:auto;padding-bottom:90px;}
-.home-scroll::-webkit-scrollbar{display:none;}
-
-/* Header */
-.home-header{background:var(--warm);padding:52px 20px 16px;display:flex;justify-content:space-between;align-items:center;position:sticky;top:0;z-index:10;}
-.header-left p:first-child{font-size:12px;color:var(--gray);font-weight:600;}
-.header-left p:last-child{font-weight:900;font-size:22px;color:var(--carbon);letter-spacing:-.02em;}
-.header-right{display:flex;gap:10px;align-items:center;}
-.icon-btn{width:40px;height:40px;border-radius:13px;background:var(--white);border:1.5px solid var(--gray2);display:flex;align-items:center;justify-content:center;cursor:pointer;position:relative;box-shadow:0 2px 8px rgba(0,0,0,.05);}
-.notif-dot{position:absolute;top:8px;right:8px;width:7px;height:7px;border-radius:50%;background:var(--orange);border:2px solid var(--warm);}
-.avatar-btn{width:40px;height:40px;border-radius:13px;background:var(--carbon);display:flex;align-items:center;justify-content:center;cursor:pointer;box-shadow:0 2px 8px rgba(17,17,16,.2);}
-.avatar-btn span{font-weight:900;font-size:15px;color:var(--white);}
-
-/* Disponível toggle */
-.disponivel-wrap{padding:0 16px 14px;}
-.disponivel-card{background:var(--white);border-radius:20px;padding:15px 18px;border:1.5px solid var(--gray2);display:flex;justify-content:space-between;align-items:center;cursor:pointer;transition:all .25s;box-shadow:0 2px 10px rgba(0,0,0,.04);}
-.disponivel-card.active{background:var(--carbon);border-color:var(--carbon);box-shadow:0 8px 28px rgba(17,17,16,.22);}
-.disp-left{display:flex;align-items:center;gap:12px;}
-.disp-icon{width:38px;height:38px;border-radius:12px;background:#EDF9F0;display:flex;align-items:center;justify-content:center;flex-shrink:0;transition:background .25s;}
-.disponivel-card.active .disp-icon{background:rgba(61,190,90,.15);}
-.disp-title{font-weight:800;font-size:14px;color:var(--carbon);transition:color .25s;}
-.disponivel-card.active .disp-title{color:var(--white);}
-.disp-sub{font-size:11px;color:var(--gray);margin-top:1px;transition:color .25s;}
-.disponivel-card.active .disp-sub{color:rgba(255,255,255,.45);}
-.toggle{width:46px;height:28px;border-radius:14px;background:var(--gray2);padding:3px;display:flex;align-items:center;justify-content:flex-start;transition:all .25s;flex-shrink:0;}
-.toggle.on{background:var(--green);justify-content:flex-end;}
-.toggle-thumb{width:22px;height:22px;border-radius:50%;background:var(--white);box-shadow:0 1px 4px rgba(0,0,0,.2);}
-
-/* Stats */
-.stats-wrap{padding:0 16px 14px;display:flex;gap:8px;}
-.stat-card{flex:1;border-radius:16px;padding:12px 10px;text-align:center;border:1.5px solid var(--gray2);}
-.stat-val{font-weight:900;font-size:16px;letter-spacing:-.02em;}
-.stat-label{font-size:9px;color:var(--gray);margin-top:2px;line-height:1.3;}
-
-/* Section header */
-.sec-head{display:flex;justify-content:space-between;align-items:center;padding:0 16px;margin-bottom:10px;}
-.sec-head p{font-weight:800;font-size:13px;color:var(--carbon);}
-.sec-head a{font-size:11px;font-weight:700;color:var(--green);text-decoration:none;cursor:pointer;}
-
-/* Categorias */
-.cats-scroll{display:flex;gap:8px;padding:0 16px;overflow-x:auto;margin-bottom:16px;}
-.cats-scroll::-webkit-scrollbar{display:none;}
-.cat-chip{display:flex;align-items:center;gap:7px;background:var(--white);border:1.5px solid var(--gray2);border-radius:50px;padding:8px 14px;cursor:pointer;transition:all .15s;white-space:nowrap;flex-shrink:0;}
-.cat-chip.active{background:var(--carbon);border-color:var(--carbon);}
-.cat-chip span{font-size:12px;font-weight:700;color:var(--carbon);transition:color .15s;}
-.cat-chip.active span{color:var(--white);}
-
-/* Diária cards */
-.diarias-wrap{padding:0 16px;display:flex;flex-direction:column;gap:10px;margin-bottom:16px;}
-.diaria-card{background:var(--white);border-radius:20px;padding:16px;border:1.5px solid var(--gray2);box-shadow:0 3px 14px rgba(0,0,0,.05);}
-.diaria-card.hot{border-color:rgba(255,125,0,.2);box-shadow:0 5px 20px rgba(255,125,0,.08);}
-.diaria-top{display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:8px;}
-.diaria-info{flex:1;}
-.diaria-badges{display:flex;gap:6px;margin-bottom:5px;flex-wrap:wrap;}
-.badge{font-size:9px;font-weight:800;padding:2px 8px;border-radius:20px;display:inline-flex;align-items:center;gap:3px;}
-.badge-green{background:#EDF9F0;color:var(--green);}
-.badge-orange{background:#FFF0E0;color:var(--orange);}
-.diaria-title{font-weight:900;font-size:15px;color:var(--carbon);}
-.diaria-company{font-size:12px;color:var(--gray);margin-top:2px;font-weight:600;}
-.diaria-value{font-weight:900;font-size:18px;color:var(--carbon);letter-spacing:-.02em;}
-.diaria-value-sub{font-size:10px;color:var(--gray);text-align:right;}
-.diaria-meta{background:var(--gray3);border-radius:12px;padding:8px 12px;display:flex;gap:12px;align-items:center;margin-bottom:12px;}
-.meta-item{display:flex;align-items:center;gap:4px;font-size:11px;color:var(--gray);font-weight:600;}
-.diaria-actions{display:flex;gap:8px;}
-.btn-ghost-sm{flex:1;background:none;border:1.5px solid var(--gray2);border-radius:50px;padding:10px;font-family:'Nunito',sans-serif;font-weight:700;font-size:12px;color:var(--gray);cursor:pointer;}
-.btn-apply{flex:2;background:var(--carbon);border:none;border-radius:50px;padding:10px;font-family:'Nunito',sans-serif;font-weight:800;font-size:13px;color:var(--white);cursor:pointer;display:flex;align-items:center;justify-content:center;gap:7px;box-shadow:0 4px 14px rgba(17,17,16,.2);transition:transform .1s;}
-.btn-apply:active{transform:scale(.97);}
-.btn-apply.applied{background:#EDF9F0;color:var(--green);border:1.5px solid var(--green);box-shadow:none;}
-
-/* Comunidade */
-.comunidade-scroll{display:flex;gap:10px;padding:0 16px;overflow-x:auto;margin-bottom:16px;}
-.comunidade-scroll::-webkit-scrollbar{display:none;}
-.worker-card{background:var(--white);border-radius:18px;padding:14px;border:1.5px solid var(--gray2);min-width:150px;flex-shrink:0;box-shadow:0 2px 8px rgba(0,0,0,.04);}
-.worker-avatar{width:44px;height:44px;border-radius:14px;display:flex;align-items:center;justify-content:center;font-size:22px;margin-bottom:8px;position:relative;}
-.worker-dot{position:absolute;bottom:2px;right:2px;width:10px;height:10px;border-radius:50%;background:var(--green);border:2px solid var(--white);}
-.worker-name{font-weight:800;font-size:13px;color:var(--carbon);}
-.worker-role{font-size:11px;color:var(--gray);margin-top:1px;}
-.worker-stats{display:flex;gap:8px;margin-top:6px;}
-.worker-stat{font-size:10px;color:var(--gray);}
-.worker-stat span{font-weight:800;color:var(--carbon);}
-
-/* Destaque banner */
-.destaque-wrap{padding:0 16px 14px;}
-.destaque-card{background:var(--orange);border-radius:20px;padding:18px 20px;display:flex;justify-content:space-between;align-items:center;box-shadow:0 6px 20px rgba(255,125,0,.28);}
-.destaque-left p:first-child{font-weight:900;font-size:15px;color:var(--white);}
-.destaque-left p:last-child{font-size:11px;color:rgba(255,255,255,.7);margin-top:3px;line-height:1.5;}
-.destaque-btn{background:var(--white);border-radius:50px;padding:9px 18px;font-family:'Nunito',sans-serif;font-weight:800;font-size:12px;color:var(--orange);cursor:pointer;border:none;flex-shrink:0;white-space:nowrap;}
-
-/* Bottom nav */
-.bottom-nav{position:fixed;bottom:0;left:50%;transform:translateX(-50%);width:100%;max-width:430px;background:var(--white);border-top:1px solid var(--gray2);padding:8px 8px 20px;display:flex;justify-content:space-around;z-index:50;}
-.nav-btn{display:flex;flex-direction:column;align-items:center;gap:3px;background:none;border:none;cursor:pointer;padding:6px 10px;border-radius:12px;}
-.nav-icon{width:40px;height:36px;border-radius:12px;display:flex;align-items:center;justify-content:center;transition:background .15s;}
-.nav-btn.active .nav-icon{background:var(--gray3);}
-.nav-label{font-size:9px;font-family:'Nunito',sans-serif;font-weight:500;color:var(--gray2);transition:color .15s;}
-.nav-btn.active .nav-label{font-weight:900;color:var(--carbon);}
-
-/* Toast */
-.toast{position:fixed;top:60px;left:50%;transform:translateX(-50%) translateY(-20px);background:var(--carbon);color:var(--white);padding:12px 20px;border-radius:50px;font-size:13px;font-weight:700;opacity:0;transition:all .3s;z-index:200;pointer-events:none;white-space:nowrap;}
-.toast.show{opacity:1;transform:translateX(-50%) translateY(0);}
-.toast.green{background:var(--green);}
-</style>
-</head>
-<body>
-
-<!-- ════════════ SPLASH ════════════ -->
-<div class="screen" id="splash" style="background:#f0f0ee;">
-  <video
-    id="splashVideo"
-    autoplay
-    muted
-    playsinline
-    style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;"
-    onended="splashDone()"
-  >
-    <source src="https://res.cloudinary.com/ddjgwglk2/video/upload/609581244_reb8tn.mp4" type="video/mp4"/>
-  </video>
-</div>
-
-<!-- ════════════ LOGIN ════════════ -->
-<div class="screen hidden" id="login">
-  <div class="login-top">
-    <div class="login-icon">
-      <svg width="32" height="32" viewBox="0 0 120 108" fill="none">
-        <path d="M8 8C18 8 30 20 42 44L60 80L78 44C90 20 102 8 112 8" stroke="white" stroke-width="18" stroke-linecap="round"/>
-        <path d="M78 44C90 20 102 8 112 8" stroke="#3DBE5A" stroke-width="18" stroke-linecap="round"/>
-        <ellipse cx="60" cy="88" rx="9" ry="6" fill="#3DBE5A"/>
-      </svg>
-    </div>
-    <h1 class="login-title" id="loginTitle">Bienvenido a <span>Vanti</span></h1>
-    <p class="login-sub" id="loginSub">Encontrá tu próxima diária hoy.</p>
-  </div>
-
-  <div class="login-form">
-    <div class="error-msg" id="errorMsg"></div>
-
-    <!-- Register extra fields -->
-    <div class="input-wrap" id="nameWrap" style="display:none;">
-      <div class="input-label">Tu nombre</div>
-      <input class="input-field" id="nameInput" type="text" placeholder="Como quieres ser encontrado"/>
-    </div>
-
-    <div class="input-wrap">
-      <div class="input-label">Email</div>
-      <input class="input-field" id="emailInput" type="email" placeholder="tu@email.com" autocomplete="email"/>
-    </div>
-
-    <div class="input-wrap">
-      <div class="input-label">Contraseña</div>
-      <input class="input-field" id="passInput" type="password" placeholder="••••••••" autocomplete="current-password"/>
-    </div>
-
-    <button class="btn-primary" id="authBtn" onclick="handleAuth()">Entrar</button>
-
-    <div class="login-divider"><span>ou</span></div>
-
-    <p class="login-switch" id="switchText">
-      Não tem conta? <a onclick="toggleMode()">Criar agora</a>
-    </p>
-  </div>
-</div>
-
-<!-- ════════════ HOME ════════════ -->
-<div class="screen hidden" id="home">
-  <div class="home-scroll" id="homeScroll">
-
-    <!-- Header -->
-    <div class="home-header">
-      <div class="header-left">
-        <p id="greetTime">Bom dia</p>
-        <p id="userName">...</p>
-      </div>
-      <div class="header-right">
-        <div class="icon-btn" onclick="showToast('Notificações em breve')">
-          <svg width="18" height="18" viewBox="0 0 24 24" fill="none"><path d="M12 3C12 3 7 6 7 13V18H17V13C17 6 12 3 12 3Z" stroke="#111110" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/><path d="M10 18C10 19.1 10.9 20 12 20C13.1 20 14 19.1 14 18" stroke="#111110" stroke-width="2" stroke-linecap="round"/></svg>
-          <div class="notif-dot"></div>
-        </div>
-        <div class="avatar-btn" onclick="showToast('Perfil em breve')">
-          <span id="userInitial">V</span>
-        </div>
-      </div>
-    </div>
-
-    <!-- Disponível -->
-    <div class="disponivel-wrap">
-      <div class="disponivel-card" id="dispCard" onclick="toggleDisp()">
-        <div class="disp-left">
-          <div class="disp-icon" id="dispIcon">
-            <svg width="18" height="18" viewBox="0 0 24 24" fill="none"><path d="M12 2C8.1 2 5 5.1 5 9C5 14.2 12 22 12 22C12 22 19 14.2 19 9C19 5.1 15.9 2 12 2Z" fill="#3DBE5A"/><circle cx="12" cy="9" r="2.5" fill="white"/></svg>
-          </div>
-          <div>
-            <div class="disp-title" id="dispTitle">Modo disponível</div>
-            <div class="disp-sub" id="dispSub">Toque para ativar</div>
-          </div>
-        </div>
-        <div class="toggle" id="toggle"><div class="toggle-thumb"></div></div>
-      </div>
-    </div>
-
-    <!-- Stats -->
-    <div class="stats-wrap">
-      <div class="stat-card" style="background:#EDF9F0;border-color:rgba(61,190,90,.2);">
-        <div class="stat-val" style="color:var(--green);">0</div>
-        <div class="stat-label">Diárias feitas</div>
-      </div>
-      <div class="stat-card" style="background:#FFF0E0;border-color:rgba(255,125,0,.2);">
-        <div class="stat-val" style="color:var(--orange);">—</div>
-        <div class="stat-label">Avaliação</div>
-      </div>
-      <div class="stat-card" style="background:var(--gray3);">
-        <div class="stat-val" style="color:var(--carbon);">R$0</div>
-        <div class="stat-label">Este mês</div>
-      </div>
-    </div>
-
-    <!-- Categorias -->
-    <div class="sec-head"><p>Categorias</p></div>
-    <div class="cats-scroll" id="catsScroll"></div>
-
-    <!-- Diárias -->
-    <div class="sec-head">
-      <p>Diárias perto de você</p>
-      <a onclick="showToast('Ver todas em breve')">Ver todas</a>
-    </div>
-    <div class="diarias-wrap" id="diariasWrap"></div>
-
-    <!-- Comunidade -->
-    <div class="sec-head">
-      <p>Comunidade perto</p>
-      <a onclick="showToast('Ver todos em breve')">Ver todos</a>
-    </div>
-    <div class="comunidade-scroll" id="comunidadeScroll"></div>
-
-    <!-- Destaque banner -->
-    <div class="destaque-wrap">
-      <div class="destaque-card">
-        <div class="destaque-left">
-          <p>Destacar meu perfil</p>
-          <p>Apareça primeiro para<br/>empresas do seu bairro</p>
-        </div>
-        <button class="destaque-btn" onclick="showToast('Em breve!')">Ver planos</button>
-      </div>
-    </div>
-
-  </div><!-- /homeScroll -->
-
-  <!-- Bottom nav -->
-  <nav class="bottom-nav">
-    <button class="nav-btn active" onclick="setNav(this)">
-      <div class="nav-icon">
-        <svg width="22" height="22" viewBox="0 0 24 24" fill="none"><path d="M3 10.5L12 3L21 10.5V21H15.5V15H8.5V21H3V10.5Z" fill="#111110" opacity=".9"/></svg>
-      </div>
-      <span class="nav-label">Início</span>
-    </button>
-    <button class="nav-btn" onclick="setNav(this);showToast('Buscar em breve')">
-      <div class="nav-icon">
-        <svg width="22" height="22" viewBox="0 0 24 24" fill="none"><circle cx="10.5" cy="10.5" r="6.5" stroke="#C0C0BC" stroke-width="2"/><path d="M15.5 15.5L21 21" stroke="#C0C0BC" stroke-width="2.2" stroke-linecap="round"/></svg>
-      </div>
-      <span class="nav-label">Buscar</span>
-    </button>
-    <button class="nav-btn" onclick="setNav(this);showToast('Perto de você em breve')">
-      <div class="nav-icon">
-        <svg width="22" height="22" viewBox="0 0 24 24" fill="none"><path d="M12 2C8.1 2 5 5.1 5 9C5 14.2 12 22 12 22C12 22 19 14.2 19 9C19 5.1 15.9 2 12 2Z" stroke="#C0C0BC" stroke-width="2" stroke-linejoin="round"/><circle cx="12" cy="9" r="2.5" stroke="#C0C0BC" stroke-width="2"/></svg>
-      </div>
-      <span class="nav-label">Perto</span>
-    </button>
-    <button class="nav-btn" onclick="setNav(this);showToast('Alertas em breve')">
-      <div class="nav-icon">
-        <svg width="22" height="22" viewBox="0 0 24 24" fill="none"><path d="M12 3C12 3 7 6 7 13V18H17V13C17 6 12 3 12 3Z" stroke="#C0C0BC" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/><path d="M10 18C10 19.1 10.9 20 12 20C13.1 20 14 19.1 14 18" stroke="#C0C0BC" stroke-width="2" stroke-linecap="round"/></svg>
-      </div>
-      <span class="nav-label">Alertas</span>
-    </button>
-    <button class="nav-btn" onclick="setNav(this);showToast('Perfil em breve')">
-      <div class="nav-icon">
-        <svg width="22" height="22" viewBox="0 0 24 24" fill="none"><circle cx="12" cy="8" r="4.5" stroke="#C0C0BC" stroke-width="2"/><path d="M3.5 21C3.5 17 7.4 14 12 14C16.6 14 20.5 17 20.5 21" stroke="#C0C0BC" stroke-width="2" stroke-linecap="round"/></svg>
-      </div>
-      <span class="nav-label">Perfil</span>
-    </button>
-  </nav>
-</div>
-
-<div class="toast" id="toast"></div>
-
-<!-- ════════════ FIREBASE ════════════ -->
-<script type="module">
-import { initializeApp } from "https://www.gstatic.com/firebasejs/11.0.1/firebase-app.js";
-import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/11.0.1/firebase-auth.js";
-import { getFirestore, doc, setDoc, getDoc, serverTimestamp } from "https://www.gstatic.com/firebasejs/11.0.1/firebase-firestore.js";
-
-// ── FIREBASE CONFIG ──
-const firebaseConfig = {
-  apiKey: "AIzaSyCw4QhQ5fGYSv_QgfY-waAZuOhkfv1ej1s",
-  authDomain: "vanti-app-br.firebaseapp.com",
-  projectId: "vanti-app-br",
-  storageBucket: "vanti-app-br.firebasestorage.app",
-  messagingSenderId: "1028700458017",
-  appId: "1:1028700458017:web:6011fd81d09010e4f1e760"
-};
-
-const app = initializeApp(firebaseConfig);
-const auth = getAuth(app);
-const db = getFirestore(app);
-
-// ── AUTH STATE ──
-onAuthStateChanged(auth, async (user) => {
-  if (user) {
-    // Logged in
-    const snap = await getDoc(doc(db, "users", user.uid));
-    const data = snap.exists() ? snap.data() : {};
-    const name = data.name || user.email.split('@')[0];
-    showHome(name);
-  } else {
-    showLogin();
-  }
-});
-
-// ── AUTH HANDLER ──
-let isRegister = false;
-
-window.handleAuth = async () => {
-  const email = document.getElementById('emailInput').value.trim();
-  const pass  = document.getElementById('passInput').value;
-  const btn   = document.getElementById('authBtn');
-  const err   = document.getElementById('errorMsg');
-  err.classList.remove('show');
-
-  if (!email || !pass) {
-    showError('Preencha todos os campos');
-    return;
-  }
-  if (pass.length < 6) {
-    showError('A senha precisa ter pelo menos 6 caracteres');
-    return;
-  }
-
-  btn.disabled = true;
-  btn.textContent = 'Aguarde...';
-
-  try {
-    if (isRegister) {
-      const name = document.getElementById('nameInput').value.trim();
-      if (!name) { showError('Coloca seu nome'); btn.disabled=false; btn.textContent='Criar conta'; return; }
-      const cred = await createUserWithEmailAndPassword(auth, email, pass);
-      await setDoc(doc(db, "users", cred.user.uid), {
-        name, email,
-        role: 'worker',
-        disponivel: false,
-        diarias: 0,
-        createdAt: serverTimestamp()
-      });
-      showToast('Bem-vindo ao Vanti!', true);
-    } else {
-      await signInWithEmailAndPassword(auth, email, pass);
-      showToast('Bem-vindo de volta!', true);
+  <style>
+    /* ═══════════════════════════════════════════
+       TOKENS DE DESIGN
+    ═══════════════════════════════════════════ */
+    :root {
+      --orange:       #FF4D20;
+      --orange-dark:  #D93A10;
+      --orange-pale:  #FFF5EE;
+      --orange-soft:  #FFE8D6;
+      --orange-glow:  rgba(255, 77, 32, 0.28);
+      --ink:          #111010;
+      --ink2:         #6B6560;
+      --ink3:         #B8B0A8;
+      --border:       #F0EDE8;
+      --white:        #FFFFFF;
+      --surface:      #FFF5EE;
+      --radius-card:  20px;
+      --radius-btn:   16px;
+      --shadow-cta:   0 8px 24px rgba(255, 77, 32, 0.30);
+      --font-main:    'Geologica', sans-serif;
+      --font-display: 'Glory', sans-serif;
+      --font-mono:    'DM Mono', monospace;
     }
-  } catch(e) {
-    const msgs = {
-      'auth/user-not-found': 'Email não encontrado',
-      'auth/wrong-password': 'Senha incorreta',
-      'auth/email-already-in-use': 'Email já cadastrado',
-      'auth/invalid-email': 'Email inválido',
-      'auth/invalid-credential': 'Email ou senha incorretos',
-    };
-    showError(msgs[e.code] || 'Algo deu errado. Tente novamente.');
-    btn.disabled = false;
-    btn.textContent = isRegister ? 'Criar conta' : 'Entrar';
-  }
-};
 
-window.toggleMode = () => {
-  isRegister = !isRegister;
-  document.getElementById('nameWrap').style.display = isRegister ? 'flex' : 'none';
-  document.getElementById('loginTitle').innerHTML = isRegister ? 'Criar sua conta <span>Vanti</span>' : 'Bienvenido a <span>Vanti</span>';
-  document.getElementById('loginSub').textContent = isRegister ? 'Comece a receber diárias hoje.' : 'Encontrá tu próxima diária hoy.';
-  document.getElementById('authBtn').textContent = isRegister ? 'Criar conta' : 'Entrar';
-  document.getElementById('switchText').innerHTML = isRegister
-    ? 'Já tem conta? <a onclick="toggleMode()">Entrar</a>'
-    : 'Não tem conta? <a onclick="toggleMode()">Criar agora</a>';
-  document.getElementById('errorMsg').classList.remove('show');
-};
+    /* ═══════════════════════════════════════════
+       RESET
+    ═══════════════════════════════════════════ */
+    *, *::before, *::after {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      -webkit-tap-highlight-color: transparent;
+    }
 
-// ── UI HELPERS ──
-function showError(msg) {
-  const el = document.getElementById('errorMsg');
-  el.textContent = msg;
-  el.classList.add('show');
-}
+    html, body {
+      height: 100%;
+      overflow: hidden;
+      font-family: var(--font-main);
+      background: var(--orange);
+      color: var(--ink);
+      -webkit-font-smoothing: antialiased;
+    }
 
-function showLogin() {
-  document.getElementById('splash').classList.add('hidden');
-  document.getElementById('home').classList.add('hidden');
-  document.getElementById('login').classList.remove('hidden');
-}
+    /* ═══════════════════════════════════════════
+       CONTENEDOR APP
+    ═══════════════════════════════════════════ */
+    #app {
+      width: 100%;
+      height: 100%;
+      position: relative;
+      overflow: hidden;
+    }
 
-function showHome(name) {
-  document.getElementById('splash').classList.add('hidden');
-  document.getElementById('login').classList.add('hidden');
-  document.getElementById('home').classList.remove('hidden');
+    /* ═══════════════════════════════════════════
+       SPLASH SCREEN
+    ═══════════════════════════════════════════ */
+    #splash {
+      position: absolute;
+      inset: 0;
+      background: var(--orange);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      z-index: 10;
+      transition: opacity 0.6s ease, transform 0.6s ease;
+    }
 
-  // Greeting
-  const h = new Date().getHours();
-  const greet = h < 12 ? 'Bom dia' : h < 18 ? 'Boa tarde' : 'Boa noite';
-  document.getElementById('greetTime').textContent = greet + ' 👋';
-  document.getElementById('userName').textContent = name;
-  document.getElementById('userInitial').textContent = name[0].toUpperCase();
+    #splash.saindo {
+      opacity: 0;
+      transform: scale(1.04);
+      pointer-events: none;
+    }
 
-  buildHome();
-}
+    /* Círculos decorativos splash */
+    #splash::before {
+      content: '';
+      position: absolute;
+      width: 420px;
+      height: 420px;
+      border-radius: 50%;
+      background: rgba(255, 255, 255, 0.06);
+      top: -100px;
+      right: -100px;
+    }
 
-// ── BUILD HOME ──
-function buildHome() {
-  buildCats();
-  buildDiarias();
-  buildComunidade();
-}
+    #splash::after {
+      content: '';
+      position: absolute;
+      width: 300px;
+      height: 300px;
+      border-radius: 50%;
+      background: rgba(255, 255, 255, 0.04);
+      bottom: -80px;
+      left: -60px;
+    }
 
-function buildCats() {
-  const cats = [
-    {label:'Todas', icon:'🔍', active:true},
-    {label:'Cozinha', icon:'🍳'},
-    {label:'Limpeza', icon:'🧹'},
-    {label:'Salão', icon:'🍽️'},
-    {label:'Pintura', icon:'🎨'},
-    {label:'Segurança', icon:'🛡️'},
-    {label:'Motorista', icon:'🚗'},
-    {label:'Elétrica', icon:'⚡'},
-  ];
-  const wrap = document.getElementById('catsScroll');
-  wrap.innerHTML = cats.map(c => `
-    <div class="cat-chip ${c.active?'active':''}" onclick="selectCat(this)">
-      <span style="font-size:14px;">${c.icon}</span>
-      <span>${c.label}</span>
+    .splash-logo-wrap {
+      position: relative;
+      z-index: 2;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 0;
+      animation: splashPop 0.7s cubic-bezier(0.34, 1.56, 0.64, 1) both;
+    }
+
+    /* Logotipo real — imagen blanca sobre naranja */
+    .splash-logo-img {
+      height: 52px;
+      width: auto;
+      display: block;
+      /* Converte o logotipo laranja em branco */
+      filter: brightness(0) invert(1);
+      object-fit: contain;
+    }
+
+    /* Fallback SVG se a imagem não carregar */
+    .splash-logo-svg {
+      display: none;
+    }
+
+    .splash-tagline {
+      font-family: var(--font-main);
+      font-weight: 400;
+      font-size: 13px;
+      color: rgba(255, 255, 255, 0.7);
+      letter-spacing: 0.06em;
+      margin-top: 14px;
+      position: relative;
+      z-index: 2;
+      animation: fadeUp 0.5s 0.5s ease both;
+    }
+
+    /* Loader dots */
+    .splash-dots {
+      position: absolute;
+      bottom: 72px;
+      left: 50%;
+      transform: translateX(-50%);
+      display: flex;
+      gap: 7px;
+      z-index: 2;
+    }
+
+    .splash-dot {
+      width: 6px;
+      height: 6px;
+      border-radius: 50%;
+      background: rgba(255, 255, 255, 0.35);
+      animation: dotPulse 1.4s ease-in-out infinite;
+    }
+
+    .splash-dot:nth-child(1) { animation-delay: 0s;    background: rgba(255,255,255,0.9); }
+    .splash-dot:nth-child(2) { animation-delay: 0.2s; }
+    .splash-dot:nth-child(3) { animation-delay: 0.4s; }
+
+    /* ═══════════════════════════════════════════
+       LOGIN SCREEN
+    ═══════════════════════════════════════════ */
+    #login {
+      position: absolute;
+      inset: 0;
+      background: var(--white);
+      display: flex;
+      flex-direction: column;
+      overflow-y: auto;
+      overflow-x: hidden;
+      opacity: 0;
+      transform: translateY(32px);
+      pointer-events: none;
+      transition: opacity 0.55s ease, transform 0.55s ease;
+    }
+
+    #login.visivel {
+      opacity: 1;
+      transform: translateY(0);
+      pointer-events: all;
+    }
+
+    /* Blobs de fundo */
+    .blob {
+      position: absolute;
+      border-radius: 50%;
+      pointer-events: none;
+      z-index: 0;
+    }
+
+    .blob-1 {
+      width: 300px;
+      height: 300px;
+      background: radial-gradient(circle, rgba(255,77,32,0.08) 0%, transparent 70%);
+      top: -80px;
+      right: -60px;
+    }
+
+    .blob-2 {
+      width: 200px;
+      height: 200px;
+      background: radial-gradient(circle, rgba(255,77,32,0.05) 0%, transparent 70%);
+      top: 260px;
+      left: -60px;
+    }
+
+    /* ── HERO ───────────────────────────────── */
+    .login-hero {
+      padding: 64px 28px 24px;
+      position: relative;
+      z-index: 1;
+      flex-shrink: 0;
+      animation: fadeUp 0.5s 0.05s ease both;
+    }
+
+    /* Logotipo naranja — png con fondo transparente */
+    .login-logo {
+      height: 38px;
+      width: auto;
+      display: block;
+      margin-bottom: 24px;
+      object-fit: contain;
+      object-position: left;
+    }
+
+    /* Fallback texto si falla la imagen */
+    .login-logo-fallback {
+      font-family: var(--font-main);
+      font-weight: 900;
+      font-size: 34px;
+      color: var(--orange);
+      letter-spacing: -0.04em;
+      line-height: 1;
+      margin-bottom: 24px;
+      display: none;
+    }
+
+    .login-titulo {
+      font-family: var(--font-display);
+      font-style: italic;
+      font-weight: 800;
+      font-size: 34px;
+      color: var(--ink);
+      letter-spacing: -0.02em;
+      line-height: 1.08;
+      margin-bottom: 8px;
+    }
+
+    .login-titulo span { color: var(--orange); }
+
+    .login-sub {
+      font-size: 14px;
+      color: var(--ink2);
+      line-height: 1.55;
+      font-weight: 400;
+    }
+
+    /* ── FORMULÁRIO ─────────────────────────── */
+    .login-form {
+      flex: 1;
+      padding: 4px 28px 48px;
+      display: flex;
+      flex-direction: column;
+      gap: 14px;
+      position: relative;
+      z-index: 1;
+      animation: fadeUp 0.5s 0.12s ease both;
+    }
+
+    /* ── BOTÕES SOCIAIS ─────────────────────── */
+    .social-row {
+      display: flex;
+      gap: 10px;
+    }
+
+    .social-btn {
+      flex: 1;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 7px;
+      padding: 13px 8px;
+      border-radius: var(--radius-btn);
+      border: 1.5px solid var(--border);
+      background: var(--white);
+      cursor: pointer;
+      font-family: var(--font-main);
+      font-weight: 600;
+      font-size: 12.5px;
+      color: var(--ink);
+      transition: background 0.15s, transform 0.1s;
+      user-select: none;
+    }
+
+    .social-btn:active {
+      background: var(--surface);
+      transform: scale(0.96);
+    }
+
+    /* ── DIVISOR ────────────────────────────── */
+    .divider {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .divider-line {
+      flex: 1;
+      height: 1px;
+      background: var(--border);
+    }
+
+    .divider-txt {
+      font-family: var(--font-mono);
+      font-size: 10px;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--ink3);
+      white-space: nowrap;
+    }
+
+    /* ── CAMPOS ─────────────────────────────── */
+    .campo {
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+    }
+
+    .campo-label {
+      font-weight: 600;
+      font-size: 12px;
+      color: var(--ink2);
+      letter-spacing: 0.02em;
+      padding-left: 2px;
+    }
+
+    .campo-wrap {
+      position: relative;
+    }
+
+    .campo-input {
+      width: 100%;
+      padding: 14px 48px 14px 46px;
+      border-radius: 16px;
+      border: 1.5px solid var(--border);
+      background: var(--surface);
+      font-family: var(--font-main);
+      font-size: 15px;
+      color: var(--ink);
+      outline: none;
+      -webkit-appearance: none;
+      transition: border-color 0.2s, background 0.2s, box-shadow 0.2s;
+    }
+
+    .campo-input::placeholder {
+      color: var(--ink3);
+      font-size: 14px;
+    }
+
+    .campo-input:focus {
+      border-color: var(--orange);
+      background: #FFFAF7;
+      box-shadow: 0 0 0 3px rgba(255, 77, 32, 0.08);
+    }
+
+    .campo-icone {
+      position: absolute;
+      left: 14px;
+      top: 50%;
+      transform: translateY(-50%);
+      width: 18px;
+      height: 18px;
+      color: var(--ink3);
+      pointer-events: none;
+      transition: color 0.2s;
+    }
+
+    .campo-wrap:has(.campo-input:focus) .campo-icone {
+      color: var(--orange);
+    }
+
+    .btn-olho {
+      position: absolute;
+      right: 14px;
+      top: 50%;
+      transform: translateY(-50%);
+      background: none;
+      border: none;
+      padding: 4px;
+      cursor: pointer;
+      color: var(--ink3);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: color 0.2s;
+    }
+
+    .btn-olho:active { color: var(--orange); }
+
+    /* ── ESQUECI SENHA ──────────────────────── */
+    .esqueci-row {
+      display: flex;
+      justify-content: flex-end;
+      margin-top: -6px;
+    }
+
+    .btn-esqueci {
+      background: none;
+      border: none;
+      font-family: var(--font-main);
+      font-size: 13px;
+      font-weight: 600;
+      color: var(--orange);
+      cursor: pointer;
+      padding: 0;
+    }
+
+    /* ── ERRO ───────────────────────────────── */
+    #msg-erro {
+      display: none;
+      background: #FFF0EE;
+      border: 1px solid #FFD0C8;
+      border-radius: 12px;
+      padding: 12px 16px;
+      font-size: 13px;
+      color: var(--orange-dark);
+      font-weight: 500;
+      text-align: center;
+      animation: fadeUp 0.3s ease both;
+    }
+
+    /* ── BOTÃO ENTRAR ───────────────────────── */
+    .btn-entrar {
+      width: 100%;
+      padding: 17px;
+      border-radius: var(--radius-btn);
+      background: var(--orange);
+      color: var(--white);
+      font-family: var(--font-main);
+      font-weight: 800;
+      font-size: 16px;
+      border: none;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      box-shadow: var(--shadow-cta);
+      transition: opacity 0.2s, transform 0.12s;
+      animation: pulseCTA 3s ease-in-out infinite;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .btn-entrar::after {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: rgba(255,255,255,0);
+      transition: background 0.15s;
+    }
+
+    .btn-entrar:active::after {
+      background: rgba(255,255,255,0.12);
+    }
+
+    .btn-entrar:active {
+      transform: scale(0.98);
+    }
+
+    .btn-entrar:disabled {
+      opacity: 0.65;
+      cursor: not-allowed;
+      animation: none;
+    }
+
+    #spinner {
+      display: none;
+      width: 18px;
+      height: 18px;
+      border: 2.5px solid rgba(255,255,255,0.35);
+      border-top-color: white;
+      border-radius: 50%;
+      animation: girar 0.7s linear infinite;
+      flex-shrink: 0;
+    }
+
+    /* ── LINK CADASTRO ──────────────────────── */
+    .cadastro-row {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .cadastro-row span {
+      font-size: 14px;
+      color: var(--ink2);
+    }
+
+    .link-cadastro {
+      font-size: 14px;
+      font-weight: 700;
+      color: var(--orange);
+      text-decoration: none;
+      cursor: pointer;
+    }
+
+    /* ═══════════════════════════════════════════
+       MODAL CELULAR
+    ═══════════════════════════════════════════ */
+    #modal-celular {
+      display: none;
+      position: fixed;
+      inset: 0;
+      background: rgba(17,16,16,0.55);
+      z-index: 50;
+      align-items: flex-end;
+      justify-content: center;
+      backdrop-filter: blur(6px);
+      -webkit-backdrop-filter: blur(6px);
+    }
+
+    #modal-celular.ativo {
+      display: flex;
+      animation: fadeIn 0.2s ease both;
+    }
+
+    .modal-sheet {
+      background: var(--white);
+      border-radius: 28px 28px 0 0;
+      padding: 20px 28px 52px;
+      width: 100%;
+      max-width: 480px;
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+      animation: slideUp 0.35s cubic-bezier(0.34,1.1,0.64,1) both;
+    }
+
+    .modal-handle {
+      width: 40px;
+      height: 4px;
+      background: var(--border);
+      border-radius: 2px;
+      margin: 0 auto 4px;
+    }
+
+    .modal-titulo {
+      font-family: var(--font-display);
+      font-style: italic;
+      font-weight: 800;
+      font-size: 26px;
+      color: var(--ink);
+      letter-spacing: -0.02em;
+      line-height: 1.1;
+    }
+
+    .modal-titulo span { color: var(--orange); }
+
+    .modal-sub {
+      font-size: 13.5px;
+      color: var(--ink2);
+      margin-top: -8px;
+      line-height: 1.5;
+    }
+
+    #etapa-codigo { display: none; }
+
+    .btn-cancelar {
+      width: 100%;
+      background: none;
+      border: none;
+      font-family: var(--font-main);
+      font-size: 14px;
+      color: var(--ink2);
+      cursor: pointer;
+      padding: 10px;
+      margin-top: -4px;
+    }
+
+    #recaptcha-container { display: none; }
+
+    /* ═══════════════════════════════════════════
+       ANIMACIONES
+    ═══════════════════════════════════════════ */
+    @keyframes splashPop {
+      from { opacity: 0; transform: scale(0.82); }
+      to   { opacity: 1; transform: scale(1); }
+    }
+
+    @keyframes fadeUp {
+      from { opacity: 0; transform: translateY(16px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; }
+      to   { opacity: 1; }
+    }
+
+    @keyframes slideUp {
+      from { transform: translateY(100%); }
+      to   { transform: translateY(0); }
+    }
+
+    @keyframes dotPulse {
+      0%, 80%, 100% { opacity: 0.3; transform: scale(0.85); }
+      40%            { opacity: 1;   transform: scale(1.1); }
+    }
+
+    @keyframes girar {
+      to { transform: rotate(360deg); }
+    }
+
+    @keyframes pulseCTA {
+      0%, 100% { box-shadow: 0 8px 24px rgba(255,77,32,0.30); }
+      50%       { box-shadow: 0 8px 36px rgba(255,77,32,0.52); }
+    }
+  </style>
+</head>
+
+<body>
+<div id="app">
+
+  <!-- ═══════════════════════════════════════════
+       SPLASH SCREEN
+  ═══════════════════════════════════════════ -->
+  <div id="splash">
+
+    <div class="splash-logo-wrap">
+      <!--
+        🔧 Troca o src pelo caminho real do logotipo no repo.
+           O filtro CSS converte o laranja em branco automaticamente.
+           Exemplo: src="assets/logotipo.png"
+      -->
+      <img
+        class="splash-logo-img"
+        src="38551-removebg-preview.png"
+        alt="Eureka"
+        onerror="this.style.display='none'; document.querySelector('.splash-logo-svg').style.display='flex';"
+      />
+
+      <!-- Fallback SVG (wordmark "eureka" en blanco) -->
+      <div class="splash-logo-svg" style="font-family:'Geologica',sans-serif;font-weight:900;font-size:52px;color:white;letter-spacing:-0.04em;line-height:1;">
+        eureka
+      </div>
     </div>
-  `).join('');
-}
 
-function buildDiarias() {
-  const data = [
-    {title:'Garçom', company:'Restaurante Batel', km:'1,8 km', value:'R$180', time:'Hoje 18h', rating:'4.9', applicants:5, hot:true, verified:true},
-    {title:'Cozinheiro', company:'Bistrô Centro', km:'3,2 km', value:'R$220', time:'Amanhã 10h', rating:'4.7', hot:false, verified:true},
-    {title:'Auxiliar de Limpeza', company:'Hotel Bourbon', km:'2,1 km', value:'R$150', time:'Hoje 14h', rating:'4.8', hot:false, verified:false},
-  ];
-  const wrap = document.getElementById('diariasWrap');
-  wrap.innerHTML = data.map((d,i) => `
-    <div class="diaria-card ${d.hot?'hot':''}">
-      <div class="diaria-top">
-        <div class="diaria-info">
-          <div class="diaria-badges">
-            ${d.verified?'<span class="badge badge-green">✓ Verificado</span>':''}
-            ${d.hot?`<span class="badge badge-orange">🔥 Em alta</span>`:''}
-          </div>
-          <div class="diaria-title">${d.title}</div>
-          <div class="diaria-company">${d.company}</div>
-        </div>
-        <div style="text-align:right;margin-left:12px;">
-          <div class="diaria-value">${d.value}</div>
-          <div class="diaria-value-sub">por dia</div>
+    <p class="splash-tagline">Encontre. Aplique. Conquiste.</p>
+
+    <div class="splash-dots">
+      <div class="splash-dot"></div>
+      <div class="splash-dot"></div>
+      <div class="splash-dot"></div>
+    </div>
+
+  </div>
+
+  <!-- ═══════════════════════════════════════════
+       LOGIN SCREEN
+  ═══════════════════════════════════════════ -->
+  <div id="login">
+
+    <div class="blob blob-1"></div>
+    <div class="blob blob-2"></div>
+
+    <!-- HERO -->
+    <div class="login-hero">
+      <!--
+        🔧 Logotipo laranja sobre branco.
+           Troca o src pelo caminho real.
+      -->
+      <img
+        class="login-logo"
+        src="38551-removebg-preview.png"
+        alt="Eureka"
+        onerror="this.style.display='none'; document.querySelector('.login-logo-fallback').style.display='block';"
+      />
+      <div class="login-logo-fallback">eureka</div>
+
+      <h1 class="login-titulo">
+        Bem-vindo<br>de <span>volta!</span>
+      </h1>
+      <p class="login-sub">Seu próximo trabalho está esperando você.</p>
+    </div>
+
+    <!-- FORMULÁRIO -->
+    <div class="login-form">
+
+      <!-- Botões sociais -->
+      <div class="social-row">
+
+        <button class="social-btn" onclick="loginGoogle()" aria-label="Entrar com Google">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+            <path d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z" fill="#4285F4"/>
+            <path d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z" fill="#34A853"/>
+            <path d="M5.84 14.1c-.22-.66-.35-1.36-.35-2.1s.13-1.44.35-2.1V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l3.66-2.83z" fill="#FBBC05"/>
+            <path d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.83c.87-2.6 3.3-4.52 6.16-4.52z" fill="#EA4335"/>
+          </svg>
+          Google
+        </button>
+
+        <button class="social-btn" onclick="abrirModalCelular()" aria-label="Entrar com celular">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <path d="M22 16.92v3a2 2 0 01-2.18 2 19.79 19.79 0 01-8.63-3.07A19.5 19.5 0 013.07 9.81 19.79 19.79 0 01.9 3.18 2 2 0 012.88 1h3a2 2 0 012 1.72 12.84 12.84 0 00.7 2.81 2 2 0 01-.45 2.11L7.09 8.91a16 16 0 006 6l1.27-1.27a2 2 0 012.11-.45 12.84 12.84 0 002.81.7A2 2 0 0122 16.92z"/>
+          </svg>
+          Celular
+        </button>
+
+        <button class="social-btn" onclick="loginApple()" aria-label="Entrar com Apple">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+            <path d="M18.71 19.5c-.83 1.24-1.71 2.45-3.05 2.47-1.34.03-1.77-.79-3.29-.79-1.53 0-2 .77-3.27.82-1.31.05-2.3-1.32-3.14-2.53C4.25 17 2.94 12.45 4.7 9.39c.87-1.52 2.43-2.48 4.12-2.51 1.28-.02 2.5.87 3.29.87.78 0 2.26-1.07 3.8-.91.65.03 2.47.26 3.64 1.98-.09.06-2.17 1.28-2.15 3.81.03 3.02 2.65 4.03 2.68 4.04-.03.07-.42 1.44-1.38 2.83M13 3.5c.73-.83 1.94-1.46 2.94-1.5.13 1.17-.34 2.35-1.04 3.19-.69.85-1.83 1.51-2.95 1.42-.15-1.15.41-2.35 1.05-3.11z"/>
+          </svg>
+          Apple
+        </button>
+
+      </div>
+
+      <!-- Divisor -->
+      <div class="divider">
+        <div class="divider-line"></div>
+        <span class="divider-txt">ou entre com email</span>
+        <div class="divider-line"></div>
+      </div>
+
+      <!-- Campo email -->
+      <div class="campo">
+        <label class="campo-label" for="email">Email</label>
+        <div class="campo-wrap">
+          <input
+            class="campo-input"
+            type="email"
+            id="email"
+            placeholder="seu@email.com"
+            autocomplete="email"
+            inputmode="email"
+          />
+          <svg class="campo-icone" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/>
+            <polyline points="22,6 12,13 2,6"/>
+          </svg>
         </div>
       </div>
-      <div class="diaria-meta">
-        <div class="meta-item">📍 ${d.km}</div>
-        <div class="meta-item">🕐 ${d.time}</div>
-        <div class="meta-item">★ ${d.rating}</div>
-        ${d.applicants?`<div class="meta-item" style="color:var(--orange);font-weight:800;">${d.applicants} aplicaram</div>`:''}
+
+      <!-- Campo senha -->
+      <div class="campo">
+        <label class="campo-label" for="senha">Senha</label>
+        <div class="campo-wrap">
+          <input
+            class="campo-input"
+            type="password"
+            id="senha"
+            placeholder="••••••••"
+            autocomplete="current-password"
+          />
+          <svg class="campo-icone" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <rect x="3" y="11" width="18" height="11" rx="2" ry="2"/>
+            <path d="M7 11V7a5 5 0 0110 0v4"/>
+          </svg>
+          <button class="btn-olho" type="button" onclick="toggleSenha()" aria-label="Mostrar senha">
+            <svg id="icone-olho" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+              <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/>
+              <circle cx="12" cy="12" r="3"/>
+            </svg>
+          </button>
+        </div>
       </div>
-      <div class="diaria-actions">
-        <button class="btn-ghost-sm" onclick="showToast('Ver detalhes em breve')">Ver mais</button>
-        <button class="btn-apply" id="apply${i}" onclick="applyDiaria(${i}, this)">
-          <svg width="14" height="14" viewBox="0 0 20 20" fill="none"><path d="M2 9L10 2L18 9" stroke="white" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/><path d="M6.5 9.5C6.5 9.5 8 11.5 10 11.5C12 11.5 13.5 9.5 13.5 9.5" stroke="white" stroke-width="1.8" stroke-linecap="round"/></svg>
-          Aplicar
+
+      <!-- Esqueci a senha -->
+      <div class="esqueci-row">
+        <button class="btn-esqueci" type="button" onclick="esqueceuSenha()">
+          Esqueci a senha
         </button>
       </div>
-    </div>
-  `).join('');
-}
 
-function buildComunidade() {
-  const workers = [
-    {name:'Carlos M.', role:'Cozinheiro', emoji:'👨🏽‍🍳', rating:'4.9', diarias:34, available:true},
-    {name:'Fernanda S.', role:'Garçonete', emoji:'👩🏻', rating:'4.8', diarias:21, available:false},
-    {name:'Roberto L.', role:'Limpeza', emoji:'🧹', rating:'5.0', diarias:18, available:true},
-    {name:'Ana C.', role:'Cozinheira', emoji:'👩🏽‍🍳', rating:'4.7', diarias:12, available:true},
-  ];
-  const wrap = document.getElementById('comunidadeScroll');
-  wrap.innerHTML = workers.map(w => `
-    <div class="worker-card">
-      <div class="worker-avatar" style="background:${w.available?'#EDF9F0':'#F0F0EE'};">
-        <span>${w.emoji}</span>
-        ${w.available?'<div class="worker-dot"></div>':''}
+      <!-- Mensaje de error -->
+      <div id="msg-erro" role="alert"></div>
+
+      <!-- Botão entrar -->
+      <button class="btn-entrar" id="btn-entrar" onclick="loginEmail(event)">
+        <span id="spinner" role="status" aria-label="Carregando"></span>
+        Entrar
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+          <path d="M5 12h14M12 5l7 7-7 7"/>
+        </svg>
+      </button>
+
+      <!-- Link cadastro -->
+      <div class="cadastro-row">
+        <span>Ainda não tem conta?</span>
+        <a class="link-cadastro" href="cadastro.html">Cadastre-se grátis</a>
       </div>
-      <div class="worker-name">${w.name}</div>
-      <div class="worker-role">${w.role}</div>
-      <div class="worker-stats">
-        <div class="worker-stat">★ <span>${w.rating}</span></div>
-        <div class="worker-stat"><span>${w.diarias}</span> diárias</div>
+
+    </div><!-- /login-form -->
+  </div><!-- /login -->
+
+  <!-- ═══════════════════════════════════════════
+       MODAL — LOGIN COM CELULAR
+  ═══════════════════════════════════════════ -->
+  <div id="modal-celular" role="dialog" aria-modal="true" aria-label="Entrar com celular" onclick="fecharSeClicarFora(event)">
+    <div class="modal-sheet">
+
+      <div class="modal-handle"></div>
+
+      <!-- Etapa 1: número -->
+      <div id="etapa-numero">
+        <h2 class="modal-titulo">Entre com seu<br><span>celular</span></h2>
+        <p class="modal-sub">Vamos enviar um código SMS para confirmar.</p>
+
+        <div class="campo" style="margin-top:4px;">
+          <label class="campo-label" for="campo-numero">Número com DDD</label>
+          <div class="campo-wrap">
+            <input
+              class="campo-input"
+              type="tel"
+              id="campo-numero"
+              placeholder="(11) 99999-9999"
+              inputmode="tel"
+              autocomplete="tel"
+              style="padding-left:16px;"
+            />
+          </div>
+        </div>
+
+        <button class="btn-entrar" style="margin-top:8px;" onclick="enviarSMS()">
+          Enviar código SMS
+        </button>
+        <button class="btn-cancelar" onclick="fecharModalCelular()">Cancelar</button>
       </div>
+
+      <!-- Etapa 2: código -->
+      <div id="etapa-codigo">
+        <h2 class="modal-titulo">Digite o<br><span>código</span></h2>
+        <p class="modal-sub">Enviamos 6 dígitos por SMS. Verifique seu celular.</p>
+
+        <div class="campo" style="margin-top:4px;">
+          <label class="campo-label" for="campo-codigo">Código SMS</label>
+          <div class="campo-wrap">
+            <input
+              class="campo-input"
+              type="number"
+              id="campo-codigo"
+              placeholder="000000"
+              inputmode="numeric"
+              maxlength="6"
+              style="padding-left:16px;letter-spacing:0.25em;font-size:22px;text-align:center;"
+            />
+          </div>
+        </div>
+
+        <button class="btn-entrar" style="margin-top:8px;" onclick="verificarCodigo()">
+          Confirmar e entrar
+        </button>
+        <button class="btn-cancelar" onclick="fecharModalCelular()">Cancelar</button>
+      </div>
+
     </div>
-  `).join('');
-}
+  </div>
 
-// ── INTERACTIONS ──
-window.toggleDisp = () => {
-  const card  = document.getElementById('dispCard');
-  const tog   = document.getElementById('toggle');
-  const title = document.getElementById('dispTitle');
-  const sub   = document.getElementById('dispSub');
-  const on    = card.classList.toggle('active');
-  tog.classList.toggle('on', on);
-  title.textContent = on ? 'Você está disponível' : 'Modo disponível';
-  sub.textContent   = on ? 'Empresas podem te encontrar' : 'Toque para ativar';
-  showToast(on ? 'Modo disponível ativado' : 'Modo disponível desativado', on);
-};
+  <div id="recaptcha-container"></div>
 
-window.selectCat = (el) => {
-  document.querySelectorAll('.cat-chip').forEach(c => c.classList.remove('active'));
-  el.classList.add('active');
-};
+</div><!-- /app -->
 
-window.applyDiaria = (idx, btn) => {
-  if (btn.classList.contains('applied')) return;
-  btn.classList.add('applied');
-  btn.innerHTML = '<svg width="13" height="13" viewBox="0 0 14 14" fill="none"><path d="M2 7L5 10L12 3" stroke="#3DBE5A" stroke-width="2" stroke-linecap="round"/></svg> Aplicado!';
-  showToast('Aplicação enviada com sucesso', true);
-};
+<!-- ═══════════════════════════════════════════
+     FIREBASE SDK
+═══════════════════════════════════════════ -->
+<script type="module">
+  import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
+  import {
+    getAuth,
+    signInWithEmailAndPassword,
+    signInWithPopup,
+    GoogleAuthProvider,
+    OAuthProvider,
+    RecaptchaVerifier,
+    signInWithPhoneNumber,
+    onAuthStateChanged
+  } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js";
 
-window.setNav = (btn) => {
-  document.querySelectorAll('.nav-btn').forEach(b => b.classList.remove('active'));
-  btn.classList.add('active');
-};
+  /* ─────────────────────────────────────────
+     🔧 CONFIGURAÇÃO FIREBASE
+     Pega esses valores no Firebase Console:
+     Configurações do Projeto → Geral → Seus apps
+  ───────────────────────────────────────── */
+  const firebaseConfig = {
+    apiKey:            "AIzaSyCw4QhQ5fGYSv_QgfY-waAZuOhkfv1ej1s",
+    authDomain:        "vanti-app-br.firebaseapp.com",
+    projectId:         "vanti-app-br",
+    storageBucket:     "vanti-app-br.firebasestorage.app",
+    messagingSenderId: "1028700458017",
+    appId:             "1:1028700458017:web:6011fd81d09010e4f1e760"
+  };
 
-window.showToast = (msg, green=false) => {
-  const t = document.getElementById('toast');
-  t.textContent = msg;
-  t.className = 'toast show' + (green?' green':'');
-  clearTimeout(window._toastTimer);
-  window._toastTimer = setTimeout(() => t.classList.remove('show'), 2500);
-};
+  const app      = initializeApp(firebaseConfig);
+  const auth     = getAuth(app);
+  const providerGoogle = new GoogleAuthProvider();
 
-// Splash video logic
-const splashVideo = document.getElementById('splashVideo');
-
-// When video ends naturally
-splashVideo.addEventListener('ended', () => {
-  if (!auth.currentUser) showLogin();
-});
-
-// When video can play — start it
-splashVideo.addEventListener('canplay', () => {
-  splashVideo.play().catch(() => {
-    // Autoplay blocked — show login after 3s
+  /* ─────────────────────────────────────────
+     SPLASH → LOGIN
+     1.5s de splash, depois transição suave
+  ───────────────────────────────────────── */
+  function mostrarLogin() {
+    const splash = document.getElementById('splash');
+    const login  = document.getElementById('login');
+    splash.classList.add('saindo');
     setTimeout(() => {
-      if (!auth.currentUser) showLogin();
-    }, 3000);
-  });
-});
-
-// If video fails to load at all
-splashVideo.addEventListener('error', () => {
-  setTimeout(() => {
-    if (!auth.currentUser) showLogin();
-  }, 1000);
-});
-
-// Hard fallback — max 10 seconds
-setTimeout(() => {
-  const splash = document.getElementById('splash');
-  if (splash && !splash.classList.contains('hidden')) {
-    if (!auth.currentUser) showLogin();
+      splash.style.display = 'none';
+      login.classList.add('visivel');
+    }, 600);
   }
-}, 10000);
 
-window.splashDone = () => {
-  if (!auth.currentUser) showLogin();
-};
+  /* ─────────────────────────────────────────
+     VERIFICAR SESSÃO ATIVA
+     Se já logado → vai direto para home.html
+  ───────────────────────────────────────── */
+  onAuthStateChanged(auth, (user) => {
+    if (user) {
+      // Usuário já logado — redirecionar sem mostrar o login
+      window.location.href = 'home.html';
+    } else {
+      // Sem sessão — mostrar login após splash
+      setTimeout(mostrarLogin, 1500);
+    }
+  });
 
+  /* ─────────────────────────────────────────
+     LOGIN COM GOOGLE
+  ───────────────────────────────────────── */
+  window.loginGoogle = async function() {
+    setCarregando(true);
+    try {
+      await signInWithPopup(auth, providerGoogle);
+      window.location.href = 'home.html';
+    } catch (err) {
+      mostrarErro(traduzirErro(err.code));
+    } finally {
+      setCarregando(false);
+    }
+  };
+
+  /* ─────────────────────────────────────────
+     LOGIN COM APPLE
+  ───────────────────────────────────────── */
+  window.loginApple = async function() {
+    const provider = new OAuthProvider('apple.com');
+    setCarregando(true);
+    try {
+      await signInWithPopup(auth, provider);
+      window.location.href = 'home.html';
+    } catch (err) {
+      mostrarErro(traduzirErro(err.code));
+    } finally {
+      setCarregando(false);
+    }
+  };
+
+  /* ─────────────────────────────────────────
+     LOGIN COM EMAIL + SENHA
+  ───────────────────────────────────────── */
+  window.loginEmail = async function(e) {
+    e.preventDefault();
+    const email = document.getElementById('email').value.trim();
+    const senha = document.getElementById('senha').value;
+    if (!email || !senha) {
+      mostrarErro('Preencha seu email e senha.');
+      return;
+    }
+    setCarregando(true);
+    try {
+      await signInWithEmailAndPassword(auth, email, senha);
+      window.location.href = 'home.html';
+    } catch (err) {
+      mostrarErro(traduzirErro(err.code));
+    } finally {
+      setCarregando(false);
+    }
+  };
+
+  /* ─────────────────────────────────────────
+     LOGIN COM CELULAR — ENVIAR SMS
+  ───────────────────────────────────────── */
+  window.abrirModalCelular = function() {
+    document.getElementById('modal-celular').classList.add('ativo');
+    setTimeout(() => document.getElementById('campo-numero').focus(), 350);
+    if (!window.recaptchaVerifier) {
+      window.recaptchaVerifier = new RecaptchaVerifier(auth, 'recaptcha-container', {
+        size: 'invisible'
+      });
+    }
+  };
+
+  window.fecharModalCelular = function() {
+    document.getElementById('modal-celular').classList.remove('ativo');
+    document.getElementById('etapa-numero').style.display = 'block';
+    document.getElementById('etapa-codigo').style.display = 'none';
+    document.getElementById('campo-numero').value = '';
+    document.getElementById('campo-codigo').value = '';
+  };
+
+  window.enviarSMS = async function() {
+    const numero = document.getElementById('campo-numero').value.trim();
+    if (!numero) { mostrarErro('Digite seu número de celular.'); return; }
+    const formatado = numero.startsWith('+') ? numero : '+55' + numero.replace(/\D/g, '');
+    try {
+      window.confirmationResult = await signInWithPhoneNumber(auth, formatado, window.recaptchaVerifier);
+      document.getElementById('etapa-numero').style.display = 'none';
+      document.getElementById('etapa-codigo').style.display = 'block';
+      setTimeout(() => document.getElementById('campo-codigo').focus(), 100);
+    } catch (err) {
+      mostrarErro(traduzirErro(err.code));
+    }
+  };
+
+  window.verificarCodigo = async function() {
+    const codigo = document.getElementById('campo-codigo').value.trim();
+    if (!codigo || codigo.length < 6) { mostrarErro('Digite o código de 6 dígitos.'); return; }
+    try {
+      await window.confirmationResult.confirm(codigo);
+      window.location.href = 'home.html';
+    } catch (err) {
+      mostrarErro('Código incorreto. Tente novamente.');
+    }
+  };
+
+  /* ─────────────────────────────────────────
+     UTILITÁRIOS
+  ───────────────────────────────────────── */
+  function setCarregando(ativo) {
+    const btn  = document.getElementById('btn-entrar');
+    const spin = document.getElementById('spinner');
+    btn.disabled       = ativo;
+    spin.style.display = ativo ? 'block' : 'none';
+  }
+
+  function mostrarErro(msg) {
+    const el = document.getElementById('msg-erro');
+    el.textContent  = msg;
+    el.style.display = 'block';
+    setTimeout(() => { el.style.display = 'none'; }, 4500);
+  }
+
+  // Expor para scripts externos
+  window.mostrarErro = mostrarErro;
+
+  function traduzirErro(code) {
+    const erros = {
+      'auth/user-not-found':         'Não encontramos uma conta com este email.',
+      'auth/wrong-password':         'Senha incorreta. Tente novamente.',
+      'auth/invalid-email':          'Email inválido.',
+      'auth/too-many-requests':      'Muitas tentativas. Aguarde alguns minutos.',
+      'auth/network-request-failed': 'Sem conexão. Verifique sua internet.',
+      'auth/popup-closed-by-user':   'Login cancelado.',
+      'auth/invalid-credential':     'Credenciais inválidas. Tente novamente.',
+      'auth/user-disabled':          'Esta conta foi desativada.',
+    };
+    return erros[code] || 'Algo deu errado. Tente novamente.';
+  }
 </script>
+
+<!-- ═══════════════════════════════════════════
+     SCRIPTS UI (sem módulo)
+═══════════════════════════════════════════ -->
+<script>
+  /* Mostrar/ocultar senha */
+  function toggleSenha() {
+    const input = document.getElementById('senha');
+    const icone = document.getElementById('icone-olho');
+    const oculta = input.type === 'password';
+    input.type     = oculta ? 'text' : 'password';
+    icone.style.opacity = oculta ? '0.35' : '1';
+  }
+
+  /* Esqueci a senha */
+  function esqueceuSenha() {
+    const email = document.getElementById('email').value.trim();
+    if (!email) {
+      window.mostrarErro && window.mostrarErro('Digite seu email acima primeiro.');
+      document.getElementById('email').focus();
+      return;
+    }
+    window.location.href = 'recuperar-senha.html?email=' + encodeURIComponent(email);
+  }
+
+  /* Fechar modal ao clicar fora */
+  function fecharSeClicarFora(e) {
+    if (e.target === document.getElementById('modal-celular')) {
+      fecharModalCelular();
+    }
+  }
+
+  /* Enter no campo senha → login */
+  document.addEventListener('DOMContentLoaded', () => {
+    document.getElementById('senha').addEventListener('keydown', (e) => {
+      if (e.key === 'Enter') loginEmail(e);
+    });
+    document.getElementById('email').addEventListener('keydown', (e) => {
+      if (e.key === 'Enter') document.getElementById('senha').focus();
+    });
+  });
+</script>
+
 </body>
 </html>
