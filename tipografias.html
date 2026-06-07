@@ -2,11 +2,12 @@
 <html lang="pt-BR">
 <head>
 <meta charset="UTF-8"/>
-<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0"/>
-<title>Eureka! â€” Tipografias</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"/>
+<title>eureka! — Tipografias</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Syne:wght@800;900&family=Unbounded:wght@700;900&family=Oswald:wght@700&family=Anton&family=Barlow+Condensed:ital,wght@0,900;1,900&family=Chakra+Petch:ital,wght@0,700;1,700&family=Exo+2:ital,wght@0,900;1,900&family=Orbitron:wght@700;900&family=Big+Shoulders+Display:wght@700;900&family=Teko:wght@700&family=Saira+Condensed:wght@900&family=Righteous&family=Fredoka:wght@600;700&family=Black+Ops+One&family=Boogaloo&family=Russo+One&family=Squada+One&family=Secular+One&family=Jost:ital,wght@0,900;1,900&family=Kanit:ital,wght@0,900;1,900&family=Nunito:wght@900&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:ital,wght@0,800;0,900;1,800;1,900&family=Barlow+Semi+Condensed:ital,wght@0,800;0,900;1,800;1,900&family=Barlow:ital,wght@0,900;1,900&family=Oswald:wght@600;700&family=Saira:ital,wght@0,900;1,900&family=Saira+Condensed:wght@800;900&family=Saira+Semi+Condensed:ital,wght@0,800;0,900;1,800;1,900&family=Jost:ital,wght@0,900;1,900&family=Heebo:wght@900&family=Prompt:ital,wght@0,900;1,900&family=Kanit:ital,wght@0,800;0,900;1,800;1,900&family=Rajdhani:wght@600;700&family=Arimo:ital,wght@0,700;1,700&family=Krona+One&family=Schibsted+Grotesk:ital,wght@0,900;1,900&family=Nunito:wght@900&display=swap" rel="stylesheet">
+
 <style>
 *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
@@ -20,472 +21,540 @@
   --pale:   #FFF5EE;
 }
 
-body {
-  background: #1a1a1a;
+html, body {
+  height: 100%;
+  background: #111;
   color: white;
   font-family: 'Nunito', sans-serif;
-  min-height: 100vh;
+  overflow-x: hidden;
 }
 
-/* HEADER FIXO */
-.top-bar {
+/* ── TOP BAR ── */
+.topbar {
   position: sticky;
   top: 0;
   z-index: 100;
-  background: #111;
-  border-bottom: 1px solid #333;
-  padding: 12px 16px;
-  display: flex;
-  flex-direction: column;
-  gap: 8px;
+  background: #0a0a0a;
+  border-bottom: 1px solid #222;
+  padding: 14px 16px 10px;
 }
 
-.top-title {
-  font-family: 'Exo 2', sans-serif;
+.topbar-title {
+  font-family: 'Barlow Condensed', sans-serif;
   font-weight: 900;
   font-style: italic;
-  font-size: 20px;
+  font-size: 22px;
   color: var(--orange);
-  letter-spacing: -0.02em;
+  letter-spacing: 0.02em;
+  margin-bottom: 4px;
 }
 
-.top-sub {
-  font-size: 11px;
+.topbar-sub {
+  font-size: 10px;
   color: var(--ink3);
-  letter-spacing: 0.06em;
+  letter-spacing: 0.12em;
   text-transform: uppercase;
+  margin-bottom: 10px;
 }
 
-/* TOGGLE MODO */
-.toggle-row {
+/* Toggle */
+.toggle {
   display: flex;
-  gap: 8px;
+  gap: 6px;
+  background: #1a1a1a;
+  padding: 4px;
+  border-radius: 12px;
 }
 
 .toggle-btn {
   flex: 1;
-  padding: 8px;
-  border-radius: 10px;
+  padding: 9px 8px;
   border: none;
+  border-radius: 9px;
   font-family: 'Nunito', sans-serif;
   font-size: 11px;
-  font-weight: 700;
+  font-weight: 800;
   letter-spacing: 0.04em;
   text-transform: uppercase;
   cursor: pointer;
   transition: all 0.2s;
 }
 
-.toggle-btn.ativo {
+.toggle-btn.on {
   background: var(--orange);
   color: white;
 }
 
-.toggle-btn:not(.ativo) {
-  background: #2a2a2a;
+.toggle-btn:not(.on) {
+  background: transparent;
   color: var(--ink3);
 }
 
-/* LISTA */
+/* ── LISTA ── */
 .lista {
-  padding: 16px 14px 80px;
+  padding: 14px 12px 80px;
   display: flex;
   flex-direction: column;
-  gap: 12px;
+  gap: 10px;
 }
 
-/* CARD DE TIPOGRAFIA */
-.tcard {
-  border-radius: 16px;
+/* ── CARD SPLASH ── */
+.card-splash {
+  border-radius: 18px;
   overflow: hidden;
   cursor: pointer;
   transition: transform 0.15s;
   -webkit-tap-highlight-color: transparent;
 }
 
-.tcard:active { transform: scale(0.98); }
+.card-splash:active { transform: scale(0.975); }
 
-/* MODO SPLASH â€” fundo colorido */
-.tcard-splash {
-  padding: 32px 24px;
-  display: flex;
-  flex-direction: column;
-  align-items: flex-start;
-  gap: 16px;
+.splash-inner {
+  padding: 28px 22px 22px;
   position: relative;
   overflow: hidden;
-  min-height: 160px;
-  justify-content: center;
-}
-
-.tcard-splash::before {
-  content: '';
-  position: absolute;
-  width: 250px; height: 250px;
-  border-radius: 50%;
-  top: -80px; right: -80px;
-  opacity: 0.08;
-  background: white;
-}
-
-/* MODO LOGIN â€” fundo branco */
-.tcard-login {
-  padding: 24px 20px;
-  background: var(--white);
+  min-height: 200px;
   display: flex;
   flex-direction: column;
-  gap: 14px;
+  justify-content: space-between;
 }
 
-/* META INFO */
-.tcard-meta {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  padding: 10px 16px;
-  background: rgba(0,0,0,0.3);
-  backdrop-filter: blur(8px);
+/* Círculo decorativo */
+.splash-inner::before {
+  content: '';
+  position: absolute;
+  width: 220px; height: 220px;
+  border-radius: 50%;
+  top: -60px; right: -60px;
+  background: rgba(255,255,255,0.06);
+  pointer-events: none;
 }
 
-.tcard-meta-login {
-  background: #f5f5f5;
+.splash-inner::after {
+  content: '';
+  position: absolute;
+  width: 140px; height: 140px;
+  border-radius: 50%;
+  bottom: -40px; left: -30px;
+  background: rgba(255,255,255,0.04);
+  pointer-events: none;
 }
 
-.meta-num {
-  width: 20px; height: 20px;
-  background: var(--orange); color: white;
-  border-radius: 50%; font-size: 9px; font-weight: 800;
-  display: flex; align-items: center; justify-content: center;
-  flex-shrink: 0;
-}
-
-.meta-name {
-  font-family: monospace; font-size: 10px;
-  color: rgba(255,255,255,0.7); flex: 1;
-}
-
-.meta-name-login {
-  color: var(--ink3);
-}
-
-.meta-vibe {
-  font-size: 9px; padding: 2px 8px;
-  border-radius: 50px; font-weight: 700;
-  letter-spacing: 0.04em; text-transform: uppercase;
-  background: rgba(255,255,255,0.15);
-  color: white;
-}
-
-.meta-vibe-login {
-  background: var(--pale);
-  color: var(--orange);
-}
-
-/* LOGO GRANDE */
-.logo-display {
+.splash-logo {
   position: relative;
   z-index: 2;
   line-height: 1;
   display: block;
 }
 
-/* UI PREVIEW MINI */
-.ui-preview {
-  position: relative; z-index: 2;
-  display: flex; flex-direction: column; gap: 6px;
+.splash-preview {
+  position: relative;
+  z-index: 2;
+  margin-top: 16px;
 }
 
-.ui-headline {
-  font-size: 16px;
+.splash-headline {
+  font-size: 17px;
   line-height: 1.2;
-  opacity: 0.9;
+  opacity: 0.85;
+  margin-bottom: 5px;
 }
 
-.ui-sub {
+.splash-sub {
   font-size: 12px;
-  opacity: 0.6;
+  opacity: 0.55;
   line-height: 1.4;
 }
 
-/* Login version */
-.ui-headline-login { color: var(--ink); }
-.ui-sub-login { color: var(--ink2); }
+.splash-meta {
+  position: absolute;
+  top: 12px; right: 12px;
+  z-index: 3;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 4px;
+}
 
-.btn-preview {
+.meta-num {
+  width: 22px; height: 22px;
+  background: rgba(255,255,255,0.15);
+  backdrop-filter: blur(8px);
+  border-radius: 50%;
+  font-size: 10px; font-weight: 800;
+  color: white;
+  display: flex; align-items: center; justify-content: center;
+}
+
+.meta-tag {
+  font-size: 9px;
+  padding: 3px 8px;
+  border-radius: 50px;
+  background: rgba(0,0,0,0.3);
+  backdrop-filter: blur(8px);
+  color: rgba(255,255,255,0.8);
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  font-weight: 700;
+}
+
+/* ── CARD LOGIN ── */
+.card-login {
+  border-radius: 18px;
+  overflow: hidden;
+  background: white;
+  cursor: pointer;
+  transition: transform 0.15s;
+  -webkit-tap-highlight-color: transparent;
+}
+
+.card-login:active { transform: scale(0.975); }
+
+.login-inner {
+  padding: 22px 22px 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+
+.login-meta {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding-bottom: 12px;
+  border-bottom: 1px solid var(--border);
+}
+
+.login-num {
+  width: 22px; height: 22px;
+  background: var(--orange); color: white;
+  border-radius: 50%; font-size: 10px; font-weight: 800;
+  display: flex; align-items: center; justify-content: center;
+}
+
+.login-fname {
+  font-family: monospace; font-size: 10px;
+  color: var(--ink3); flex: 1; letter-spacing: 0.03em;
+}
+
+.login-tag {
+  font-size: 9px; padding: 3px 8px;
+  border-radius: 50px; font-weight: 700;
+  background: var(--pale); color: var(--orange);
+  letter-spacing: 0.05em; text-transform: uppercase;
+}
+
+.login-logo {
+  line-height: 1;
+  display: block;
+}
+
+.login-divider { height: 1px; background: var(--border); }
+
+.login-headline {
+  font-size: 20px;
+  color: var(--ink);
+  line-height: 1.2;
+  font-weight: 800;
+}
+
+.login-sub {
+  font-size: 13px;
+  color: var(--ink2);
+  line-height: 1.5;
+  margin-top: -6px;
+}
+
+.login-btn {
   display: inline-flex;
   align-items: center;
   gap: 6px;
-  padding: 10px 18px;
-  border-radius: 12px;
-  font-size: 13px;
-  font-weight: 700;
-  border: none;
-  cursor: default;
-  width: fit-content;
-}
-
-.btn-splash {
-  background: rgba(255,255,255,0.2);
-  color: white;
-  backdrop-filter: blur(8px);
-}
-
-.btn-login-orange {
+  padding: 12px 20px;
+  border-radius: 14px;
+  font-size: 14px;
+  font-weight: 800;
   background: var(--orange);
   color: white;
+  border: none;
+  cursor: default;
+  width: 100%;
+  justify-content: center;
 }
 
-/* ANIMACIONES */
-@keyframes fadeIn {
-  from { opacity: 0; transform: translateY(10px); }
+/* ── ANIMACIÓN ── */
+@keyframes cardIn {
+  from { opacity: 0; transform: translateY(12px); }
   to   { opacity: 1; transform: translateY(0); }
 }
-
-.tcard { animation: fadeIn 0.4s ease both; }
-.tcard:nth-child(1)  { animation-delay: 0.02s; }
-.tcard:nth-child(2)  { animation-delay: 0.04s; }
-.tcard:nth-child(3)  { animation-delay: 0.06s; }
-.tcard:nth-child(4)  { animation-delay: 0.08s; }
-.tcard:nth-child(5)  { animation-delay: 0.10s; }
-.tcard:nth-child(6)  { animation-delay: 0.12s; }
-.tcard:nth-child(7)  { animation-delay: 0.14s; }
-.tcard:nth-child(8)  { animation-delay: 0.16s; }
-.tcard:nth-child(9)  { animation-delay: 0.18s; }
-.tcard:nth-child(10) { animation-delay: 0.20s; }
-.tcard:nth-child(11) { animation-delay: 0.22s; }
-.tcard:nth-child(12) { animation-delay: 0.24s; }
-.tcard:nth-child(13) { animation-delay: 0.26s; }
-.tcard:nth-child(14) { animation-delay: 0.28s; }
-.tcard:nth-child(15) { animation-delay: 0.30s; }
 </style>
 </head>
 <body>
 
-<div class="top-bar">
-  <div class="top-title">Eureka! â€” Tipografias</div>
-  <div class="top-sub">Toque para selecionar Â· 15 opÃ§Ãµes</div>
-  <div class="toggle-row">
-    <button class="toggle-btn ativo" id="btn-splash" onclick="setModo('splash')">ðŸŒŸ Splash</button>
-    <button class="toggle-btn" id="btn-login" onclick="setModo('login')">ðŸ“± Login</button>
+<div class="topbar">
+  <div class="topbar-title">eureka! · Tipografias</div>
+  <div class="topbar-sub">Semi-quadradas · Dinâmicas · 12 opções</div>
+  <div class="toggle">
+    <button class="toggle-btn on" id="btn-s" onclick="modo('splash')">🌟 Splash</button>
+    <button class="toggle-btn" id="btn-l" onclick="modo('login')">📱 Login</button>
   </div>
 </div>
 
 <div class="lista" id="lista"></div>
 
 <script>
+// ─── FUENTES SEMI-CUADRADAS, DINÁMICAS ───────────────────────
+// Criterios de selección:
+// ✓ Terminaciones semi-cuadradas (no redondas, no afiladas)
+// ✓ Carácter dinámico (tensión visual, peso, condensación)
+// ✓ "eureka!" en minúscula
+// ✓ Memorables — cada una con identidad propia
+
 const FONTES = [
+
+  // ── GROTESCAS CONDENSADAS CON TENSIÓN ──
+
   {
-    num: 1,
-    nome: "Exo 2 900 Italic",
-    css: "font-family:'Exo 2',sans-serif;font-weight:900;font-style:italic;",
-    size: "68px",
-    vibe: "Sci-fi humano",
-    bg: "linear-gradient(135deg,#5B21B6,#7C3AED)",
-    cor: "white",
-    corLogin: "#5B21B6",
-  },
-  {
-    num: 2,
-    nome: "Bebas Neue",
-    css: "font-family:'Bebas Neue',sans-serif;letter-spacing:0.05em;text-transform:uppercase;",
-    size: "76px",
-    vibe: "Urbano impacto",
-    bg: "linear-gradient(135deg,#111010,#2D2D2D)",
-    cor: "var(--orange)",
-    corLogin: "#111010",
-  },
-  {
-    num: 3,
-    nome: "Syne 900",
-    css: "font-family:'Syne',sans-serif;font-weight:900;letter-spacing:-0.04em;",
-    size: "64px",
-    vibe: "AssimÃ©trica moderna",
-    bg: "linear-gradient(135deg,#0F4C75,#1B6CA8)",
-    cor: "white",
-    corLogin: "#0F4C75",
-  },
-  {
-    num: 4,
-    nome: "Unbounded 900",
-    css: "font-family:'Unbounded',sans-serif;font-weight:900;letter-spacing:-0.03em;",
-    size: "44px",
-    vibe: "MÃ¡xima presenÃ§a",
-    bg: "linear-gradient(135deg,#FF4D20,#FF7043)",
-    cor: "white",
-    corLogin: "var(--orange)",
-  },
-  {
-    num: 5,
-    nome: "Anton",
-    css: "font-family:'Anton',sans-serif;letter-spacing:0.02em;text-transform:uppercase;",
-    size: "76px",
-    vibe: "Street agressivo",
-    bg: "linear-gradient(135deg,#1B5E20,#2E7D32)",
-    cor: "#FFD60A",
-    corLogin: "#1B5E20",
-  },
-  {
-    num: 6,
+    n: 1,
     nome: "Barlow Condensed 900i",
-    css: "font-family:'Barlow Condensed',sans-serif;font-weight:900;font-style:italic;text-transform:uppercase;",
-    size: "80px",
-    vibe: "Esportiva dinÃ¢mica",
-    bg: "linear-gradient(135deg,#1C1C2E,#2D2D4E)",
-    cor: "var(--orange)",
-    corLogin: "#1C1C2E",
-  },
-  {
-    num: 7,
-    nome: "Big Shoulders Display 900",
-    css: "font-family:'Big Shoulders Display',sans-serif;font-weight:900;text-transform:uppercase;letter-spacing:-0.02em;",
-    size: "76px",
-    vibe: "ArquitetÃ´nica urbana",
-    bg: "linear-gradient(135deg,#37474F,#455A64)",
+    tag: "Esportiva condensada",
+    css: `font-family:'Barlow Condensed',sans-serif;
+          font-weight:900; font-style:italic;
+          letter-spacing:0.01em;`,
+    sz: "82px",
+    bg: "linear-gradient(145deg, #FF4D20 0%, #FF2D00 100%)",
     cor: "white",
-    corLogin: "#37474F",
+    lcor: "var(--orange)",
+    // Por qué: Grotesca condensada californiana. Las terminaciones
+    // son levemente cuadradas. La itálica crea movimiento sin curvas.
+    // Es la "Nike" de las fuentes — deportiva, directa, sin excusas.
+    desc: "Barlow: grotesca de California. Semi-cuadrada, itálica cria movimento diagonal. Energética sem ser caricata."
   },
+
   {
-    num: 8,
-    nome: "Oswald 700",
-    css: "font-family:'Oswald',sans-serif;font-weight:700;text-transform:uppercase;letter-spacing:0.04em;",
-    size: "72px",
-    vibe: "Condensada clÃ¡ssica",
-    bg: "linear-gradient(135deg,#B71C1C,#C62828)",
+    n: 2,
+    nome: "Barlow Semi Condensed 900i",
+    tag: "Equilibrio dinámico",
+    css: `font-family:'Barlow Semi Condensed',sans-serif;
+          font-weight:900; font-style:italic;
+          letter-spacing:-0.01em;`,
+    sz: "70px",
+    bg: "linear-gradient(145deg, #1a1a2e 0%, #16213e 100%)",
+    cor: "var(--orange)",
+    lcor: "var(--orange)",
+    desc: "Versão mais larga da Barlow. Pontas semi-quadradas, mais legível em tamanhos menores. Ótima no login."
+  },
+
+  {
+    n: 3,
+    nome: "Saira 900 Italic",
+    tag: "Tecnológica humana",
+    css: `font-family:'Saira',sans-serif;
+          font-weight:900; font-style:italic;
+          letter-spacing:-0.02em;`,
+    sz: "68px",
+    bg: "linear-gradient(145deg, #0F3460 0%, #16213E 100%)",
     cor: "white",
-    corLogin: "#B71C1C",
+    lcor: "#0F3460",
+    desc: "Saira: desenhada para interfaces digitais no Brasil. Terminações semi-quadradas, traços com tensão. Itálica = dinamismo."
   },
+
   {
-    num: 9,
-    nome: "Chakra Petch 700i",
-    css: "font-family:'Chakra Petch',sans-serif;font-weight:700;font-style:italic;",
-    size: "60px",
-    vibe: "Cyberpunk tech",
-    bg: "linear-gradient(135deg,#001524,#002D4A)",
-    cor: "var(--orange)",
-    corLogin: "#001524",
+    n: 4,
+    nome: "Saira Semi Condensed 900i",
+    tag: "Estruturada moderna",
+    css: `font-family:'Saira Semi Condensed',sans-serif;
+          font-weight:900; font-style:italic;
+          letter-spacing:-0.01em;`,
+    sz: "74px",
+    bg: "linear-gradient(145deg, #1B4332 0%, #2D6A4F 100%)",
+    cor: "white",
+    lcor: "#1B4332",
+    desc: "Semi-condensada com estrutura robusta. Pontas quadradas visíveis nas letras 'e', 'u', 'k'. Sobre verde parece marca de impacto social."
   },
+
   {
-    num: 10,
-    nome: "Orbitron 900",
-    css: "font-family:'Orbitron',sans-serif;font-weight:900;letter-spacing:0.06em;text-transform:uppercase;",
-    size: "38px",
-    vibe: "Espacial geomÃ©trica",
-    bg: "linear-gradient(135deg,#050A18,#0A1428)",
-    cor: "var(--orange)",
-    corLogin: "#050A18",
-  },
-  {
-    num: 11,
+    n: 5,
     nome: "Jost 900 Italic",
-    css: "font-family:'Jost',sans-serif;font-weight:900;font-style:italic;letter-spacing:-0.03em;",
-    size: "68px",
-    vibe: "GeomÃ©trica clean",
-    bg: "linear-gradient(135deg,#4A0E8F,#6B21A8)",
+    tag: "Geométrica precisa",
+    css: `font-family:'Jost',sans-serif;
+          font-weight:900; font-style:italic;
+          letter-spacing:-0.03em;`,
+    sz: "72px",
+    bg: "linear-gradient(145deg, #2D0057 0%, #4A0E8F 100%)",
     cor: "white",
-    corLogin: "#4A0E8F",
+    lcor: "#4A0E8F",
+    desc: "Jost: geométrica européia. Terminações quase quadradas, muito tensão nos strokes. Itálica cria inclinação única no 'e' e 'a'."
   },
+
   {
-    num: 12,
-    nome: "Kanit 900 Italic",
-    css: "font-family:'Kanit',sans-serif;font-weight:900;font-style:italic;letter-spacing:-0.01em;",
-    size: "68px",
-    vibe: "Tailandesa moderna",
-    bg: "linear-gradient(135deg,#0D7377,#14A085)",
-    cor: "white",
-    corLogin: "#0D7377",
-  },
-  {
-    num: 13,
-    nome: "Black Ops One",
-    css: "font-family:'Black Ops One',sans-serif;letter-spacing:0.04em;text-transform:uppercase;",
-    size: "56px",
-    vibe: "Militar tÃ¡tica",
-    bg: "linear-gradient(135deg,#212121,#424242)",
+    n: 6,
+    nome: "Heebo 900",
+    tag: "Grotesca quadrada",
+    css: `font-family:'Heebo',sans-serif;
+          font-weight:900;
+          letter-spacing:-0.04em;`,
+    sz: "72px",
+    bg: "linear-gradient(145deg, #212121 0%, #424242 100%)",
     cor: "var(--orange)",
-    corLogin: "#212121",
+    lcor: "#212121",
+    desc: "Heebo: baseada no alfabeto hebraico. Terminações notavelmente quadradas. O 'e' e 'k' são únicos. Sem itálica — a tensão vem do peso e do espaçamento."
   },
+
   {
-    num: 14,
-    nome: "Russo One",
-    css: "font-family:'Russo One',sans-serif;letter-spacing:0.02em;",
-    size: "60px",
-    vibe: "Futurista sÃ³lida",
-    bg: "linear-gradient(135deg,#1A237E,#283593)",
+    n: 7,
+    nome: "Prompt 900 Italic",
+    tag: "Tailandesa moderna",
+    css: `font-family:'Prompt',sans-serif;
+          font-weight:900; font-style:italic;
+          letter-spacing:-0.02em;`,
+    sz: "68px",
+    bg: "linear-gradient(145deg, #7B2D00 0%, #BF360C 100%)",
     cor: "white",
-    corLogin: "#1A237E",
+    lcor: "#BF360C",
+    desc: "Prompt: tailandesa com DNA de grotesca europeia. Pontas semi-quadradas com leve corte diagonal. Itálica muito elegante — o '!' fica fenomenal."
   },
+
   {
-    num: 15,
-    nome: "Teko 700",
-    css: "font-family:'Teko',sans-serif;font-weight:700;text-transform:uppercase;letter-spacing:0.04em;",
-    size: "96px",
-    vibe: "Ultra condensada",
-    bg: "linear-gradient(135deg,#880E4F,#AD1457)",
+    n: 8,
+    nome: "Kanit 900 Italic",
+    tag: "Asiática tensa",
+    css: `font-family:'Kanit',sans-serif;
+          font-weight:900; font-style:italic;
+          letter-spacing:-0.02em;`,
+    sz: "68px",
+    bg: "linear-gradient(145deg, #004D40 0%, #00695C 100%)",
     cor: "white",
-    corLogin: "#880E4F",
+    lcor: "#00695C",
+    desc: "Kanit: tailandesa mais geométrica. Traços com cortes limpos — semi-quadrada pura. Itálica cria angulação agressiva no 'k' e 'a'. Muito usada em fintech asiático."
   },
+
+  {
+    n: 9,
+    nome: "Oswald 700",
+    tag: "Condensada clássica",
+    css: `font-family:'Oswald',sans-serif;
+          font-weight:700;
+          letter-spacing:0.02em;`,
+    sz: "72px",
+    bg: "linear-gradient(145deg, #880E4F 0%, #AD1457 100%)",
+    cor: "white",
+    lcor: "#880E4F",
+    desc: "Oswald: releitura da Alternate Gothic. Terminações flat (horizontais) — o máximo do semi-quadrado. Condensada e vertical. Sem itálica — a força vem da proporção."
+  },
+
+  {
+    n: 10,
+    nome: "Rajdhani 700",
+    tag: "Indiana geométrica",
+    css: `font-family:'Rajdhani',sans-serif;
+          font-weight:700;
+          letter-spacing:0.02em;`,
+    sz: "68px",
+    bg: "linear-gradient(145deg, #1A237E 0%, #283593 100%)",
+    cor: "white",
+    lcor: "#1A237E",
+    desc: "Rajdhani: devanagari + grotesca. Terminações com cortes retos únicos — semi-quadrada com personalidade. O 'e' tem uma abertura que não existe em nenhuma outra fonte."
+  },
+
+  {
+    n: 11,
+    nome: "Schibsted Grotesk 900i",
+    tag: "Editorial nórdica",
+    css: `font-family:'Schibsted Grotesk',sans-serif;
+          font-weight:900; font-style:italic;
+          letter-spacing:-0.04em;`,
+    sz: "68px",
+    bg: "linear-gradient(145deg, #0D1117 0%, #1C2128 100%)",
+    cor: "var(--orange)",
+    lcor: "#0D1117",
+    desc: "Schibsted: criada para plataformas de mídia nórdicas. Grotesca com terminações semi-quadradas e aberturas humanistas. A itálica 900 é raramente usada — completamente única."
+  },
+
+  {
+    n: 12,
+    nome: "Krona One",
+    tag: "Grotesca pesada única",
+    css: `font-family:'Krona One',sans-serif;
+          letter-spacing:-0.01em;`,
+    sz: "62px",
+    bg: "linear-gradient(145deg, #FF6F00 0%, #F57C00 100%)",
+    cor: "white",
+    lcor: "#E65100",
+    desc: "Krona: semi-condensada com traços pesados e terminações quase quadradas. Proporções únicas — o 'k' tem uma estrutura que vai ficar na memória. Sem itálica mas com muita personalidade."
+  },
+
 ];
+
+// ─── RENDER ──────────────────────────────────────────────────
 
 let modoAtual = 'splash';
 
-function setModo(modo) {
-  modoAtual = modo;
-  document.getElementById('btn-splash').className = 'toggle-btn' + (modo === 'splash' ? ' ativo' : '');
-  document.getElementById('btn-login').className  = 'toggle-btn' + (modo === 'login'  ? ' ativo' : '');
-  renderizar();
+function modo(m) {
+  modoAtual = m;
+  document.getElementById('btn-s').className = 'toggle-btn' + (m === 'splash' ? ' on' : '');
+  document.getElementById('btn-l').className = 'toggle-btn' + (m === 'login'  ? ' on' : '');
+  render();
 }
 
-function renderizar() {
+function render() {
   const lista = document.getElementById('lista');
   lista.innerHTML = '';
 
   FONTES.forEach((f, i) => {
-    const card = document.createElement('div');
-    card.className = 'tcard';
-    card.style.animationDelay = (i * 0.04) + 's';
+    const el = document.createElement('div');
+    el.style.animation = `cardIn 0.35s ${i * 0.04}s ease both`;
+    el.style.cssText += 'opacity:0';
 
     if (modoAtual === 'splash') {
-      card.innerHTML = `
-        <div class="tcard-meta" style="background:rgba(0,0,0,0.4);">
-          <div class="meta-num">${f.num}</div>
-          <span class="meta-name">${f.nome}</span>
-          <span class="meta-vibe">${f.vibe}</span>
-        </div>
-        <div class="tcard-splash" style="background:${f.bg};">
-          <div class="logo-display" style="${f.css}font-size:${f.size};color:${f.cor};">Eureka!</div>
-          <div class="ui-preview">
-            <div class="ui-headline" style="${f.css}font-size:18px;color:${f.cor};">Seu trabalho estÃ¡ aqui</div>
-            <div class="ui-sub" style="color:${f.cor};">+1.200 vagas esperando vocÃª hoje</div>
+      el.className = 'card-splash';
+      el.innerHTML = `
+        <div class="splash-inner" style="background:${f.bg}">
+          <div class="splash-meta">
+            <div class="meta-num">${f.n}</div>
+            <div class="meta-tag">${f.tag}</div>
+          </div>
+          <div class="splash-logo" style="${f.css}font-size:${f.sz};color:${f.cor};">eureka!</div>
+          <div class="splash-preview">
+            <div class="splash-headline" style="${f.css}font-size:18px;color:${f.cor};">
+              Seu trabalho está aqui
+            </div>
+            <div class="splash-sub">${f.desc}</div>
           </div>
         </div>
       `;
     } else {
-      const loginCor = f.corLogin;
-      card.innerHTML = `
-        <div class="tcard-login">
-          <div class="tcard-meta tcard-meta-login">
-            <div class="meta-num">${f.num}</div>
-            <span class="meta-name meta-name-login">${f.nome}</span>
-            <span class="meta-vibe meta-vibe-login">${f.vibe}</span>
+      el.className = 'card-login';
+      const szLogin = parseInt(f.sz) * 0.65 + 'px';
+      el.innerHTML = `
+        <div class="login-inner">
+          <div class="login-meta">
+            <div class="login-num">${f.n}</div>
+            <span class="login-fname">${f.nome}</span>
+            <span class="login-tag">${f.tag}</span>
           </div>
-          <div class="logo-display" style="${f.css}font-size:${parseInt(f.size)*0.7}px;color:${loginCor};">Eureka!</div>
-          <div style="height:1px;background:#F0EDE8;"></div>
-          <div class="ui-preview">
-            <div class="ui-headline ui-headline-login" style="${f.css}font-size:20px;">Bem-vindo de volta!</div>
-            <div class="ui-sub ui-sub-login">Seu prÃ³ximo trabalho estÃ¡ esperando vocÃª.</div>
+          <div class="login-logo" style="${f.css}font-size:${szLogin};color:${f.lcor};">eureka!</div>
+          <div class="login-divider"></div>
+          <div>
+            <div class="login-headline" style="${f.css}font-size:20px;">Bem-vindo de volta!</div>
+            <div class="login-sub">Seu próximo trabalho está esperando você.</div>
           </div>
-          <button class="btn-preview btn-login-orange" style="${f.css}font-size:14px;">
-            Entrar â†’
-          </button>
+          <button class="login-btn" style="${f.css}font-size:14px;">Entrar →</button>
         </div>
       `;
     }
 
-    lista.appendChild(card);
+    lista.appendChild(el);
+  });
+
+  // Aplicar animación después de insertar
+  requestAnimationFrame(() => {
+    document.querySelectorAll('.card-splash, .card-login').forEach((c, i) => {
+      c.style.animation = `cardIn 0.35s ${i * 0.05}s ease both`;
+    });
   });
 }
 
-renderizar();
+render();
 </script>
 
 </body>
