@@ -1,0 +1,492 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0"/>
+<title>Eureka! â€” Tipografias</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Syne:wght@800;900&family=Unbounded:wght@700;900&family=Oswald:wght@700&family=Anton&family=Barlow+Condensed:ital,wght@0,900;1,900&family=Chakra+Petch:ital,wght@0,700;1,700&family=Exo+2:ital,wght@0,900;1,900&family=Orbitron:wght@700;900&family=Big+Shoulders+Display:wght@700;900&family=Teko:wght@700&family=Saira+Condensed:wght@900&family=Righteous&family=Fredoka:wght@600;700&family=Black+Ops+One&family=Boogaloo&family=Russo+One&family=Squada+One&family=Secular+One&family=Jost:ital,wght@0,900;1,900&family=Kanit:ital,wght@0,900;1,900&family=Nunito:wght@900&display=swap" rel="stylesheet">
+<style>
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+:root {
+  --orange: #FF4D20;
+  --ink:    #111010;
+  --ink2:   #6B6560;
+  --ink3:   #B8B0A8;
+  --border: #F0EDE8;
+  --white:  #FFFFFF;
+  --pale:   #FFF5EE;
+}
+
+body {
+  background: #1a1a1a;
+  color: white;
+  font-family: 'Nunito', sans-serif;
+  min-height: 100vh;
+}
+
+/* HEADER FIXO */
+.top-bar {
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  background: #111;
+  border-bottom: 1px solid #333;
+  padding: 12px 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.top-title {
+  font-family: 'Exo 2', sans-serif;
+  font-weight: 900;
+  font-style: italic;
+  font-size: 20px;
+  color: var(--orange);
+  letter-spacing: -0.02em;
+}
+
+.top-sub {
+  font-size: 11px;
+  color: var(--ink3);
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+}
+
+/* TOGGLE MODO */
+.toggle-row {
+  display: flex;
+  gap: 8px;
+}
+
+.toggle-btn {
+  flex: 1;
+  padding: 8px;
+  border-radius: 10px;
+  border: none;
+  font-family: 'Nunito', sans-serif;
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.toggle-btn.ativo {
+  background: var(--orange);
+  color: white;
+}
+
+.toggle-btn:not(.ativo) {
+  background: #2a2a2a;
+  color: var(--ink3);
+}
+
+/* LISTA */
+.lista {
+  padding: 16px 14px 80px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+/* CARD DE TIPOGRAFIA */
+.tcard {
+  border-radius: 16px;
+  overflow: hidden;
+  cursor: pointer;
+  transition: transform 0.15s;
+  -webkit-tap-highlight-color: transparent;
+}
+
+.tcard:active { transform: scale(0.98); }
+
+/* MODO SPLASH â€” fundo colorido */
+.tcard-splash {
+  padding: 32px 24px;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 16px;
+  position: relative;
+  overflow: hidden;
+  min-height: 160px;
+  justify-content: center;
+}
+
+.tcard-splash::before {
+  content: '';
+  position: absolute;
+  width: 250px; height: 250px;
+  border-radius: 50%;
+  top: -80px; right: -80px;
+  opacity: 0.08;
+  background: white;
+}
+
+/* MODO LOGIN â€” fundo branco */
+.tcard-login {
+  padding: 24px 20px;
+  background: var(--white);
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+
+/* META INFO */
+.tcard-meta {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 10px 16px;
+  background: rgba(0,0,0,0.3);
+  backdrop-filter: blur(8px);
+}
+
+.tcard-meta-login {
+  background: #f5f5f5;
+}
+
+.meta-num {
+  width: 20px; height: 20px;
+  background: var(--orange); color: white;
+  border-radius: 50%; font-size: 9px; font-weight: 800;
+  display: flex; align-items: center; justify-content: center;
+  flex-shrink: 0;
+}
+
+.meta-name {
+  font-family: monospace; font-size: 10px;
+  color: rgba(255,255,255,0.7); flex: 1;
+}
+
+.meta-name-login {
+  color: var(--ink3);
+}
+
+.meta-vibe {
+  font-size: 9px; padding: 2px 8px;
+  border-radius: 50px; font-weight: 700;
+  letter-spacing: 0.04em; text-transform: uppercase;
+  background: rgba(255,255,255,0.15);
+  color: white;
+}
+
+.meta-vibe-login {
+  background: var(--pale);
+  color: var(--orange);
+}
+
+/* LOGO GRANDE */
+.logo-display {
+  position: relative;
+  z-index: 2;
+  line-height: 1;
+  display: block;
+}
+
+/* UI PREVIEW MINI */
+.ui-preview {
+  position: relative; z-index: 2;
+  display: flex; flex-direction: column; gap: 6px;
+}
+
+.ui-headline {
+  font-size: 16px;
+  line-height: 1.2;
+  opacity: 0.9;
+}
+
+.ui-sub {
+  font-size: 12px;
+  opacity: 0.6;
+  line-height: 1.4;
+}
+
+/* Login version */
+.ui-headline-login { color: var(--ink); }
+.ui-sub-login { color: var(--ink2); }
+
+.btn-preview {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 10px 18px;
+  border-radius: 12px;
+  font-size: 13px;
+  font-weight: 700;
+  border: none;
+  cursor: default;
+  width: fit-content;
+}
+
+.btn-splash {
+  background: rgba(255,255,255,0.2);
+  color: white;
+  backdrop-filter: blur(8px);
+}
+
+.btn-login-orange {
+  background: var(--orange);
+  color: white;
+}
+
+/* ANIMACIONES */
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(10px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+.tcard { animation: fadeIn 0.4s ease both; }
+.tcard:nth-child(1)  { animation-delay: 0.02s; }
+.tcard:nth-child(2)  { animation-delay: 0.04s; }
+.tcard:nth-child(3)  { animation-delay: 0.06s; }
+.tcard:nth-child(4)  { animation-delay: 0.08s; }
+.tcard:nth-child(5)  { animation-delay: 0.10s; }
+.tcard:nth-child(6)  { animation-delay: 0.12s; }
+.tcard:nth-child(7)  { animation-delay: 0.14s; }
+.tcard:nth-child(8)  { animation-delay: 0.16s; }
+.tcard:nth-child(9)  { animation-delay: 0.18s; }
+.tcard:nth-child(10) { animation-delay: 0.20s; }
+.tcard:nth-child(11) { animation-delay: 0.22s; }
+.tcard:nth-child(12) { animation-delay: 0.24s; }
+.tcard:nth-child(13) { animation-delay: 0.26s; }
+.tcard:nth-child(14) { animation-delay: 0.28s; }
+.tcard:nth-child(15) { animation-delay: 0.30s; }
+</style>
+</head>
+<body>
+
+<div class="top-bar">
+  <div class="top-title">Eureka! â€” Tipografias</div>
+  <div class="top-sub">Toque para selecionar Â· 15 opÃ§Ãµes</div>
+  <div class="toggle-row">
+    <button class="toggle-btn ativo" id="btn-splash" onclick="setModo('splash')">ðŸŒŸ Splash</button>
+    <button class="toggle-btn" id="btn-login" onclick="setModo('login')">ðŸ“± Login</button>
+  </div>
+</div>
+
+<div class="lista" id="lista"></div>
+
+<script>
+const FONTES = [
+  {
+    num: 1,
+    nome: "Exo 2 900 Italic",
+    css: "font-family:'Exo 2',sans-serif;font-weight:900;font-style:italic;",
+    size: "68px",
+    vibe: "Sci-fi humano",
+    bg: "linear-gradient(135deg,#5B21B6,#7C3AED)",
+    cor: "white",
+    corLogin: "#5B21B6",
+  },
+  {
+    num: 2,
+    nome: "Bebas Neue",
+    css: "font-family:'Bebas Neue',sans-serif;letter-spacing:0.05em;text-transform:uppercase;",
+    size: "76px",
+    vibe: "Urbano impacto",
+    bg: "linear-gradient(135deg,#111010,#2D2D2D)",
+    cor: "var(--orange)",
+    corLogin: "#111010",
+  },
+  {
+    num: 3,
+    nome: "Syne 900",
+    css: "font-family:'Syne',sans-serif;font-weight:900;letter-spacing:-0.04em;",
+    size: "64px",
+    vibe: "AssimÃ©trica moderna",
+    bg: "linear-gradient(135deg,#0F4C75,#1B6CA8)",
+    cor: "white",
+    corLogin: "#0F4C75",
+  },
+  {
+    num: 4,
+    nome: "Unbounded 900",
+    css: "font-family:'Unbounded',sans-serif;font-weight:900;letter-spacing:-0.03em;",
+    size: "44px",
+    vibe: "MÃ¡xima presenÃ§a",
+    bg: "linear-gradient(135deg,#FF4D20,#FF7043)",
+    cor: "white",
+    corLogin: "var(--orange)",
+  },
+  {
+    num: 5,
+    nome: "Anton",
+    css: "font-family:'Anton',sans-serif;letter-spacing:0.02em;text-transform:uppercase;",
+    size: "76px",
+    vibe: "Street agressivo",
+    bg: "linear-gradient(135deg,#1B5E20,#2E7D32)",
+    cor: "#FFD60A",
+    corLogin: "#1B5E20",
+  },
+  {
+    num: 6,
+    nome: "Barlow Condensed 900i",
+    css: "font-family:'Barlow Condensed',sans-serif;font-weight:900;font-style:italic;text-transform:uppercase;",
+    size: "80px",
+    vibe: "Esportiva dinÃ¢mica",
+    bg: "linear-gradient(135deg,#1C1C2E,#2D2D4E)",
+    cor: "var(--orange)",
+    corLogin: "#1C1C2E",
+  },
+  {
+    num: 7,
+    nome: "Big Shoulders Display 900",
+    css: "font-family:'Big Shoulders Display',sans-serif;font-weight:900;text-transform:uppercase;letter-spacing:-0.02em;",
+    size: "76px",
+    vibe: "ArquitetÃ´nica urbana",
+    bg: "linear-gradient(135deg,#37474F,#455A64)",
+    cor: "white",
+    corLogin: "#37474F",
+  },
+  {
+    num: 8,
+    nome: "Oswald 700",
+    css: "font-family:'Oswald',sans-serif;font-weight:700;text-transform:uppercase;letter-spacing:0.04em;",
+    size: "72px",
+    vibe: "Condensada clÃ¡ssica",
+    bg: "linear-gradient(135deg,#B71C1C,#C62828)",
+    cor: "white",
+    corLogin: "#B71C1C",
+  },
+  {
+    num: 9,
+    nome: "Chakra Petch 700i",
+    css: "font-family:'Chakra Petch',sans-serif;font-weight:700;font-style:italic;",
+    size: "60px",
+    vibe: "Cyberpunk tech",
+    bg: "linear-gradient(135deg,#001524,#002D4A)",
+    cor: "var(--orange)",
+    corLogin: "#001524",
+  },
+  {
+    num: 10,
+    nome: "Orbitron 900",
+    css: "font-family:'Orbitron',sans-serif;font-weight:900;letter-spacing:0.06em;text-transform:uppercase;",
+    size: "38px",
+    vibe: "Espacial geomÃ©trica",
+    bg: "linear-gradient(135deg,#050A18,#0A1428)",
+    cor: "var(--orange)",
+    corLogin: "#050A18",
+  },
+  {
+    num: 11,
+    nome: "Jost 900 Italic",
+    css: "font-family:'Jost',sans-serif;font-weight:900;font-style:italic;letter-spacing:-0.03em;",
+    size: "68px",
+    vibe: "GeomÃ©trica clean",
+    bg: "linear-gradient(135deg,#4A0E8F,#6B21A8)",
+    cor: "white",
+    corLogin: "#4A0E8F",
+  },
+  {
+    num: 12,
+    nome: "Kanit 900 Italic",
+    css: "font-family:'Kanit',sans-serif;font-weight:900;font-style:italic;letter-spacing:-0.01em;",
+    size: "68px",
+    vibe: "Tailandesa moderna",
+    bg: "linear-gradient(135deg,#0D7377,#14A085)",
+    cor: "white",
+    corLogin: "#0D7377",
+  },
+  {
+    num: 13,
+    nome: "Black Ops One",
+    css: "font-family:'Black Ops One',sans-serif;letter-spacing:0.04em;text-transform:uppercase;",
+    size: "56px",
+    vibe: "Militar tÃ¡tica",
+    bg: "linear-gradient(135deg,#212121,#424242)",
+    cor: "var(--orange)",
+    corLogin: "#212121",
+  },
+  {
+    num: 14,
+    nome: "Russo One",
+    css: "font-family:'Russo One',sans-serif;letter-spacing:0.02em;",
+    size: "60px",
+    vibe: "Futurista sÃ³lida",
+    bg: "linear-gradient(135deg,#1A237E,#283593)",
+    cor: "white",
+    corLogin: "#1A237E",
+  },
+  {
+    num: 15,
+    nome: "Teko 700",
+    css: "font-family:'Teko',sans-serif;font-weight:700;text-transform:uppercase;letter-spacing:0.04em;",
+    size: "96px",
+    vibe: "Ultra condensada",
+    bg: "linear-gradient(135deg,#880E4F,#AD1457)",
+    cor: "white",
+    corLogin: "#880E4F",
+  },
+];
+
+let modoAtual = 'splash';
+
+function setModo(modo) {
+  modoAtual = modo;
+  document.getElementById('btn-splash').className = 'toggle-btn' + (modo === 'splash' ? ' ativo' : '');
+  document.getElementById('btn-login').className  = 'toggle-btn' + (modo === 'login'  ? ' ativo' : '');
+  renderizar();
+}
+
+function renderizar() {
+  const lista = document.getElementById('lista');
+  lista.innerHTML = '';
+
+  FONTES.forEach((f, i) => {
+    const card = document.createElement('div');
+    card.className = 'tcard';
+    card.style.animationDelay = (i * 0.04) + 's';
+
+    if (modoAtual === 'splash') {
+      card.innerHTML = `
+        <div class="tcard-meta" style="background:rgba(0,0,0,0.4);">
+          <div class="meta-num">${f.num}</div>
+          <span class="meta-name">${f.nome}</span>
+          <span class="meta-vibe">${f.vibe}</span>
+        </div>
+        <div class="tcard-splash" style="background:${f.bg};">
+          <div class="logo-display" style="${f.css}font-size:${f.size};color:${f.cor};">Eureka!</div>
+          <div class="ui-preview">
+            <div class="ui-headline" style="${f.css}font-size:18px;color:${f.cor};">Seu trabalho estÃ¡ aqui</div>
+            <div class="ui-sub" style="color:${f.cor};">+1.200 vagas esperando vocÃª hoje</div>
+          </div>
+        </div>
+      `;
+    } else {
+      const loginCor = f.corLogin;
+      card.innerHTML = `
+        <div class="tcard-login">
+          <div class="tcard-meta tcard-meta-login">
+            <div class="meta-num">${f.num}</div>
+            <span class="meta-name meta-name-login">${f.nome}</span>
+            <span class="meta-vibe meta-vibe-login">${f.vibe}</span>
+          </div>
+          <div class="logo-display" style="${f.css}font-size:${parseInt(f.size)*0.7}px;color:${loginCor};">Eureka!</div>
+          <div style="height:1px;background:#F0EDE8;"></div>
+          <div class="ui-preview">
+            <div class="ui-headline ui-headline-login" style="${f.css}font-size:20px;">Bem-vindo de volta!</div>
+            <div class="ui-sub ui-sub-login">Seu prÃ³ximo trabalho estÃ¡ esperando vocÃª.</div>
+          </div>
+          <button class="btn-preview btn-login-orange" style="${f.css}font-size:14px;">
+            Entrar â†’
+          </button>
+        </div>
+      `;
+    }
+
+    lista.appendChild(card);
+  });
+}
+
+renderizar();
+</script>
+
+</body>
+</html>
