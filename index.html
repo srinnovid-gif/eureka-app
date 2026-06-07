@@ -7,16 +7,642 @@
   <meta name="mobile-web-app-capable" content="yes" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
-  <meta name="description" content="Eureka — Encontre trabalhos flexíveis perto de você" />
   <title>Eureka</title>
-
   <link rel="manifest" href="manifest.json" />
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Geologica:slnt,wght@-12..0,100..900&family=Glory:ital,wght@0,400;0,700;0,800;1,700;1,800&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet" />
-  <link rel="stylesheet" href="style.css" />
-</head>
+  <style>
+/* ═══════════════════════════════════════════════════════════
+   EUREKA — style.css v2
+   Corrección crítica: sistema de pantallas robusto para móvil
+═══════════════════════════════════════════════════════════ */
 
+/* ─────────────────────────────────────────
+   1. TOKENS
+───────────────────────────────────────── */
+:root {
+  --orange:      #FF4D20;
+  --orange-dark: #D93A10;
+  --orange-pale: #FFF5EE;
+  --orange-soft: #FFE8D6;
+  --ink:         #111010;
+  --ink2:        #6B6560;
+  --ink3:        #B8B0A8;
+  --white:       #FFFFFF;
+  --surface:     #FFF5EE;
+  --border:      #F0EDE8;
+  --green:       #1FAD6B;
+  --font-main:   'Geologica', sans-serif;
+  --font-display:'Glory', sans-serif;
+  --font-mono:   'DM Mono', monospace;
+  --radius:      16px;
+  --shadow-cta:  0 8px 24px rgba(255,77,32,0.28);
+}
+
+/* ─────────────────────────────────────────
+   2. RESET CRÍTICO
+───────────────────────────────────────── */
+*, *::before, *::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+  -webkit-tap-highlight-color: transparent;
+}
+
+html {
+  height: 100%;
+  height: 100dvh;
+}
+
+body {
+  height: 100%;
+  height: 100dvh;
+  font-family: var(--font-main);
+  background: var(--orange); /* mismo color que splash para evitar flash */
+  color: var(--ink);
+  -webkit-font-smoothing: antialiased;
+  overflow: hidden;
+}
+
+/* ─────────────────────────────────────────
+   3. CONTENEDOR PRINCIPAL
+   Ocupa exactamente la pantalla del celular.
+   Todo lo demás va dentro.
+───────────────────────────────────────── */
+#app {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+  background: var(--orange);
+}
+
+/* ─────────────────────────────────────────
+   4. SISTEMA DE PANTALLAS
+   Cada pantalla ocupa 100% del #app.
+   Solo la pantalla .visible es visible.
+───────────────────────────────────────── */
+.screen {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  /* Estado inicial: oculto */
+  opacity: 0;
+  pointer-events: none;
+  /* Transición suave */
+  transition: opacity 0.5s ease, transform 0.5s ease;
+  transform: translateX(30px);
+  will-change: opacity, transform;
+}
+
+.screen.visible {
+  opacity: 1;
+  pointer-events: all;
+  transform: translateX(0);
+}
+
+.screen.oculto {
+  opacity: 0;
+  pointer-events: none;
+  transform: translateX(30px);
+}
+
+.screen.saliendo {
+  opacity: 0;
+  transform: scale(1.03);
+  pointer-events: none;
+}
+
+/* ─────────────────────────────────────────
+   5. SPLASH
+───────────────────────────────────────── */
+#splash {
+  background: var(--orange);
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+  /* El splash empieza visible desde el inicio */
+  opacity: 1;
+  transform: translateX(0);
+}
+
+#splash::before {
+  content: "";
+  position: absolute;
+  width: 500px; height: 500px;
+  border-radius: 50%;
+  background: rgba(255,255,255,0.07);
+  top: -150px; right: -130px;
+  pointer-events: none;
+}
+
+#splash::after {
+  content: "";
+  position: absolute;
+  width: 300px; height: 300px;
+  border-radius: 50%;
+  background: rgba(255,255,255,0.04);
+  bottom: -100px; left: -80px;
+  pointer-events: none;
+}
+
+.splash-logo-wrap {
+  position: relative;
+  z-index: 2;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  animation: splashPop 0.8s cubic-bezier(0.34,1.56,0.64,1) both;
+}
+
+.splash-logo-img {
+  width: 75vw;
+  max-width: 300px;
+  height: auto;
+  display: block;
+  filter: brightness(0) invert(1);
+  object-fit: contain;
+}
+
+.splash-logo-fallback {
+  font-family: var(--font-main);
+  font-weight: 900;
+  font-size: 72px;
+  color: white;
+  letter-spacing: -0.05em;
+  line-height: 1;
+  display: none;
+}
+
+/* ─────────────────────────────────────────
+   6. COMECAR
+───────────────────────────────────────── */
+#comecar {
+  background: var(--white);
+}
+
+.comecar-img-wrap {
+  position: relative;
+  flex: 1;
+  overflow: hidden;
+  background: #F7F4F0;
+  display: flex;
+  flex-direction: column;
+  min-height: 0;
+}
+
+.comecar-img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center top;
+  display: block;
+  min-height: 0;
+}
+
+/* Badges flotantes */
+.badge-vagas {
+  position: absolute;
+  top: 24px; right: 18px;
+  background: white;
+  border-radius: 50px;
+  padding: 8px 14px;
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  box-shadow: 0 4px 20px rgba(0,0,0,0.12);
+  animation: floatA 3.5s ease-in-out infinite;
+  z-index: 2;
+}
+
+.badge-dot-green {
+  width: 8px; height: 8px;
+  border-radius: 50%;
+  background: var(--green);
+  flex-shrink: 0;
+  box-shadow: 0 0 0 3px rgba(31,173,107,0.2);
+}
+
+.badge-vagas-txt {
+  font-size: 12px;
+  font-weight: 700;
+  color: var(--ink);
+  white-space: nowrap;
+}
+
+.badge-salario {
+  position: absolute;
+  bottom: 20px; left: 18px;
+  background: white;
+  border-radius: 16px;
+  padding: 10px 14px;
+  box-shadow: 0 4px 20px rgba(0,0,0,0.12);
+  animation: floatB 4s ease-in-out infinite;
+  z-index: 2;
+}
+
+.badge-salario-label {
+  font-family: var(--font-mono);
+  font-size: 9px;
+  color: var(--ink3);
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.badge-salario-val {
+  font-size: 20px;
+  font-weight: 900;
+  color: var(--orange);
+  line-height: 1.2;
+  margin-top: 1px;
+}
+
+/* Panel inferior — altura fija para que la imagen tome el resto */
+.comecar-panel {
+  flex-shrink: 0;
+  background: var(--white);
+  padding: 20px 22px 44px;
+  border-top: 1px solid var(--border);
+}
+
+.btn-continuar {
+  width: 100%;
+  padding: 17px;
+  border-radius: var(--radius);
+  background: var(--orange);
+  color: white;
+  font-family: var(--font-main);
+  font-weight: 800;
+  font-size: 16px;
+  border: none;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  box-shadow: var(--shadow-cta);
+  animation: pulseCTA 3s ease-in-out infinite;
+  transition: transform 0.12s;
+}
+
+.btn-continuar:active { transform: scale(0.98); }
+
+/* ─────────────────────────────────────────
+   7. LOGIN
+───────────────────────────────────────── */
+#login {
+  background: var(--white);
+  overflow-y: auto;
+  overflow-x: hidden;
+  /* Espacio para el botón flotante de cadastro */
+  padding-bottom: 150px;
+}
+
+.blob {
+  position: absolute;
+  border-radius: 50%;
+  pointer-events: none;
+  z-index: 0;
+}
+
+.blob-1 {
+  width: 280px; height: 280px;
+  background: radial-gradient(circle, rgba(255,77,32,0.08) 0%, transparent 70%);
+  top: -80px; right: -60px;
+}
+
+.blob-2 {
+  width: 180px; height: 180px;
+  background: radial-gradient(circle, rgba(255,77,32,0.05) 0%, transparent 70%);
+  top: 300px; left: -60px;
+}
+
+.login-hero {
+  padding: 60px 28px 22px;
+  position: relative;
+  z-index: 1;
+  flex-shrink: 0;
+}
+
+.login-logo {
+  height: 40px;
+  width: auto;
+  display: block;
+  margin-bottom: 22px;
+  object-fit: contain;
+  object-position: left;
+}
+
+.login-logo-fallback {
+  font-family: var(--font-main);
+  font-weight: 900;
+  font-size: 40px;
+  color: var(--orange);
+  letter-spacing: -0.04em;
+  line-height: 1;
+  margin-bottom: 22px;
+  display: none;
+}
+
+.login-titulo {
+  font-family: var(--font-display);
+  font-style: italic;
+  font-weight: 800;
+  font-size: 32px;
+  color: var(--ink);
+  letter-spacing: -0.02em;
+  line-height: 1.1;
+  margin-bottom: 7px;
+}
+
+.login-titulo span { color: var(--orange); }
+.login-sub { font-size: 14px; color: var(--ink2); line-height: 1.5; }
+
+.login-form {
+  flex: 1;
+  padding: 4px 28px 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 13px;
+  position: relative;
+  z-index: 1;
+}
+
+/* Botones sociales */
+.social-row { display: flex; gap: 10px; }
+
+.social-btn {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 7px;
+  padding: 12px 8px;
+  border-radius: var(--radius);
+  border: 1.5px solid var(--border);
+  background: var(--white);
+  font-family: var(--font-main);
+  font-weight: 600;
+  font-size: 12px;
+  color: var(--ink);
+  transition: background 0.15s, transform 0.1s;
+}
+
+.social-btn:active { background: var(--surface); transform: scale(0.96); }
+
+/* Divisor */
+.divider { display: flex; align-items: center; gap: 10px; }
+.divider-line { flex: 1; height: 1px; background: var(--border); }
+.divider-txt {
+  font-family: var(--font-mono);
+  font-size: 10px;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--ink3);
+  white-space: nowrap;
+}
+
+/* Campos */
+.campo { display: flex; flex-direction: column; gap: 5px; }
+.campo-label { font-weight: 600; font-size: 12px; color: var(--ink2); padding-left: 2px; }
+.campo-wrap { position: relative; }
+
+.campo-input {
+  width: 100%;
+  padding: 13px 44px 13px 44px;
+  border-radius: var(--radius);
+  border: 1.5px solid var(--border);
+  background: var(--surface);
+  font-family: var(--font-main);
+  font-size: 15px;
+  color: var(--ink);
+  outline: none;
+  -webkit-appearance: none;
+  transition: border-color 0.2s, background 0.2s, box-shadow 0.2s;
+}
+
+.campo-input::placeholder { color: var(--ink3); font-size: 14px; }
+
+.campo-input:focus {
+  border-color: var(--orange);
+  background: #FFFAF7;
+  box-shadow: 0 0 0 3px rgba(255,77,32,0.08);
+}
+
+.campo-icone {
+  position: absolute; left: 13px; top: 50%;
+  transform: translateY(-50%);
+  width: 17px; height: 17px;
+  color: var(--ink3); pointer-events: none;
+  transition: color 0.2s;
+}
+
+.campo-wrap:has(.campo-input:focus) .campo-icone { color: var(--orange); }
+
+.btn-olho {
+  position: absolute; right: 13px; top: 50%;
+  transform: translateY(-50%);
+  background: none; border: none;
+  padding: 4px; cursor: pointer;
+  color: var(--ink3);
+  display: flex; align-items: center;
+}
+
+.esqueci-row { display: flex; justify-content: flex-end; margin-top: -4px; }
+.btn-esqueci {
+  background: none; border: none;
+  font-family: var(--font-main);
+  font-size: 13px; font-weight: 600;
+  color: var(--orange); cursor: pointer; padding: 0;
+}
+
+#msg-erro {
+  display: none;
+  background: #FFF0EE;
+  border: 1px solid #FFD0C8;
+  border-radius: 12px;
+  padding: 11px 15px;
+  font-size: 13px;
+  color: var(--orange-dark);
+  font-weight: 500;
+  text-align: center;
+}
+
+.btn-entrar {
+  width: 100%;
+  padding: 16px;
+  border-radius: var(--radius);
+  background: var(--orange);
+  color: white;
+  font-family: var(--font-main);
+  font-weight: 800;
+  font-size: 16px;
+  border: none;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  box-shadow: var(--shadow-cta);
+  animation: pulseCTA 3s ease-in-out infinite;
+  transition: transform 0.12s;
+}
+
+.btn-entrar:active { transform: scale(0.98); }
+.btn-entrar:disabled { opacity: 0.65; animation: none; cursor: not-allowed; }
+
+#spinner {
+  display: none;
+  width: 17px; height: 17px;
+  border: 2.5px solid rgba(255,255,255,0.35);
+  border-top-color: white;
+  border-radius: 50%;
+  animation: girar 0.7s linear infinite;
+}
+
+/* ─────────────────────────────────────────
+   8. BOTÃO FLUTUANTE CADASTRO
+───────────────────────────────────────── */
+.cadastro-float {
+  position: fixed;
+  bottom: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 100%;
+  max-width: 100%;
+  padding: 10px 22px 40px;
+  background: linear-gradient(to top, #fff 60%, transparent 100%);
+  display: none;
+  flex-direction: column;
+  gap: 8px;
+  z-index: 40;
+  pointer-events: none;
+}
+
+.cadastro-float.visivel {
+  display: flex;
+  pointer-events: all;
+  animation: slideUpFloat 0.45s cubic-bezier(0.34,1.1,0.64,1) both;
+}
+
+.float-divider { display: flex; align-items: center; gap: 10px; }
+.float-divider-line { flex: 1; height: 1px; background: var(--border); }
+.float-divider-txt {
+  font-family: var(--font-mono);
+  font-size: 10px;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--ink3);
+}
+
+.btn-cadastro {
+  width: 100%;
+  padding: 15px;
+  border-radius: var(--radius);
+  background: var(--white);
+  color: var(--orange);
+  font-family: var(--font-main);
+  font-weight: 800;
+  font-size: 15px;
+  border: 2px solid var(--orange);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  transition: background 0.15s, transform 0.12s;
+  animation: pulseBorder 3s ease-in-out infinite;
+}
+
+.btn-cadastro:active { background: var(--orange-pale); transform: scale(0.98); }
+
+/* ─────────────────────────────────────────
+   9. MODAL CELULAR
+───────────────────────────────────────── */
+#modal-celular {
+  display: none;
+  position: fixed;
+  inset: 0;
+  background: rgba(17,16,16,0.55);
+  z-index: 50;
+  align-items: flex-end;
+  justify-content: center;
+  backdrop-filter: blur(6px);
+  -webkit-backdrop-filter: blur(6px);
+}
+
+#modal-celular.ativo { display: flex; animation: fadeIn 0.2s ease both; }
+
+.modal-sheet {
+  background: var(--white);
+  border-radius: 26px 26px 0 0;
+  padding: 18px 26px 50px;
+  width: 100%; max-width: 480px;
+  display: flex; flex-direction: column; gap: 14px;
+  animation: slideUp 0.35s cubic-bezier(0.34,1.1,0.64,1) both;
+}
+
+.modal-handle {
+  width: 38px; height: 4px;
+  background: var(--border);
+  border-radius: 2px; margin: 0 auto 4px;
+}
+
+.modal-titulo {
+  font-family: var(--font-display);
+  font-style: italic; font-weight: 800;
+  font-size: 26px; color: var(--ink);
+  letter-spacing: -0.02em; line-height: 1.1;
+}
+
+.modal-titulo span { color: var(--orange); }
+.modal-sub { font-size: 13px; color: var(--ink2); margin-top: -6px; line-height: 1.5; }
+#etapa-codigo { display: none; }
+
+.btn-cancelar {
+  width: 100%; background: none; border: none;
+  font-family: var(--font-main);
+  font-size: 14px; color: var(--ink2); padding: 8px; cursor: pointer;
+}
+
+#recaptcha-container { display: none; }
+
+/* ─────────────────────────────────────────
+   10. ANIMACIONES
+───────────────────────────────────────── */
+@keyframes splashPop {
+  from { opacity: 0; transform: scale(0.78); }
+  to   { opacity: 1; transform: scale(1); }
+}
+@keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+@keyframes slideUp { from { transform: translateY(100%); } to { transform: translateY(0); } }
+@keyframes slideUpFloat {
+  from { opacity: 0; transform: translateX(-50%) translateY(28px); }
+  to   { opacity: 1; transform: translateX(-50%) translateY(0); }
+}
+@keyframes girar { to { transform: rotate(360deg); } }
+@keyframes pulseCTA {
+  0%,100% { box-shadow: 0 8px 24px rgba(255,77,32,0.28); }
+  50%      { box-shadow: 0 8px 36px rgba(255,77,32,0.50); }
+}
+@keyframes pulseBorder {
+  0%,100% { box-shadow: 0 4px 16px rgba(255,77,32,0.10); }
+  50%      { box-shadow: 0 4px 24px rgba(255,77,32,0.28); }
+}
+@keyframes floatA {
+  0%,100% { transform: translateY(0); } 50% { transform: translateY(-6px); }
+}
+@keyframes floatB {
+  0%,100% { transform: translateY(0); } 50% { transform: translateY(-5px); }
+}
+
+  </style>
+</head>
 <body>
 <div id="app">
 
@@ -57,18 +683,14 @@
   <div id="login" class="screen oculto">
     <div class="blob blob-1"></div>
     <div class="blob blob-2"></div>
-
     <div class="login-hero">
-      <!-- Logo naranja sobre fondo blanco -->
       <img class="login-logo" src="38551-removebg-preview.png" alt="Eureka"
         onerror="this.style.display='none';document.querySelector('.login-logo-fallback').style.display='block';" />
       <div class="login-logo-fallback">eureka</div>
       <h1 class="login-titulo">Bem-vindo<br>de <span>volta!</span></h1>
       <p class="login-sub">Seu próximo trabalho está esperando você.</p>
     </div>
-
     <div class="login-form">
-      <!-- Sociais -->
       <div class="social-row">
         <button class="social-btn" onclick="loginGoogle()">
           <svg width="18" height="18" viewBox="0 0 24 24" fill="none">
@@ -92,13 +714,11 @@
           Apple
         </button>
       </div>
-
       <div class="divider">
         <div class="divider-line"></div>
         <span class="divider-txt">ou entre com email</span>
         <div class="divider-line"></div>
       </div>
-
       <div class="campo">
         <label class="campo-label" for="email">Email</label>
         <div class="campo-wrap">
@@ -109,7 +729,6 @@
           </svg>
         </div>
       </div>
-
       <div class="campo">
         <label class="campo-label" for="senha">Senha</label>
         <div class="campo-wrap">
@@ -126,13 +745,10 @@
           </button>
         </div>
       </div>
-
       <div class="esqueci-row">
         <button class="btn-esqueci" onclick="esqueceuSenha()">Esqueci a senha</button>
       </div>
-
       <div id="msg-erro" role="alert"></div>
-
       <button class="btn-entrar" id="btn-entrar" onclick="loginEmail(event)">
         <span id="spinner" role="status"></span>
         Entrar
@@ -194,14 +810,220 @@
 
   <div id="recaptcha-container"></div>
 
-</div><!-- /app -->
+</div>
 
-<!-- ═══ SCRIPTS ═══
-     app.js como módulo (maneja Firebase + router)
-     auth.js también como módulo (usa import de Firebase)
--->
-<script type="module" src="app.js"></script>
-<script type="module" src="auth.js"></script>
+<script type="module">
+import { initializeApp }              from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
+import { getAuth, onAuthStateChanged,
+         signInWithEmailAndPassword, signInWithPopup,
+         GoogleAuthProvider, OAuthProvider,
+         RecaptchaVerifier, signInWithPhoneNumber } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js";
+import { getFirestore } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
 
+const firebaseConfig = {
+  apiKey:            "AIzaSyCw4QhQ5fGYSv_QgfY-waAZuOhkfv1ej1s",
+  authDomain:        "vanti-app-br.firebaseapp.com",
+  projectId:         "vanti-app-br",
+  storageBucket:     "vanti-app-br.firebasestorage.app",
+  messagingSenderId: "1028700458017",
+  appId:             "1:1028700458017:web:6011fd81d09010e4f1e760"
+};
+
+const app  = initializeApp(firebaseConfig);
+const auth = getAuth(app);
+const db   = getFirestore(app);
+const providerGoogle = new GoogleAuthProvider();
+
+/* ── ROUTER ── */
+function mostrarPantalla(de, para) {
+  const ant = document.getElementById(de);
+  const sig = document.getElementById(para);
+  if (!ant || !sig) return;
+  ant.classList.remove("visible");
+  ant.classList.add("oculto");
+  sig.classList.remove("oculto");
+  requestAnimationFrame(() => requestAnimationFrame(() => sig.classList.add("visible")));
+}
+
+/* ── FLUJO: garantizar mínimo 2s de splash ──
+   El splash se muestra SIEMPRE mínimo 2 segundos.
+   Firebase puede responder antes o después — esperamos ambos.
+── */
+let firebaseRespondio = false;
+let splashTermino     = false;
+let usuarioLogado     = null;
+
+function intentarTransicion() {
+  if (!firebaseRespondio || !splashTermino) return; // esperar los dos
+  if (usuarioLogado) {
+    window.location.href = "home.html";
+  } else {
+    mostrarPantalla("splash", "comecar");
+  }
+}
+
+// Timer del splash: mínimo 2.5 segundos
+setTimeout(() => {
+  splashTermino = true;
+  intentarTransicion();
+}, 2500);
+
+// Esperar respuesta de Firebase
+onAuthStateChanged(auth, (user) => {
+  usuarioLogado     = user;
+  firebaseRespondio = true;
+  intentarTransicion();
+});
+
+/* ── NAVEGACION ── */
+window.irParaLogin = function() {
+  mostrarPantalla("comecar", "login");
+  setTimeout(() => {
+    const f = document.getElementById("cadastro-float");
+    if (f) f.classList.add("visivel");
+  }, 400);
+};
+
+/* ── LOGIN GOOGLE ── */
+window.loginGoogle = async function() {
+  setCarregando(true);
+  try {
+    await signInWithPopup(auth, providerGoogle);
+    window.location.href = "home.html";
+  } catch(err) { mostrarErro(traduzir(err.code)); }
+  finally { setCarregando(false); }
+};
+
+/* ── LOGIN APPLE ── */
+window.loginApple = async function() {
+  const p = new OAuthProvider("apple.com");
+  setCarregando(true);
+  try {
+    await signInWithPopup(auth, p);
+    window.location.href = "home.html";
+  } catch(err) { mostrarErro(traduzir(err.code)); }
+  finally { setCarregando(false); }
+};
+
+/* ── LOGIN EMAIL ── */
+window.loginEmail = async function(e) {
+  e.preventDefault();
+  const email = document.getElementById("email").value.trim();
+  const senha = document.getElementById("senha").value;
+  if (!email || !senha) { mostrarErro("Preencha seu email e senha."); return; }
+  setCarregando(true);
+  try {
+    await signInWithEmailAndPassword(auth, email, senha);
+    window.location.href = "home.html";
+  } catch(err) { mostrarErro(traduzir(err.code)); }
+  finally { setCarregando(false); }
+};
+
+/* ── CELULAR ── */
+window.abrirModalCelular = function() {
+  document.getElementById("modal-celular").classList.add("ativo");
+  if (!window._recaptcha) {
+    window._recaptcha = new RecaptchaVerifier(auth, "recaptcha-container", { size: "invisible" });
+  }
+};
+
+window.fecharModalCelular = function() {
+  document.getElementById("modal-celular").classList.remove("ativo");
+  document.getElementById("etapa-numero").style.display = "block";
+  document.getElementById("etapa-codigo").style.display = "none";
+  document.getElementById("campo-numero").value = "";
+  document.getElementById("campo-codigo").value = "";
+};
+
+window.enviarSMS = async function() {
+  const n = document.getElementById("campo-numero").value.trim();
+  if (!n) { mostrarErro("Digite seu número."); return; }
+  const fmt = n.startsWith("+") ? n : "+55" + n.replace(/\D/g, "");
+  try {
+    window._confirmSMS = await signInWithPhoneNumber(auth, fmt, window._recaptcha);
+    document.getElementById("etapa-numero").style.display = "none";
+    document.getElementById("etapa-codigo").style.display = "block";
+  } catch(err) { mostrarErro(traduzir(err.code)); }
+};
+
+window.verificarCodigo = async function() {
+  const c = document.getElementById("campo-codigo").value.trim();
+  if (!c || c.length < 6) { mostrarErro("Digite o código de 6 dígitos."); return; }
+  try {
+    await window._confirmSMS.confirm(c);
+    window.location.href = "home.html";
+  } catch { mostrarErro("Código incorreto. Tente novamente."); }
+};
+
+window.esqueceuSenha = function() {
+  const email = document.getElementById("email").value.trim();
+  if (!email) { mostrarErro("Digite seu email primeiro."); return; }
+  window.location.href = "recuperar-senha.html?email=" + encodeURIComponent(email);
+};
+
+/* ── HELPERS ── */
+window.toggleSenha = function(inputId, iconoId) {
+  const input = document.getElementById(inputId);
+  const icono = document.getElementById(iconoId);
+  if (!input) return;
+  input.type = input.type === "password" ? "text" : "password";
+  if (icono) icono.style.opacity = input.type === "text" ? "0.35" : "1";
+};
+
+window.fecharSeClicarFora = function(e) {
+  if (e.target === document.getElementById("modal-celular")) fecharModalCelular();
+};
+
+function setCarregando(v) {
+  const btn  = document.getElementById("btn-entrar");
+  const spin = document.getElementById("spinner");
+  if (btn)  btn.disabled       = v;
+  if (spin) spin.style.display = v ? "block" : "none";
+}
+
+function mostrarErro(msg) {
+  const el = document.getElementById("msg-erro");
+  if (!el) return;
+  el.textContent = msg;
+  el.style.display = "block";
+  setTimeout(() => el.style.display = "none", 4500);
+}
+
+function traduzir(code) {
+  return ({
+    "auth/user-not-found":         "Não encontramos uma conta com este email.",
+    "auth/wrong-password":         "Senha incorreta. Tente novamente.",
+    "auth/invalid-email":          "Email inválido. Verifique e tente de novo.",
+    "auth/too-many-requests":      "Muitas tentativas. Aguarde um momento.",
+    "auth/network-request-failed": "Sem conexão. Verifique sua internet.",
+    "auth/popup-closed-by-user":   "Login cancelado.",
+    "auth/invalid-credential":     "Email ou senha incorretos.",
+    "auth/user-disabled":          "Esta conta foi desativada.",
+  })[code] || "Algo deu errado. Tente novamente.";
+}
+
+document.addEventListener("DOMContentLoaded", () => {
+  document.getElementById("email")?.addEventListener("keydown", e => {
+    if (e.key === "Enter") document.getElementById("senha")?.focus();
+  });
+  document.getElementById("senha")?.addEventListener("keydown", e => {
+    if (e.key === "Enter") loginEmail(e);
+  });
+  document.getElementById("campo-numero")?.addEventListener("input", function() {
+    let v = this.value.replace(/\D/g, "");
+    v = v.replace(/^(\d{2})(\d)/, "($1) $2");
+    v = v.replace(/(\d{5})(\d)/, "$1-$2");
+    this.value = v.slice(0, 15);
+  });
+});
+
+if ("serviceWorker" in navigator) {
+  window.addEventListener("load", () => {
+    navigator.serviceWorker.register("sw.js")
+      .then(() => console.log("[SW] ✅"))
+      .catch(err => console.warn("[SW]:", err));
+  });
+}
+</script>
 </body>
 </html>
