@@ -3,559 +3,333 @@
 <head>
 <meta charset="UTF-8"/>
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"/>
-<title>eureka! — Tipografias</title>
+<title>Eureka! â€” Tipografias</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:ital,wght@0,800;0,900;1,800;1,900&family=Barlow+Semi+Condensed:ital,wght@0,800;0,900;1,800;1,900&family=Barlow:ital,wght@0,900;1,900&family=Oswald:wght@600;700&family=Saira:ital,wght@0,900;1,900&family=Saira+Condensed:wght@800;900&family=Saira+Semi+Condensed:ital,wght@0,800;0,900;1,800;1,900&family=Jost:ital,wght@0,900;1,900&family=Heebo:wght@900&family=Prompt:ital,wght@0,900;1,900&family=Kanit:ital,wght@0,800;0,900;1,800;1,900&family=Rajdhani:wght@600;700&family=Arimo:ital,wght@0,700;1,700&family=Krona+One&family=Schibsted+Grotesk:ital,wght@0,900;1,900&family=Nunito:wght@900&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Encode+Sans+Condensed:wght@700;800;900&family=Encode+Sans+Semi+Condensed:wght@700;800;900&family=Asap+Condensed:ital,wght@0,700;0,900;1,700;1,900&family=Asap:ital,wght@0,700;0,900;1,700;1,900&family=Barlow+Condensed:ital,wght@0,700;0,800;0,900;1,700;1,800;1,900&family=Barlow+Semi+Condensed:ital,wght@0,700;0,900;1,700;1,900&family=Saira+Condensed:wght@700;800;900&family=Saira+Semi+Condensed:ital,wght@0,700;0,900;1,700;1,900&family=Jost:ital,wght@0,900;1,900&family=Oswald:wght@600;700&family=Big+Shoulders+Display:wght@800;900&family=Heebo:wght@800;900&family=Nunito:wght@900&display=swap" rel="stylesheet">
 
 <style>
 *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-
 :root {
   --orange: #FF4D20;
-  --ink:    #111010;
-  --ink2:   #6B6560;
-  --ink3:   #B8B0A8;
-  --border: #F0EDE8;
-  --white:  #FFFFFF;
-  --pale:   #FFF5EE;
+  --ink: #111010; --ink2: #6B6560; --ink3: #B8B0A8;
+  --border: #F0EDE8; --white: #FFFFFF; --pale: #FFF5EE;
 }
-
 html, body {
-  height: 100%;
-  background: #111;
-  color: white;
-  font-family: 'Nunito', sans-serif;
+  height: 100%; background: #0E0E0E;
+  color: white; font-family: 'Nunito', sans-serif;
   overflow-x: hidden;
 }
 
-/* ── TOP BAR ── */
-.topbar {
-  position: sticky;
-  top: 0;
-  z-index: 100;
-  background: #0a0a0a;
-  border-bottom: 1px solid #222;
+/* TOP BAR */
+.top {
+  position: sticky; top: 0; z-index: 100;
+  background: #0a0a0a; border-bottom: 1px solid #1f1f1f;
   padding: 14px 16px 10px;
 }
-
-.topbar-title {
+.top-logo {
   font-family: 'Barlow Condensed', sans-serif;
-  font-weight: 900;
-  font-style: italic;
-  font-size: 22px;
-  color: var(--orange);
-  letter-spacing: 0.02em;
-  margin-bottom: 4px;
+  font-weight: 900; font-style: italic;
+  font-size: 20px; color: var(--orange);
+  letter-spacing: 0.02em; margin-bottom: 3px;
 }
-
-.topbar-sub {
-  font-size: 10px;
-  color: var(--ink3);
-  letter-spacing: 0.12em;
-  text-transform: uppercase;
-  margin-bottom: 10px;
+.top-sub {
+  font-size: 10px; color: var(--ink3);
+  letter-spacing: 0.1em; text-transform: uppercase; margin-bottom: 10px;
 }
-
-/* Toggle */
 .toggle {
-  display: flex;
-  gap: 6px;
-  background: #1a1a1a;
-  padding: 4px;
-  border-radius: 12px;
+  display: flex; gap: 5px;
+  background: #1a1a1a; padding: 4px; border-radius: 12px;
 }
-
-.toggle-btn {
-  flex: 1;
-  padding: 9px 8px;
-  border: none;
-  border-radius: 9px;
-  font-family: 'Nunito', sans-serif;
-  font-size: 11px;
-  font-weight: 800;
-  letter-spacing: 0.04em;
-  text-transform: uppercase;
-  cursor: pointer;
-  transition: all 0.2s;
+.tbtn {
+  flex: 1; padding: 9px 6px; border: none;
+  border-radius: 9px; font-family: 'Nunito', sans-serif;
+  font-size: 11px; font-weight: 800;
+  letter-spacing: 0.04em; text-transform: uppercase;
+  cursor: pointer; transition: all 0.2s;
 }
+.tbtn.on { background: var(--orange); color: white; }
+.tbtn:not(.on) { background: transparent; color: var(--ink3); }
 
-.toggle-btn.on {
-  background: var(--orange);
-  color: white;
-}
+/* LISTA */
+.lista { padding: 12px 12px 80px; display: flex; flex-direction: column; gap: 10px; }
 
-.toggle-btn:not(.on) {
-  background: transparent;
-  color: var(--ink3);
-}
-
-/* ── LISTA ── */
-.lista {
-  padding: 14px 12px 80px;
-  display: flex;
-  flex-direction: column;
-  gap: 10px;
-}
-
-/* ── CARD SPLASH ── */
-.card-splash {
-  border-radius: 18px;
-  overflow: hidden;
-  cursor: pointer;
-  transition: transform 0.15s;
+/* CARD SPLASH */
+.cs {
+  border-radius: 18px; overflow: hidden;
+  cursor: pointer; transition: transform 0.15s;
   -webkit-tap-highlight-color: transparent;
 }
+.cs:active { transform: scale(0.975); }
 
-.card-splash:active { transform: scale(0.975); }
-
-.splash-inner {
-  padding: 28px 22px 22px;
-  position: relative;
-  overflow: hidden;
-  min-height: 200px;
-  display: flex;
-  flex-direction: column;
+.cs-inner {
+  padding: 26px 22px 22px;
+  position: relative; overflow: hidden;
+  min-height: 210px; display: flex; flex-direction: column;
   justify-content: space-between;
 }
-
-/* Círculo decorativo */
-.splash-inner::before {
-  content: '';
-  position: absolute;
-  width: 220px; height: 220px;
-  border-radius: 50%;
-  top: -60px; right: -60px;
-  background: rgba(255,255,255,0.06);
-  pointer-events: none;
+.cs-inner::before {
+  content: ''; position: absolute;
+  width: 240px; height: 240px; border-radius: 50%;
+  top: -70px; right: -70px;
+  background: rgba(255,255,255,0.05); pointer-events: none;
 }
-
-.splash-inner::after {
-  content: '';
-  position: absolute;
-  width: 140px; height: 140px;
-  border-radius: 50%;
-  bottom: -40px; left: -30px;
-  background: rgba(255,255,255,0.04);
-  pointer-events: none;
+.cs-inner::after {
+  content: ''; position: absolute;
+  width: 150px; height: 150px; border-radius: 50%;
+  bottom: -50px; left: -30px;
+  background: rgba(255,255,255,0.03); pointer-events: none;
 }
-
-.splash-logo {
-  position: relative;
-  z-index: 2;
-  line-height: 1;
-  display: block;
-}
-
-.splash-preview {
-  position: relative;
-  z-index: 2;
-  margin-top: 16px;
-}
-
-.splash-headline {
-  font-size: 17px;
-  line-height: 1.2;
-  opacity: 0.85;
-  margin-bottom: 5px;
-}
-
-.splash-sub {
-  font-size: 12px;
-  opacity: 0.55;
-  line-height: 1.4;
-}
-
-.splash-meta {
-  position: absolute;
-  top: 12px; right: 12px;
-  z-index: 3;
-  display: flex;
-  flex-direction: column;
-  align-items: flex-end;
-  gap: 4px;
-}
-
-.meta-num {
-  width: 22px; height: 22px;
-  background: rgba(255,255,255,0.15);
-  backdrop-filter: blur(8px);
-  border-radius: 50%;
-  font-size: 10px; font-weight: 800;
-  color: white;
+.cs-top { display: flex; justify-content: space-between; align-items: flex-start; position: relative; z-index: 2; }
+.cs-num {
+  width: 24px; height: 24px;
+  background: rgba(0,0,0,0.4); backdrop-filter: blur(8px);
+  border-radius: 50%; font-size: 10px; font-weight: 800; color: white;
   display: flex; align-items: center; justify-content: center;
 }
-
-.meta-tag {
-  font-size: 9px;
-  padding: 3px 8px;
-  border-radius: 50px;
-  background: rgba(0,0,0,0.3);
-  backdrop-filter: blur(8px);
-  color: rgba(255,255,255,0.8);
-  letter-spacing: 0.05em;
-  text-transform: uppercase;
-  font-weight: 700;
+.cs-tag {
+  font-size: 9px; padding: 4px 9px; border-radius: 50px;
+  background: rgba(0,0,0,0.35); backdrop-filter: blur(8px);
+  color: rgba(255,255,255,0.85); font-weight: 700;
+  letter-spacing: 0.05em; text-transform: uppercase;
 }
+.cs-logo { position: relative; z-index: 2; line-height: 1; display: block; margin: 12px 0 16px; }
+.cs-preview { position: relative; z-index: 2; }
+.cs-h { font-size: 16px; line-height: 1.2; margin-bottom: 3px; opacity: 0.85; }
+.cs-s { font-size: 11px; opacity: 0.5; line-height: 1.4; }
 
-/* ── CARD LOGIN ── */
-.card-login {
-  border-radius: 18px;
-  overflow: hidden;
-  background: white;
-  cursor: pointer;
-  transition: transform 0.15s;
+/* CARD LOGIN */
+.cl {
+  border-radius: 18px; overflow: hidden; background: white;
+  cursor: pointer; transition: transform 0.15s;
   -webkit-tap-highlight-color: transparent;
 }
-
-.card-login:active { transform: scale(0.975); }
-
-.login-inner {
-  padding: 22px 22px 20px;
-  display: flex;
-  flex-direction: column;
-  gap: 14px;
+.cl:active { transform: scale(0.975); }
+.cl-inner { padding: 18px 20px 18px; display: flex; flex-direction: column; gap: 12px; }
+.cl-meta {
+  display: flex; align-items: center; gap: 8px;
+  padding-bottom: 12px; border-bottom: 1px solid var(--border);
 }
-
-.login-meta {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  padding-bottom: 12px;
-  border-bottom: 1px solid var(--border);
-}
-
-.login-num {
-  width: 22px; height: 22px;
-  background: var(--orange); color: white;
+.cl-num {
+  width: 22px; height: 22px; background: var(--orange); color: white;
   border-radius: 50%; font-size: 10px; font-weight: 800;
   display: flex; align-items: center; justify-content: center;
 }
-
-.login-fname {
-  font-family: monospace; font-size: 10px;
-  color: var(--ink3); flex: 1; letter-spacing: 0.03em;
-}
-
-.login-tag {
-  font-size: 9px; padding: 3px 8px;
-  border-radius: 50px; font-weight: 700;
+.cl-fname { font-family: monospace; font-size: 10px; color: var(--ink3); flex: 1; letter-spacing: 0.03em; }
+.cl-tag {
+  font-size: 9px; padding: 3px 8px; border-radius: 50px;
   background: var(--pale); color: var(--orange);
-  letter-spacing: 0.05em; text-transform: uppercase;
+  font-weight: 700; letter-spacing: 0.05em; text-transform: uppercase;
 }
-
-.login-logo {
-  line-height: 1;
-  display: block;
-}
-
-.login-divider { height: 1px; background: var(--border); }
-
-.login-headline {
-  font-size: 20px;
-  color: var(--ink);
-  line-height: 1.2;
-  font-weight: 800;
-}
-
-.login-sub {
-  font-size: 13px;
-  color: var(--ink2);
-  line-height: 1.5;
-  margin-top: -6px;
-}
-
-.login-btn {
-  display: inline-flex;
-  align-items: center;
-  gap: 6px;
-  padding: 12px 20px;
-  border-radius: 14px;
-  font-size: 14px;
-  font-weight: 800;
-  background: var(--orange);
-  color: white;
-  border: none;
+.cl-logo { line-height: 1; display: block; }
+.cl-div { height: 1px; background: var(--border); }
+.cl-h { font-size: 19px; color: var(--ink); line-height: 1.2; }
+.cl-s { font-size: 13px; color: var(--ink2); line-height: 1.5; margin-top: -4px; }
+.cl-btn {
+  width: 100%; padding: 13px; border-radius: 14px;
+  background: var(--orange); color: white; border: none;
+  font-size: 14px; font-weight: 800;
+  display: flex; align-items: center; justify-content: center; gap: 6px;
   cursor: default;
-  width: 100%;
-  justify-content: center;
 }
 
-/* ── ANIMACIÓN ── */
 @keyframes cardIn {
-  from { opacity: 0; transform: translateY(12px); }
+  from { opacity: 0; transform: translateY(10px); }
   to   { opacity: 1; transform: translateY(0); }
 }
 </style>
 </head>
 <body>
 
-<div class="topbar">
-  <div class="topbar-title">eureka! · Tipografias</div>
-  <div class="topbar-sub">Semi-quadradas · Dinâmicas · 12 opções</div>
+<div class="top">
+  <div class="top-logo">Eureka! Â· Tipografias</div>
+  <div class="top-sub">Semi-quadradas Â· DinÃ¢micas Â· "Eureka!"</div>
   <div class="toggle">
-    <button class="toggle-btn on" id="btn-s" onclick="modo('splash')">🌟 Splash</button>
-    <button class="toggle-btn" id="btn-l" onclick="modo('login')">📱 Login</button>
+    <button class="tbtn on" id="bs" onclick="modo('s')">ðŸŒŸ Splash</button>
+    <button class="tbtn" id="bl" onclick="modo('l')">ðŸ“± Login</button>
   </div>
 </div>
 
 <div class="lista" id="lista"></div>
 
 <script>
-// ─── FUENTES SEMI-CUADRADAS, DINÁMICAS ───────────────────────
-// Criterios de selección:
-// ✓ Terminaciones semi-cuadradas (no redondas, no afiladas)
-// ✓ Carácter dinámico (tensión visual, peso, condensación)
-// ✓ "eureka!" en minúscula
-// ✓ Memorables — cada una con identidad propia
-
-const FONTES = [
-
-  // ── GROTESCAS CONDENSADAS CON TENSIÓN ──
-
+const F = [
   {
-    n: 1,
-    nome: "Barlow Condensed 900i",
-    tag: "Esportiva condensada",
-    css: `font-family:'Barlow Condensed',sans-serif;
-          font-weight:900; font-style:italic;
-          letter-spacing:0.01em;`,
-    sz: "82px",
-    bg: "linear-gradient(145deg, #FF4D20 0%, #FF2D00 100%)",
-    cor: "white",
-    lcor: "var(--orange)",
-    // Por qué: Grotesca condensada californiana. Las terminaciones
-    // son levemente cuadradas. La itálica crea movimiento sin curvas.
-    // Es la "Nike" de las fuentes — deportiva, directa, sin excusas.
-    desc: "Barlow: grotesca de California. Semi-cuadrada, itálica cria movimento diagonal. Energética sem ser caricata."
+    n:1, nome:"Encode Sans Condensed 900",
+    tag:"Angular semi-quadrada",
+    css:`font-family:'Encode Sans Condensed',sans-serif;font-weight:900;letter-spacing:-0.02em;`,
+    sz:"76px",
+    bg:"linear-gradient(145deg,#FF4D20,#C62828)",
+    cor:"white", lcor:"var(--orange)",
+    h:"Seu trabalho estÃ¡ aqui",
+    why:"Pontas com corte horizontal limpo â€” o mÃ¡ximo do semi-quadrado. Muito compacta, lÃª-se num milissegundo."
   },
-
   {
-    n: 2,
-    nome: "Barlow Semi Condensed 900i",
-    tag: "Equilibrio dinámico",
-    css: `font-family:'Barlow Semi Condensed',sans-serif;
-          font-weight:900; font-style:italic;
-          letter-spacing:-0.01em;`,
-    sz: "70px",
-    bg: "linear-gradient(145deg, #1a1a2e 0%, #16213e 100%)",
-    cor: "var(--orange)",
-    lcor: "var(--orange)",
-    desc: "Versão mais larga da Barlow. Pontas semi-quadradas, mais legível em tamanhos menores. Ótima no login."
+    n:2, nome:"Encode Sans Semi Condensed 900",
+    tag:"Equilibrada e forte",
+    css:`font-family:'Encode Sans Semi Condensed',sans-serif;font-weight:900;letter-spacing:-0.02em;`,
+    sz:"68px",
+    bg:"linear-gradient(145deg,#1A237E,#283593)",
+    cor:"white", lcor:"#1A237E",
+    h:"Seu trabalho estÃ¡ aqui",
+    why:"VersÃ£o mais larga â€” mais legÃ­vel no login. Pontas semi-quadradas mais suaves. O 'E', 'k' e '!' tÃªm proporÃ§Ãµes Ãºnicas."
   },
-
   {
-    n: 3,
-    nome: "Saira 900 Italic",
-    tag: "Tecnológica humana",
-    css: `font-family:'Saira',sans-serif;
-          font-weight:900; font-style:italic;
-          letter-spacing:-0.02em;`,
-    sz: "68px",
-    bg: "linear-gradient(145deg, #0F3460 0%, #16213E 100%)",
-    cor: "white",
-    lcor: "#0F3460",
-    desc: "Saira: desenhada para interfaces digitais no Brasil. Terminações semi-quadradas, traços com tensão. Itálica = dinamismo."
+    n:3, nome:"Asap Condensed 900 Italic",
+    tag:"Grotesca tensa",
+    css:`font-family:'Asap Condensed',sans-serif;font-weight:900;font-style:italic;letter-spacing:-0.01em;`,
+    sz:"76px",
+    bg:"linear-gradient(145deg,#004D40,#00796B)",
+    cor:"white", lcor:"#00695C",
+    h:"Seu trabalho estÃ¡ aqui",
+    why:"Asap: 'As Soon As Possible' â€” urgÃªncia no nome e na forma. ItÃ¡lica condensada com terminaÃ§Ãµes semi-cuadradas. O 'k' Ã© especialmente dinÃ¢mico."
   },
-
   {
-    n: 4,
-    nome: "Saira Semi Condensed 900i",
-    tag: "Estruturada moderna",
-    css: `font-family:'Saira Semi Condensed',sans-serif;
-          font-weight:900; font-style:italic;
-          letter-spacing:-0.01em;`,
-    sz: "74px",
-    bg: "linear-gradient(145deg, #1B4332 0%, #2D6A4F 100%)",
-    cor: "white",
-    lcor: "#1B4332",
-    desc: "Semi-condensada com estrutura robusta. Pontas quadradas visíveis nas letras 'e', 'u', 'k'. Sobre verde parece marca de impacto social."
+    n:4, nome:"Asap Semi Condensed 900i",
+    tag:"Urgente e humana",
+    css:`font-family:'Asap',sans-serif;font-weight:900;font-style:italic;letter-spacing:-0.02em;`,
+    sz:"66px",
+    bg:"linear-gradient(145deg,#4A148C,#6A1B9A)",
+    cor:"white", lcor:"#4A148C",
+    h:"Seu trabalho estÃ¡ aqui",
+    why:"VersÃ£o mais larga da Asap. Mistura grotesca com leve humanismo â€” menos fria, mais prÃ³xima. Semi-quadrada com curvas sutis."
   },
-
   {
-    n: 5,
-    nome: "Jost 900 Italic",
-    tag: "Geométrica precisa",
-    css: `font-family:'Jost',sans-serif;
-          font-weight:900; font-style:italic;
-          letter-spacing:-0.03em;`,
-    sz: "72px",
-    bg: "linear-gradient(145deg, #2D0057 0%, #4A0E8F 100%)",
-    cor: "white",
-    lcor: "#4A0E8F",
-    desc: "Jost: geométrica européia. Terminações quase quadradas, muito tensão nos strokes. Itálica cria inclinação única no 'e' e 'a'."
+    n:5, nome:"Barlow Condensed 900 Italic",
+    tag:"Esportiva californiana",
+    css:`font-family:'Barlow Condensed',sans-serif;font-weight:900;font-style:italic;letter-spacing:0.01em;`,
+    sz:"80px",
+    bg:"linear-gradient(145deg,#0D1117,#161B22)",
+    cor:"var(--orange)", lcor:"var(--orange)",
+    h:"Seu trabalho estÃ¡ aqui",
+    why:"Grotesca de California. TerminaÃ§Ãµes horizontais planas. A itÃ¡lica inclina tudo para frente â€” parece que 'Eureka!' estÃ¡ correndo. DNA de Nike e Adidas."
   },
-
   {
-    n: 6,
-    nome: "Heebo 900",
-    tag: "Grotesca quadrada",
-    css: `font-family:'Heebo',sans-serif;
-          font-weight:900;
-          letter-spacing:-0.04em;`,
-    sz: "72px",
-    bg: "linear-gradient(145deg, #212121 0%, #424242 100%)",
-    cor: "var(--orange)",
-    lcor: "#212121",
-    desc: "Heebo: baseada no alfabeto hebraico. Terminações notavelmente quadradas. O 'e' e 'k' são únicos. Sem itálica — a tensão vem do peso e do espaçamento."
+    n:6, nome:"Barlow Condensed 900",
+    tag:"Direta sem adorno",
+    css:`font-family:'Barlow Condensed',sans-serif;font-weight:900;letter-spacing:0.01em;`,
+    sz:"78px",
+    bg:"linear-gradient(145deg,#BF360C,#E64A19)",
+    cor:"white", lcor:"var(--orange)",
+    h:"Seu trabalho estÃ¡ aqui",
+    why:"Sem itÃ¡lica â€” puro peso e condensaÃ§Ã£o. As terminaÃ§Ãµes planas criam uma linha invisÃ­vel no topo e base que unifica o logotipo. Muito memorÃ¡vel."
   },
-
   {
-    n: 7,
-    nome: "Prompt 900 Italic",
-    tag: "Tailandesa moderna",
-    css: `font-family:'Prompt',sans-serif;
-          font-weight:900; font-style:italic;
-          letter-spacing:-0.02em;`,
-    sz: "68px",
-    bg: "linear-gradient(145deg, #7B2D00 0%, #BF360C 100%)",
-    cor: "white",
-    lcor: "#BF360C",
-    desc: "Prompt: tailandesa com DNA de grotesca europeia. Pontas semi-quadradas com leve corte diagonal. Itálica muito elegante — o '!' fica fenomenal."
+    n:7, nome:"Saira Condensed 900",
+    tag:"TecnolÃ³gica brasileira",
+    css:`font-family:'Saira Condensed',sans-serif;font-weight:900;letter-spacing:0.01em;`,
+    sz:"78px",
+    bg:"linear-gradient(145deg,#006064,#00838F)",
+    cor:"white", lcor:"#006064",
+    h:"Seu trabalho estÃ¡ aqui",
+    why:"Criada com DNA de interface digital. Pontas semi-quadradas com abertura generosa. O 'r' e 'k' sÃ£o distintos â€” reconhecÃ­veis a qualquer tamanho."
   },
-
   {
-    n: 8,
-    nome: "Kanit 900 Italic",
-    tag: "Asiática tensa",
-    css: `font-family:'Kanit',sans-serif;
-          font-weight:900; font-style:italic;
-          letter-spacing:-0.02em;`,
-    sz: "68px",
-    bg: "linear-gradient(145deg, #004D40 0%, #00695C 100%)",
-    cor: "white",
-    lcor: "#00695C",
-    desc: "Kanit: tailandesa mais geométrica. Traços com cortes limpos — semi-quadrada pura. Itálica cria angulação agressiva no 'k' e 'a'. Muito usada em fintech asiático."
+    n:8, nome:"Saira Semi Condensed 900i",
+    tag:"Estruturada dinÃ¢mica",
+    css:`font-family:'Saira Semi Condensed',sans-serif;font-weight:900;font-style:italic;letter-spacing:-0.01em;`,
+    sz:"68px",
+    bg:"linear-gradient(145deg,#212121,#37474F)",
+    cor:"var(--orange)", lcor:"#212121",
+    h:"Seu trabalho estÃ¡ aqui",
+    why:"Semi-condensada com itÃ¡lica marcada. O 'E' maiÃºsculo em itÃ¡lica tem inclinaÃ§Ã£o Ãºnica â€” parece o momento exato do 'Â¡Eureka!'. Sobre escuro fica premium."
   },
-
   {
-    n: 9,
-    nome: "Oswald 700",
-    tag: "Condensada clássica",
-    css: `font-family:'Oswald',sans-serif;
-          font-weight:700;
-          letter-spacing:0.02em;`,
-    sz: "72px",
-    bg: "linear-gradient(145deg, #880E4F 0%, #AD1457 100%)",
-    cor: "white",
-    lcor: "#880E4F",
-    desc: "Oswald: releitura da Alternate Gothic. Terminações flat (horizontais) — o máximo do semi-quadrado. Condensada e vertical. Sem itálica — a força vem da proporção."
+    n:9, nome:"Jost 900 Italic",
+    tag:"GeomÃ©trica europeia",
+    css:`font-family:'Jost',sans-serif;font-weight:900;font-style:italic;letter-spacing:-0.03em;`,
+    sz:"70px",
+    bg:"linear-gradient(145deg,#1B0000,#5D1010)",
+    cor:"white", lcor:"#7B1515",
+    h:"Seu trabalho estÃ¡ aqui",
+    why:"Jost: geomÃ©trica suÃ­Ã§a modernizada. TerminaÃ§Ãµes com corte reto â€” semi-quadrada pura. ItÃ¡lica muito inclinada cria tensÃ£o. O 'E' maiÃºsculo Ã© especialmente forte."
   },
-
   {
-    n: 10,
-    nome: "Rajdhani 700",
-    tag: "Indiana geométrica",
-    css: `font-family:'Rajdhani',sans-serif;
-          font-weight:700;
-          letter-spacing:0.02em;`,
-    sz: "68px",
-    bg: "linear-gradient(145deg, #1A237E 0%, #283593 100%)",
-    cor: "white",
-    lcor: "#1A237E",
-    desc: "Rajdhani: devanagari + grotesca. Terminações com cortes retos únicos — semi-quadrada com personalidade. O 'e' tem uma abertura que não existe em nenhuma outra fonte."
+    n:10, nome:"Oswald 700",
+    tag:"ClÃ¡ssica sem concessÃµes",
+    css:`font-family:'Oswald',sans-serif;font-weight:700;letter-spacing:0.03em;`,
+    sz:"74px",
+    bg:"linear-gradient(145deg,#880E4F,#C2185B)",
+    cor:"white", lcor:"#880E4F",
+    h:"Seu trabalho estÃ¡ aqui",
+    why:"Releitura da Alternate Gothic â€” terminaÃ§Ãµes completamente horizontais. O mais quadrado de todos. Sem itÃ¡lica porque nÃ£o precisa â€” a condensaÃ§Ã£o jÃ¡ cria toda a tensÃ£o."
   },
-
   {
-    n: 11,
-    nome: "Schibsted Grotesk 900i",
-    tag: "Editorial nórdica",
-    css: `font-family:'Schibsted Grotesk',sans-serif;
-          font-weight:900; font-style:italic;
-          letter-spacing:-0.04em;`,
-    sz: "68px",
-    bg: "linear-gradient(145deg, #0D1117 0%, #1C2128 100%)",
-    cor: "var(--orange)",
-    lcor: "#0D1117",
-    desc: "Schibsted: criada para plataformas de mídia nórdicas. Grotesca com terminações semi-quadradas e aberturas humanistas. A itálica 900 é raramente usada — completamente única."
+    n:11, nome:"Big Shoulders Display 900",
+    tag:"ArquitetÃ´nica urbana",
+    css:`font-family:'Big Shoulders Display',sans-serif;font-weight:900;letter-spacing:-0.02em;text-transform:uppercase;`,
+    sz:"76px",
+    bg:"linear-gradient(145deg,#263238,#37474F)",
+    cor:"white", lcor:"#263238",
+    h:"SEU TRABALHO ESTÃ AQUI",
+    why:"Inspirada na sinalizaÃ§Ã£o de Chicago. Extremamente alta â€” o 'E' ocupa quase toda a linha de base ao topo. Semi-quadrada com ombros largos. Muito memorÃ¡vel em maiÃºsculas."
   },
-
   {
-    n: 12,
-    nome: "Krona One",
-    tag: "Grotesca pesada única",
-    css: `font-family:'Krona One',sans-serif;
-          letter-spacing:-0.01em;`,
-    sz: "62px",
-    bg: "linear-gradient(145deg, #FF6F00 0%, #F57C00 100%)",
-    cor: "white",
-    lcor: "#E65100",
-    desc: "Krona: semi-condensada com traços pesados e terminações quase quadradas. Proporções únicas — o 'k' tem uma estrutura que vai ficar na memória. Sem itálica mas com muita personalidade."
+    n:12, nome:"Heebo 900",
+    tag:"Quadrada Ãºnica",
+    css:`font-family:'Heebo',sans-serif;font-weight:900;letter-spacing:-0.04em;`,
+    sz:"72px",
+    bg:"linear-gradient(145deg,#0A3622,#1B5E20)",
+    cor:"white", lcor:"#0A3622",
+    h:"Seu trabalho estÃ¡ aqui",
+    why:"Baseada no hebraico â€” terminaÃ§Ãµes notavelmente quadradas. O 'k' e o 'a' tÃªm formas que nÃ£o existem em nenhuma grotesca ocidental. 100% reconhecÃ­vel."
   },
-
 ];
 
-// ─── RENDER ──────────────────────────────────────────────────
+let m = 's';
 
-let modoAtual = 'splash';
-
-function modo(m) {
-  modoAtual = m;
-  document.getElementById('btn-s').className = 'toggle-btn' + (m === 'splash' ? ' on' : '');
-  document.getElementById('btn-l').className = 'toggle-btn' + (m === 'login'  ? ' on' : '');
+function modo(v) {
+  m = v;
+  document.getElementById('bs').className = 'tbtn' + (v==='s'?' on':'');
+  document.getElementById('bl').className = 'tbtn' + (v==='l'?' on':'');
   render();
 }
 
 function render() {
   const lista = document.getElementById('lista');
   lista.innerHTML = '';
-
-  FONTES.forEach((f, i) => {
+  F.forEach((f, i) => {
     const el = document.createElement('div');
-    el.style.animation = `cardIn 0.35s ${i * 0.04}s ease both`;
-    el.style.cssText += 'opacity:0';
-
-    if (modoAtual === 'splash') {
-      el.className = 'card-splash';
+    if (m === 's') {
+      el.className = 'cs';
       el.innerHTML = `
-        <div class="splash-inner" style="background:${f.bg}">
-          <div class="splash-meta">
-            <div class="meta-num">${f.n}</div>
-            <div class="meta-tag">${f.tag}</div>
+        <div class="cs-inner" style="background:${f.bg}">
+          <div class="cs-top">
+            <div class="cs-num">${f.n}</div>
+            <div class="cs-tag">${f.tag}</div>
           </div>
-          <div class="splash-logo" style="${f.css}font-size:${f.sz};color:${f.cor};">eureka!</div>
-          <div class="splash-preview">
-            <div class="splash-headline" style="${f.css}font-size:18px;color:${f.cor};">
-              Seu trabalho está aqui
-            </div>
-            <div class="splash-sub">${f.desc}</div>
+          <div class="cs-logo" style="${f.css}font-size:${f.sz};color:${f.cor};">Eureka!</div>
+          <div class="cs-preview">
+            <div class="cs-h" style="${f.css}font-size:17px;color:${f.cor};">${f.h}</div>
+            <div class="cs-s">${f.why}</div>
           </div>
-        </div>
-      `;
+        </div>`;
     } else {
-      el.className = 'card-login';
-      const szLogin = parseInt(f.sz) * 0.65 + 'px';
+      el.className = 'cl';
+      const sz2 = Math.round(parseInt(f.sz)*0.65)+'px';
       el.innerHTML = `
-        <div class="login-inner">
-          <div class="login-meta">
-            <div class="login-num">${f.n}</div>
-            <span class="login-fname">${f.nome}</span>
-            <span class="login-tag">${f.tag}</span>
+        <div class="cl-inner">
+          <div class="cl-meta">
+            <div class="cl-num">${f.n}</div>
+            <span class="cl-fname">${f.nome}</span>
+            <span class="cl-tag">${f.tag}</span>
           </div>
-          <div class="login-logo" style="${f.css}font-size:${szLogin};color:${f.lcor};">eureka!</div>
-          <div class="login-divider"></div>
+          <div class="cl-logo" style="${f.css}font-size:${sz2};color:${f.lcor};">Eureka!</div>
+          <div class="cl-div"></div>
           <div>
-            <div class="login-headline" style="${f.css}font-size:20px;">Bem-vindo de volta!</div>
-            <div class="login-sub">Seu próximo trabalho está esperando você.</div>
+            <div class="cl-h" style="${f.css}font-size:20px;">Bem-vindo de volta!</div>
+            <div class="cl-s">Seu prÃ³ximo trabalho estÃ¡ esperando vocÃª.</div>
           </div>
-          <button class="login-btn" style="${f.css}font-size:14px;">Entrar →</button>
-        </div>
-      `;
+          <button class="cl-btn" style="${f.css}font-size:14px;">Entrar â†’</button>
+        </div>`;
     }
-
+    el.style.animation = `cardIn 0.35s ${i*0.045}s ease both`;
+    el.style.opacity = '0';
     lista.appendChild(el);
-  });
-
-  // Aplicar animación después de insertar
-  requestAnimationFrame(() => {
-    document.querySelectorAll('.card-splash, .card-login').forEach((c, i) => {
-      c.style.animation = `cardIn 0.35s ${i * 0.05}s ease both`;
-    });
   });
 }
 
 render();
 </script>
-
 </body>
 </html>
