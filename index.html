@@ -11,7 +11,7 @@
   <link rel="manifest" href="manifest.json" />
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=Geologica:slnt,wght@-12..0,100..900&family=Glory:ital,wght@0,400;0,700;0,800;1,700;1,800&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=Geologica:slnt,wght@-12..0,100..900&family=Exo+2:ital,wght@0,400;0,700;1,700;1,900&family=Glory:ital,wght@0,400;0,700;0,800;1,700;1,800&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet" />
   <style>
 /* ═══════════════════════════════════════════════════════════
    EUREKA — style.css v2
@@ -641,6 +641,38 @@ body {
   0%,100% { transform: translateY(0); } 50% { transform: translateY(-5px); }
 }
 
+
+    /* ── LOGOTIPO TIPOGRÁFICO — Exo 2 900 Italic ── */
+    .eureka-logo {
+      font-family: 'Exo 2', sans-serif;
+      font-weight: 900;
+      font-style: italic;
+      letter-spacing: -0.03em;
+      line-height: 1;
+      display: inline-block;
+    }
+
+    /* Splash — blanco sobre naranja */
+    .eureka-logo-splash {
+      font-size: 72px;
+      color: white;
+    }
+
+    /* Login — naranja sobre blanco */
+    .eureka-logo-login {
+      font-size: 44px;
+      color: var(--orange);
+      margin-bottom: 20px;
+      display: block;
+    }
+
+    /* Header naranja (cadastro) — blanco pequeño */
+    .eureka-logo-header {
+      font-size: 30px;
+      color: white;
+      margin-bottom: 12px;
+      display: block;
+    }
   </style>
 </head>
 <body>
@@ -649,9 +681,7 @@ body {
   <!-- ═══ SPLASH ═══ -->
   <div id="splash" class="screen visible">
     <div class="splash-logo-wrap">
-      <img class="splash-logo-img" src="38551-removebg-preview.png" alt="Eureka"
-        onerror="this.style.display='none';document.querySelector('.splash-logo-fallback').style.display='block';" />
-      <div class="splash-logo-fallback">eureka</div>
+      <div class="eureka-logo eureka-logo-splash">Eureka!</div>
     </div>
   </div>
 
@@ -684,9 +714,7 @@ body {
     <div class="blob blob-1"></div>
     <div class="blob blob-2"></div>
     <div class="login-hero">
-      <img class="login-logo" src="38551-removebg-preview.png" alt="Eureka"
-        onerror="this.style.display='none';document.querySelector('.login-logo-fallback').style.display='block';" />
-      <div class="login-logo-fallback">eureka</div>
+      <div class="eureka-logo eureka-logo-login">Eureka!</div>
       <h1 class="login-titulo">Bem-vindo<br>de <span>volta!</span></h1>
       <p class="login-sub">Seu próximo trabalho está esperando você.</p>
     </div>
