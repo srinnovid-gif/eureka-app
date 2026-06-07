@@ -3,10 +3,11 @@
 <head>
 <meta charset="UTF-8"/>
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"/>
-<title>Eureka! â€” Tipografias</title>
+<title>Eureka! — Tipografias</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Encode+Sans+Condensed:wght@700;800;900&family=Encode+Sans+Semi+Condensed:wght@700;800;900&family=Asap+Condensed:ital,wght@0,700;0,900;1,700;1,900&family=Asap:ital,wght@0,700;0,900;1,700;1,900&family=Barlow+Condensed:ital,wght@0,700;0,800;0,900;1,700;1,800;1,900&family=Barlow+Semi+Condensed:ital,wght@0,700;0,900;1,700;1,900&family=Saira+Condensed:wght@700;800;900&family=Saira+Semi+Condensed:ital,wght@0,700;0,900;1,700;1,900&family=Jost:ital,wght@0,900;1,900&family=Oswald:wght@600;700&family=Big+Shoulders+Display:wght@800;900&family=Heebo:wght@800;900&family=Nunito:wght@900&display=swap" rel="stylesheet">
+<!-- Familia Asap completa + similares de Omnibus-Type y otras grotescas humanistas con itálica fuerte -->
+<link href="https://fonts.googleapis.com/css2?family=Asap+Condensed:ital,wght@0,700;0,800;0,900;1,700;1,800;1,900&family=Asap:ital,wght@0,700;0,800;0,900;1,700;1,800;1,900&family=Cabin+Condensed:wght@700&family=Cabin:ital,wght@0,700;1,700&family=Chivo:ital,wght@0,700;0,900;1,700;1,900&family=Archivo+Narrow:ital,wght@0,700;1,700&family=Archivo:ital,wght@0,700;0,900;1,700;1,900&family=Faustina:ital,wght@0,700;0,800;1,700;1,800&family=Barlow:ital,wght@0,700;0,900;1,700;1,900&family=Barlow+Condensed:ital,wght@0,700;0,900;1,700;1,900&family=Barlow+Semi+Condensed:ital,wght@0,700;0,900;1,700;1,900&family=IBM+Plex+Sans+Condensed:ital,wght@0,700;1,700&family=IBM+Plex+Sans:ital,wght@0,700;1,700&family=Nunito:wght@900&display=swap" rel="stylesheet">
 
 <style>
 *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
@@ -16,9 +17,8 @@
   --border: #F0EDE8; --white: #FFFFFF; --pale: #FFF5EE;
 }
 html, body {
-  height: 100%; background: #0E0E0E;
+  min-height: 100%; background: #0E0E0E;
   color: white; font-family: 'Nunito', sans-serif;
-  overflow-x: hidden;
 }
 
 /* TOP BAR */
@@ -28,25 +28,16 @@ html, body {
   padding: 14px 16px 10px;
 }
 .top-logo {
-  font-family: 'Barlow Condensed', sans-serif;
+  font-family: 'Asap Condensed', sans-serif;
   font-weight: 900; font-style: italic;
-  font-size: 20px; color: var(--orange);
-  letter-spacing: 0.02em; margin-bottom: 3px;
+  font-size: 22px; color: var(--orange); margin-bottom: 3px;
 }
-.top-sub {
-  font-size: 10px; color: var(--ink3);
-  letter-spacing: 0.1em; text-transform: uppercase; margin-bottom: 10px;
-}
-.toggle {
-  display: flex; gap: 5px;
-  background: #1a1a1a; padding: 4px; border-radius: 12px;
-}
+.top-sub { font-size: 10px; color: var(--ink3); letter-spacing: 0.1em; text-transform: uppercase; margin-bottom: 10px; }
+.toggle { display: flex; gap: 5px; background: #1a1a1a; padding: 4px; border-radius: 12px; }
 .tbtn {
-  flex: 1; padding: 9px 6px; border: none;
-  border-radius: 9px; font-family: 'Nunito', sans-serif;
-  font-size: 11px; font-weight: 800;
-  letter-spacing: 0.04em; text-transform: uppercase;
-  cursor: pointer; transition: all 0.2s;
+  flex: 1; padding: 9px 6px; border: none; border-radius: 9px;
+  font-family: 'Nunito', sans-serif; font-size: 11px; font-weight: 800;
+  letter-spacing: 0.04em; text-transform: uppercase; cursor: pointer; transition: all 0.2s;
 }
 .tbtn.on { background: var(--orange); color: white; }
 .tbtn:not(.on) { background: transparent; color: var(--ink3); }
@@ -54,73 +45,56 @@ html, body {
 /* LISTA */
 .lista { padding: 12px 12px 80px; display: flex; flex-direction: column; gap: 10px; }
 
-/* CARD SPLASH */
-.cs {
-  border-radius: 18px; overflow: hidden;
-  cursor: pointer; transition: transform 0.15s;
-  -webkit-tap-highlight-color: transparent;
-}
+/* SPLASH */
+.cs { border-radius: 18px; overflow: hidden; cursor: pointer; transition: transform 0.15s; }
 .cs:active { transform: scale(0.975); }
-
 .cs-inner {
-  padding: 26px 22px 22px;
-  position: relative; overflow: hidden;
-  min-height: 210px; display: flex; flex-direction: column;
-  justify-content: space-between;
+  padding: 22px 22px 20px; position: relative; overflow: hidden;
+  min-height: 200px; display: flex; flex-direction: column; justify-content: space-between;
 }
 .cs-inner::before {
-  content: ''; position: absolute;
-  width: 240px; height: 240px; border-radius: 50%;
-  top: -70px; right: -70px;
-  background: rgba(255,255,255,0.05); pointer-events: none;
+  content: ''; position: absolute; width: 220px; height: 220px; border-radius: 50%;
+  top: -60px; right: -60px; background: rgba(255,255,255,0.05); pointer-events: none;
 }
-.cs-inner::after {
-  content: ''; position: absolute;
-  width: 150px; height: 150px; border-radius: 50%;
-  bottom: -50px; left: -30px;
-  background: rgba(255,255,255,0.03); pointer-events: none;
-}
-.cs-top { display: flex; justify-content: space-between; align-items: flex-start; position: relative; z-index: 2; }
+.cs-top { display: flex; justify-content: space-between; align-items: flex-start; position: relative; z-index: 2; margin-bottom: 10px; }
 .cs-num {
-  width: 24px; height: 24px;
-  background: rgba(0,0,0,0.4); backdrop-filter: blur(8px);
+  width: 24px; height: 24px; background: rgba(0,0,0,0.4); backdrop-filter: blur(8px);
   border-radius: 50%; font-size: 10px; font-weight: 800; color: white;
   display: flex; align-items: center; justify-content: center;
 }
 .cs-tag {
   font-size: 9px; padding: 4px 9px; border-radius: 50px;
-  background: rgba(0,0,0,0.35); backdrop-filter: blur(8px);
+  background: rgba(0,0,0,0.4); backdrop-filter: blur(8px);
   color: rgba(255,255,255,0.85); font-weight: 700;
   letter-spacing: 0.05em; text-transform: uppercase;
 }
-.cs-logo { position: relative; z-index: 2; line-height: 1; display: block; margin: 12px 0 16px; }
+.cs-logo { position: relative; z-index: 2; line-height: 1; display: block; margin-bottom: 14px; }
 .cs-preview { position: relative; z-index: 2; }
-.cs-h { font-size: 16px; line-height: 1.2; margin-bottom: 3px; opacity: 0.85; }
-.cs-s { font-size: 11px; opacity: 0.5; line-height: 1.4; }
+.cs-h { font-size: 15px; line-height: 1.2; opacity: 0.8; margin-bottom: 3px; }
+.cs-s { font-size: 10.5px; opacity: 0.45; line-height: 1.4; }
 
-/* CARD LOGIN */
-.cl {
-  border-radius: 18px; overflow: hidden; background: white;
-  cursor: pointer; transition: transform 0.15s;
-  -webkit-tap-highlight-color: transparent;
+/* REFERENCIA badge */
+.ref-badge {
+  display: inline-flex; align-items: center; gap: 5px;
+  font-size: 9px; padding: 3px 8px; border-radius: 50px;
+  background: rgba(255,255,255,0.15); color: rgba(255,255,255,0.7);
+  font-weight: 700; letter-spacing: 0.05em; text-transform: uppercase;
+  margin-bottom: 8px; width: fit-content; position: relative; z-index: 2;
 }
+
+/* LOGIN */
+.cl { border-radius: 18px; overflow: hidden; background: white; cursor: pointer; transition: transform 0.15s; }
 .cl:active { transform: scale(0.975); }
-.cl-inner { padding: 18px 20px 18px; display: flex; flex-direction: column; gap: 12px; }
-.cl-meta {
-  display: flex; align-items: center; gap: 8px;
-  padding-bottom: 12px; border-bottom: 1px solid var(--border);
-}
+.cl-inner { padding: 18px 20px 18px; display: flex; flex-direction: column; gap: 11px; }
+.cl-meta { display: flex; align-items: center; gap: 8px; padding-bottom: 11px; border-bottom: 1px solid var(--border); }
 .cl-num {
   width: 22px; height: 22px; background: var(--orange); color: white;
   border-radius: 50%; font-size: 10px; font-weight: 800;
   display: flex; align-items: center; justify-content: center;
 }
-.cl-fname { font-family: monospace; font-size: 10px; color: var(--ink3); flex: 1; letter-spacing: 0.03em; }
-.cl-tag {
-  font-size: 9px; padding: 3px 8px; border-radius: 50px;
-  background: var(--pale); color: var(--orange);
-  font-weight: 700; letter-spacing: 0.05em; text-transform: uppercase;
-}
+.cl-fname { font-family: monospace; font-size: 10px; color: var(--ink3); flex: 1; }
+.cl-tag { font-size: 9px; padding: 3px 8px; border-radius: 50px; background: var(--pale); color: var(--orange); font-weight: 700; letter-spacing: 0.05em; text-transform: uppercase; }
+.cl-ref { font-size: 9px; color: var(--ink3); font-family: monospace; padding: 2px 0; }
 .cl-logo { line-height: 1; display: block; }
 .cl-div { height: 1px; background: var(--border); }
 .cl-h { font-size: 19px; color: var(--ink); line-height: 1.2; }
@@ -129,150 +103,192 @@ html, body {
   width: 100%; padding: 13px; border-radius: 14px;
   background: var(--orange); color: white; border: none;
   font-size: 14px; font-weight: 800;
-  display: flex; align-items: center; justify-content: center; gap: 6px;
-  cursor: default;
+  display: flex; align-items: center; justify-content: center; gap: 6px; cursor: default;
 }
 
-@keyframes cardIn {
-  from { opacity: 0; transform: translateY(10px); }
-  to   { opacity: 1; transform: translateY(0); }
-}
+@keyframes cardIn { from { opacity:0; transform:translateY(10px); } to { opacity:1; transform:translateY(0); } }
 </style>
 </head>
 <body>
 
 <div class="top">
-  <div class="top-logo">Eureka! Â· Tipografias</div>
-  <div class="top-sub">Semi-quadradas Â· DinÃ¢micas Â· "Eureka!"</div>
+  <div class="top-logo">Eureka! · Similares #3 e #4</div>
+  <div class="top-sub">Grotescas humanistas · Itálica · Semi-quadradas</div>
   <div class="toggle">
-    <button class="tbtn on" id="bs" onclick="modo('s')">ðŸŒŸ Splash</button>
-    <button class="tbtn" id="bl" onclick="modo('l')">ðŸ“± Login</button>
+    <button class="tbtn on" id="bs" onclick="modo('s')">🌟 Splash</button>
+    <button class="tbtn" id="bl" onclick="modo('l')">📱 Login</button>
   </div>
 </div>
 
 <div class="lista" id="lista"></div>
 
 <script>
+// As fontes #3 e #4 que você gostou:
+// #3 = Asap Condensed 900 Italic
+// #4 = Asap (semi-condensed) 900 Italic
+//
+// O que as define:
+// ✓ Grotesca humanista (não pura geométrica)
+// ✓ Itálica com inclinação marcada
+// ✓ Pontas semi-quadradas com leve suavidade
+// ✓ Peso 900 — muito bold sem ser agressivo
+// ✓ "k" e "E" com formas distintas
+//
+// Família de referência: Omnibus-Type (criadores do Asap)
+// Outras: humanistas condensadas com itálica forte
+
 const F = [
+  // ── FAMÍLIA ASAP — TODOS OS MEMBROS ──
   {
-    n:1, nome:"Encode Sans Condensed 900",
-    tag:"Angular semi-quadrada",
-    css:`font-family:'Encode Sans Condensed',sans-serif;font-weight:900;letter-spacing:-0.02em;`,
-    sz:"76px",
-    bg:"linear-gradient(145deg,#FF4D20,#C62828)",
-    cor:"white", lcor:"var(--orange)",
-    h:"Seu trabalho estÃ¡ aqui",
-    why:"Pontas com corte horizontal limpo â€” o mÃ¡ximo do semi-quadrado. Muito compacta, lÃª-se num milissegundo."
+    n:1, nome:"Asap Condensed 900 Italic",
+    tag:"Original #3",
+    ref:"Sua escolha original",
+    css:`font-family:'Asap Condensed',sans-serif;font-weight:900;font-style:italic;`,
+    sz:"78px",
+    bg:"linear-gradient(145deg,#004D40,#00695C)",
+    cor:"white", lcor:"#004D40",
+    why:"A fonte que você escolheu. Condensada, itálica marcada, pontas com leve suavidade. O 'k' e o 'E' são únicos."
   },
   {
-    n:2, nome:"Encode Sans Semi Condensed 900",
-    tag:"Equilibrada e forte",
-    css:`font-family:'Encode Sans Semi Condensed',sans-serif;font-weight:900;letter-spacing:-0.02em;`,
-    sz:"68px",
-    bg:"linear-gradient(145deg,#1A237E,#283593)",
-    cor:"white", lcor:"#1A237E",
-    h:"Seu trabalho estÃ¡ aqui",
-    why:"VersÃ£o mais larga â€” mais legÃ­vel no login. Pontas semi-quadradas mais suaves. O 'E', 'k' e '!' tÃªm proporÃ§Ãµes Ãºnicas."
-  },
-  {
-    n:3, nome:"Asap Condensed 900 Italic",
-    tag:"Grotesca tensa",
-    css:`font-family:'Asap Condensed',sans-serif;font-weight:900;font-style:italic;letter-spacing:-0.01em;`,
-    sz:"76px",
-    bg:"linear-gradient(145deg,#004D40,#00796B)",
-    cor:"white", lcor:"#00695C",
-    h:"Seu trabalho estÃ¡ aqui",
-    why:"Asap: 'As Soon As Possible' â€” urgÃªncia no nome e na forma. ItÃ¡lica condensada com terminaÃ§Ãµes semi-cuadradas. O 'k' Ã© especialmente dinÃ¢mico."
-  },
-  {
-    n:4, nome:"Asap Semi Condensed 900i",
-    tag:"Urgente e humana",
-    css:`font-family:'Asap',sans-serif;font-weight:900;font-style:italic;letter-spacing:-0.02em;`,
+    n:2, nome:"Asap 900 Italic",
+    tag:"Original #4",
+    ref:"Sua escolha original",
+    css:`font-family:'Asap',sans-serif;font-weight:900;font-style:italic;`,
     sz:"66px",
     bg:"linear-gradient(145deg,#4A148C,#6A1B9A)",
     cor:"white", lcor:"#4A148C",
-    h:"Seu trabalho estÃ¡ aqui",
-    why:"VersÃ£o mais larga da Asap. Mistura grotesca com leve humanismo â€” menos fria, mais prÃ³xima. Semi-quadrada com curvas sutis."
+    why:"Versão mais larga. Mais presença no login, mais legível em tamanhos pequenos. Mesma personalidade."
   },
   {
-    n:5, nome:"Barlow Condensed 900 Italic",
-    tag:"Esportiva californiana",
-    css:`font-family:'Barlow Condensed',sans-serif;font-weight:900;font-style:italic;letter-spacing:0.01em;`,
-    sz:"80px",
-    bg:"linear-gradient(145deg,#0D1117,#161B22)",
-    cor:"var(--orange)", lcor:"var(--orange)",
-    h:"Seu trabalho estÃ¡ aqui",
-    why:"Grotesca de California. TerminaÃ§Ãµes horizontais planas. A itÃ¡lica inclina tudo para frente â€” parece que 'Eureka!' estÃ¡ correndo. DNA de Nike e Adidas."
-  },
-  {
-    n:6, nome:"Barlow Condensed 900",
-    tag:"Direta sem adorno",
-    css:`font-family:'Barlow Condensed',sans-serif;font-weight:900;letter-spacing:0.01em;`,
+    n:3, nome:"Asap Condensed 800 Italic",
+    tag:"Asap mais leve",
+    ref:"Variação Asap",
+    css:`font-family:'Asap Condensed',sans-serif;font-weight:800;font-style:italic;`,
     sz:"78px",
+    bg:"linear-gradient(145deg,#1A237E,#283593)",
+    cor:"white", lcor:"#1A237E",
+    why:"Mesmo DNA do #3, mas 800 é um pouco mais fino. Às vezes parece mais elegante — menos agressivo, mais sofisticado."
+  },
+  {
+    n:4, nome:"Asap 800 Italic",
+    tag:"Asap equilibrada",
+    ref:"Variação Asap",
+    css:`font-family:'Asap',sans-serif;font-weight:800;font-style:italic;`,
+    sz:"66px",
     bg:"linear-gradient(145deg,#BF360C,#E64A19)",
-    cor:"white", lcor:"var(--orange)",
-    h:"Seu trabalho estÃ¡ aqui",
-    why:"Sem itÃ¡lica â€” puro peso e condensaÃ§Ã£o. As terminaÃ§Ãµes planas criam uma linha invisÃ­vel no topo e base que unifica o logotipo. Muito memorÃ¡vel."
+    cor:"white", lcor:"#BF360C",
+    why:"Semi-condensada 800 — o ponto de equilíbrio. Nem muito pesado nem muito leve. Muito boa no login em tamanho médio."
+  },
+
+  // ── BARLOW FAMILY — DNA PARECIDO COM ASAP ──
+  // Barlow é California grotesque, Asap é argentina — mesmo espírito humanista
+  {
+    n:5, nome:"Barlow Semi Condensed 900 Italic",
+    tag:"Barlow semi-cond",
+    ref:"Mesmo espírito que Asap",
+    css:`font-family:'Barlow Semi Condensed',sans-serif;font-weight:900;font-style:italic;`,
+    sz:"70px",
+    bg:"linear-gradient(145deg,#0D1117,#21262D)",
+    cor:"var(--orange)", lcor:"var(--orange)",
+    why:"Barlow Semi Condensed 900i — quase idêntica à proporção do Asap #4. Mesmas terminações semi-quadradas, mesma inclinação dinâmica. Pouco mais geométrica."
   },
   {
-    n:7, nome:"Saira Condensed 900",
-    tag:"TecnolÃ³gica brasileira",
-    css:`font-family:'Saira Condensed',sans-serif;font-weight:900;letter-spacing:0.01em;`,
-    sz:"78px",
+    n:6, nome:"Barlow Condensed 900 Italic",
+    tag:"Barlow condensada",
+    ref:"Mais condensada que Asap",
+    css:`font-family:'Barlow Condensed',sans-serif;font-weight:900;font-style:italic;`,
+    sz:"82px",
+    bg:"linear-gradient(145deg,#880E4F,#AD1457)",
+    cor:"white", lcor:"#880E4F",
+    why:"Mais condensada que o Asap #3. DNA californiano — grotesca com terminações mais planas. O 'k' em itálica tem um ângulo diferente do Asap, mais abrupto."
+  },
+  {
+    n:7, nome:"Barlow 900 Italic",
+    tag:"Barlow largo",
+    ref:"Barlow sem condensar",
+    css:`font-family:'Barlow',sans-serif;font-weight:900;font-style:italic;`,
+    sz:"60px",
     bg:"linear-gradient(145deg,#006064,#00838F)",
     cor:"white", lcor:"#006064",
-    h:"Seu trabalho estÃ¡ aqui",
-    why:"Criada com DNA de interface digital. Pontas semi-quadradas com abertura generosa. O 'r' e 'k' sÃ£o distintos â€” reconhecÃ­veis a qualquer tamanho."
+    why:"Barlow regular 900i — mais amplo, mais presença horizontal. Bom para logos que precisam ocupar espaço. Pontas semi-quadradas menos visíveis que nas versões condensadas."
   },
+
+  // ── CHIVO — Omnibus-Type, mesmos criadores do Asap ──
   {
-    n:8, nome:"Saira Semi Condensed 900i",
-    tag:"Estruturada dinÃ¢mica",
-    css:`font-family:'Saira Semi Condensed',sans-serif;font-weight:900;font-style:italic;letter-spacing:-0.01em;`,
-    sz:"68px",
-    bg:"linear-gradient(145deg,#212121,#37474F)",
+    n:8, nome:"Chivo 900 Italic",
+    tag:"Irmã do Asap",
+    ref:"Mesmo criador — Omnibus-Type",
+    css:`font-family:'Chivo',sans-serif;font-weight:900;font-style:italic;`,
+    sz:"64px",
+    bg:"linear-gradient(145deg,#212121,#424242)",
     cor:"var(--orange)", lcor:"#212121",
-    h:"Seu trabalho estÃ¡ aqui",
-    why:"Semi-condensada com itÃ¡lica marcada. O 'E' maiÃºsculo em itÃ¡lica tem inclinaÃ§Ã£o Ãºnica â€” parece o momento exato do 'Â¡Eureka!'. Sobre escuro fica premium."
+    why:"Chivo: criada pelo mesmo estúdio do Asap (Omnibus-Type). DNA idêntico mas com proportions ligeiramente diferentes. O 'h' e 'u' têm aberturas maiores — parece mais arejada."
   },
   {
-    n:9, nome:"Jost 900 Italic",
-    tag:"GeomÃ©trica europeia",
-    css:`font-family:'Jost',sans-serif;font-weight:900;font-style:italic;letter-spacing:-0.03em;`,
-    sz:"70px",
-    bg:"linear-gradient(145deg,#1B0000,#5D1010)",
-    cor:"white", lcor:"#7B1515",
-    h:"Seu trabalho estÃ¡ aqui",
-    why:"Jost: geomÃ©trica suÃ­Ã§a modernizada. TerminaÃ§Ãµes com corte reto â€” semi-quadrada pura. ItÃ¡lica muito inclinada cria tensÃ£o. O 'E' maiÃºsculo Ã© especialmente forte."
+    n:9, nome:"Chivo 700 Italic",
+    tag:"Chivo mais leve",
+    ref:"Mesmo criador — Omnibus-Type",
+    css:`font-family:'Chivo',sans-serif;font-weight:700;font-style:italic;`,
+    sz:"64px",
+    bg:"linear-gradient(145deg,#1B4332,#2D6A4F)",
+    cor:"white", lcor:"#1B4332",
+    why:"Chivo 700i — mais fina, parece mais elegante. Para marcas que querem parecer tech-cool sem ser agressivas. O '!' fica muito bem nesta espessura."
+  },
+
+  // ── ARCHIVO — grotesca humanista, itálica forte ──
+  {
+    n:10, nome:"Archivo 900 Italic",
+    tag:"Archivo bold italic",
+    ref:"Grotesca humanista argentina",
+    css:`font-family:'Archivo',sans-serif;font-weight:900;font-style:italic;`,
+    sz:"64px",
+    bg:"linear-gradient(145deg,#0F3460,#1B5E8A)",
+    cor:"white", lcor:"#0F3460",
+    why:"Archivo: grotesca argentina desenhada para legibilidade máxima em telas. Itálica 900 muito expressiva. Pontas semi-quadradas com leve tensão. O 'r' e 'a' têm caráter."
   },
   {
-    n:10, nome:"Oswald 700",
-    tag:"ClÃ¡ssica sem concessÃµes",
-    css:`font-family:'Oswald',sans-serif;font-weight:700;letter-spacing:0.03em;`,
-    sz:"74px",
-    bg:"linear-gradient(145deg,#880E4F,#C2185B)",
-    cor:"white", lcor:"#880E4F",
-    h:"Seu trabalho estÃ¡ aqui",
-    why:"Releitura da Alternate Gothic â€” terminaÃ§Ãµes completamente horizontais. O mais quadrado de todos. Sem itÃ¡lica porque nÃ£o precisa â€” a condensaÃ§Ã£o jÃ¡ cria toda a tensÃ£o."
+    n:11, nome:"Archivo Narrow 700 Italic",
+    tag:"Archivo condensada",
+    ref:"Versão narrow do Archivo",
+    css:`font-family:'Archivo Narrow',sans-serif;font-weight:700;font-style:italic;`,
+    sz:"78px",
+    bg:"linear-gradient(145deg,#7B2D00,#BF360C)",
+    cor:"white", lcor:"#BF360C",
+    why:"Arquivo Narrow 700i — muito condensada com inclinação forte. Sem peso 900 disponível, mas o 700 já é bastante bold. Similar ao Asap Condensed mas com aberturas diferentes."
   },
+
+  // ── CABIN — humanista próxima ao Johnston ──
   {
-    n:11, nome:"Big Shoulders Display 900",
-    tag:"ArquitetÃ´nica urbana",
-    css:`font-family:'Big Shoulders Display',sans-serif;font-weight:900;letter-spacing:-0.02em;text-transform:uppercase;`,
-    sz:"76px",
-    bg:"linear-gradient(145deg,#263238,#37474F)",
-    cor:"white", lcor:"#263238",
-    h:"SEU TRABALHO ESTÃ AQUI",
-    why:"Inspirada na sinalizaÃ§Ã£o de Chicago. Extremamente alta â€” o 'E' ocupa quase toda a linha de base ao topo. Semi-quadrada com ombros largos. Muito memorÃ¡vel em maiÃºsculas."
-  },
-  {
-    n:12, nome:"Heebo 900",
-    tag:"Quadrada Ãºnica",
-    css:`font-family:'Heebo',sans-serif;font-weight:900;letter-spacing:-0.04em;`,
+    n:12, nome:"Cabin Condensed 700 Italic",
+    tag:"Humanista clássica",
+    ref:"DNA humanista puro",
+    css:`font-family:'Cabin',sans-serif;font-weight:700;font-style:italic;`,
     sz:"72px",
-    bg:"linear-gradient(145deg,#0A3622,#1B5E20)",
-    cor:"white", lcor:"#0A3622",
-    h:"Seu trabalho estÃ¡ aqui",
-    why:"Baseada no hebraico â€” terminaÃ§Ãµes notavelmente quadradas. O 'k' e o 'a' tÃªm formas que nÃ£o existem em nenhuma grotesca ocidental. 100% reconhecÃ­vel."
+    bg:"linear-gradient(145deg,#4A0E8F,#7B1FA2)",
+    cor:"white", lcor:"#4A0E8F",
+    why:"Cabin: humanista inspirada no Johnston (fonte do metrô de Londres). Itálica 700 tem muita personalidade. Não é 900 mas compensa com proporções mais largas e abertas."
+  },
+
+  // ── IBM PLEX SANS — terminações com corte diagonal único ──
+  {
+    n:13, nome:"IBM Plex Sans Condensed 700 Italic",
+    tag:"Terminações únicas",
+    ref:"Corte diagonal semi-quadrado",
+    css:`font-family:'IBM Plex Sans Condensed',sans-serif;font-weight:700;font-style:italic;`,
+    sz:"74px",
+    bg:"linear-gradient(145deg,#002D62,#0043A4)",
+    cor:"white", lcor:"#002D62",
+    why:"IBM Plex tem terminações com corte diagonal único — nem redondo nem horizontal. O resultado é semi-quadrado com um toque técnico. Itálica condensada muito bem construída."
+  },
+  {
+    n:14, nome:"IBM Plex Sans 700 Italic",
+    tag:"IBM Plex semi-cond",
+    ref:"Versão larga com o mesmo DNA",
+    css:`font-family:'IBM Plex Sans',sans-serif;font-weight:700;font-style:italic;`,
+    sz:"60px",
+    bg:"linear-gradient(145deg,#1C1C1C,#2D2D2D)",
+    cor:"var(--orange)", lcor:"#1C1C1C",
+    why:"IBM Plex Sans 700i regular — as terminações diagonais ficam mais visíveis em tamanho maior. Sobre escuro com laranja parece muito premium e tech."
   },
 ];
 
@@ -292,21 +308,24 @@ function render() {
     const el = document.createElement('div');
     if (m === 's') {
       el.className = 'cs';
+      // Marcar las originales
+      const isOrig = f.ref && f.ref.includes('original');
       el.innerHTML = `
         <div class="cs-inner" style="background:${f.bg}">
           <div class="cs-top">
             <div class="cs-num">${f.n}</div>
             <div class="cs-tag">${f.tag}</div>
           </div>
+          ${isOrig ? `<div class="ref-badge">⭐ ${f.ref}</div>` : `<div class="ref-badge">↗ ${f.ref}</div>`}
           <div class="cs-logo" style="${f.css}font-size:${f.sz};color:${f.cor};">Eureka!</div>
           <div class="cs-preview">
-            <div class="cs-h" style="${f.css}font-size:17px;color:${f.cor};">${f.h}</div>
+            <div class="cs-h" style="${f.css}font-size:16px;color:${f.cor};">Seu trabalho está aqui</div>
             <div class="cs-s">${f.why}</div>
           </div>
         </div>`;
     } else {
       el.className = 'cl';
-      const sz2 = Math.round(parseInt(f.sz)*0.65)+'px';
+      const sz2 = Math.round(parseInt(f.sz)*0.62)+'px';
       el.innerHTML = `
         <div class="cl-inner">
           <div class="cl-meta">
@@ -314,16 +333,17 @@ function render() {
             <span class="cl-fname">${f.nome}</span>
             <span class="cl-tag">${f.tag}</span>
           </div>
+          <div class="cl-ref">↗ ${f.ref}</div>
           <div class="cl-logo" style="${f.css}font-size:${sz2};color:${f.lcor};">Eureka!</div>
           <div class="cl-div"></div>
           <div>
             <div class="cl-h" style="${f.css}font-size:20px;">Bem-vindo de volta!</div>
-            <div class="cl-s">Seu prÃ³ximo trabalho estÃ¡ esperando vocÃª.</div>
+            <div class="cl-s">Seu próximo trabalho está esperando você.</div>
           </div>
-          <button class="cl-btn" style="${f.css}font-size:14px;">Entrar â†’</button>
+          <button class="cl-btn" style="${f.css}font-size:14px;">Entrar →</button>
         </div>`;
     }
-    el.style.animation = `cardIn 0.35s ${i*0.045}s ease both`;
+    el.style.animation = `cardIn 0.35s ${i*0.04}s ease both`;
     el.style.opacity = '0';
     lista.appendChild(el);
   });
