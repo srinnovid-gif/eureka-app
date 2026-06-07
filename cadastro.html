@@ -1,0 +1,1080 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+  <meta name="theme-color" content="#FF4D20" />
+  <meta name="mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <title>Eureka — Criar conta</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Geologica:slnt,wght@-12..0,100..900&family=Glory:ital,wght@0,400;0,700;0,800;1,700;1,800&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet" />
+
+  <style>
+    :root {
+      --orange:      #FF4D20;
+      --orange-dark: #D93A10;
+      --orange-pale: #FFF5EE;
+      --orange-soft: #FFE8D6;
+      --ink:         #111010;
+      --ink2:        #6B6560;
+      --ink3:        #B8B0A8;
+      --border:      #F0EDE8;
+      --white:       #FFFFFF;
+      --surface:     #FFF5EE;
+      --green:       #1FAD6B;
+      --green-pale:  #E8F8EF;
+      --red:         #E05252;
+      --red-pale:    #FFF0EE;
+      --red-border:  #FFD0C8;
+    }
+
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; -webkit-tap-highlight-color: transparent; }
+
+    html, body {
+      height: 100%;
+      font-family: 'Geologica', sans-serif;
+      background: var(--white);
+      color: var(--ink);
+      -webkit-font-smoothing: antialiased;
+      overflow: hidden;
+    }
+
+    #app {
+      position: fixed;
+      top: 0; left: 0;
+      width: 100%; height: 100%;
+      display: flex;
+      flex-direction: column;
+      background: var(--white);
+      overflow: hidden;
+    }
+
+    /* ═══ HEADER ═══ */
+    .header {
+      flex-shrink: 0;
+      background: var(--orange);
+      padding: 52px 24px 24px;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .header::before {
+      content: "";
+      position: absolute;
+      width: 280px; height: 280px;
+      border-radius: 50%;
+      background: rgba(255,255,255,0.07);
+      top: -100px; right: -80px;
+      pointer-events: none;
+    }
+
+    .btn-voltar {
+      position: relative; z-index: 2;
+      width: 36px; height: 36px;
+      background: rgba(255,255,255,0.2);
+      border: none; border-radius: 50%;
+      display: flex; align-items: center; justify-content: center;
+      cursor: pointer; margin-bottom: 18px;
+      transition: background 0.15s;
+    }
+    .btn-voltar:active { background: rgba(255,255,255,0.35); }
+    .btn-voltar svg { width: 16px; height: 16px; stroke: white; fill: none; stroke-width: 2.5; stroke-linecap: round; stroke-linejoin: round; }
+
+    .header-logo {
+      position: relative; z-index: 2;
+      height: 26px; width: auto; display: block;
+      filter: brightness(0) invert(1);
+      object-fit: contain; object-position: left;
+      margin-bottom: 12px;
+    }
+
+    .header-logo-fallback {
+      font-weight: 900; font-size: 24px; color: white;
+      letter-spacing: -0.04em; line-height: 1;
+      margin-bottom: 12px; display: none;
+      position: relative; z-index: 2;
+    }
+
+    .header-titulo {
+      font-family: 'Glory', sans-serif;
+      font-style: italic; font-weight: 800;
+      font-size: 26px; color: white;
+      letter-spacing: -0.02em; line-height: 1.1;
+      position: relative; z-index: 2;
+    }
+
+    .header-sub {
+      font-size: 13px; color: rgba(255,255,255,0.75);
+      margin-top: 4px; line-height: 1.5;
+      position: relative; z-index: 2;
+    }
+
+    /* ═══ PROGRESO ═══ */
+    .progreso {
+      flex-shrink: 0;
+      padding: 14px 24px 0;
+      background: var(--white);
+    }
+
+    .prog-labels {
+      display: flex;
+      justify-content: space-between;
+      margin-bottom: 8px;
+    }
+
+    .prog-lbl {
+      font-family: 'DM Mono', monospace;
+      font-size: 9px;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: var(--ink3);
+      transition: color 0.3s;
+    }
+
+    .prog-lbl.ativo { color: var(--orange); font-weight: 500; }
+    .prog-lbl.completo { color: var(--green); }
+
+    .prog-bar { display: flex; gap: 6px; }
+
+    .prog-seg {
+      flex: 1; height: 3px; border-radius: 2px;
+      background: var(--border);
+      transition: background 0.4s ease;
+      position: relative; overflow: hidden;
+    }
+
+    .prog-seg.ativo::after {
+      content: "";
+      position: absolute; inset: 0;
+      background: var(--orange); border-radius: 2px;
+      animation: barraEntrar 0.4s ease both;
+    }
+
+    .prog-seg.completo { background: var(--green); }
+
+    /* ═══ PASOS ═══ */
+    .pasos {
+      flex: 1;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .paso {
+      position: absolute; inset: 0;
+      padding: 16px 22px 20px;
+      overflow-y: auto;
+      display: flex; flex-direction: column; gap: 13px;
+      opacity: 0; transform: translateX(40px);
+      pointer-events: none;
+      transition: opacity 0.35s ease, transform 0.35s ease;
+    }
+
+    .paso.visible { opacity: 1; transform: translateX(0); pointer-events: all; }
+    .paso.saliendo { opacity: 0; transform: translateX(-40px); pointer-events: none; }
+
+    .paso-titulo {
+      font-weight: 700; font-size: 14px;
+      color: var(--ink); letter-spacing: -0.01em;
+    }
+
+    /* ═══ CAMPOS ═══ */
+    .campo { display: flex; flex-direction: column; gap: 5px; }
+
+    .campo-label {
+      font-weight: 600; font-size: 12px;
+      color: var(--ink2); padding-left: 2px;
+      display: flex; align-items: center; gap: 4px;
+    }
+
+    .campo-label .requerido {
+      color: var(--orange);
+      font-size: 14px;
+      line-height: 1;
+    }
+
+    .campo-wrap { position: relative; }
+
+    .campo-input {
+      width: 100%;
+      padding: 13px 40px 13px 44px;
+      border-radius: 16px;
+      border: 1.5px solid var(--border);
+      background: var(--surface);
+      font-family: 'Geologica', sans-serif;
+      font-size: 15px; color: var(--ink);
+      outline: none; -webkit-appearance: none;
+      transition: border-color 0.2s, background 0.2s, box-shadow 0.2s;
+    }
+
+    .campo-input.sin-icono { padding-left: 16px; }
+    .campo-input::placeholder { color: var(--ink3); font-size: 14px; }
+
+    /* Estados del campo */
+    .campo-input:focus {
+      border-color: var(--orange);
+      background: #FFFAF7;
+      box-shadow: 0 0 0 3px rgba(255,77,32,0.08);
+    }
+
+    .campo-input.valido {
+      border-color: var(--green);
+      background: var(--green-pale);
+    }
+
+    .campo-input.error {
+      border-color: var(--red);
+      background: var(--red-pale);
+      box-shadow: 0 0 0 3px rgba(224,82,82,0.08);
+      animation: shake 0.4s ease;
+    }
+
+    /* Icono izquierdo */
+    .campo-icone {
+      position: absolute; left: 13px; top: 50%;
+      transform: translateY(-50%);
+      width: 17px; height: 17px;
+      color: var(--ink3); pointer-events: none;
+      transition: color 0.2s;
+    }
+
+    .campo-wrap:has(.campo-input:focus) .campo-icone { color: var(--orange); }
+    .campo-wrap:has(.campo-input.valido) .campo-icone { color: var(--green); }
+    .campo-wrap:has(.campo-input.error) .campo-icone { color: var(--red); }
+
+    /* Check / X derecho */
+    .campo-estado {
+      position: absolute; right: 13px; top: 50%;
+      transform: translateY(-50%);
+      width: 18px; height: 18px;
+      display: none; align-items: center; justify-content: center;
+    }
+
+    .campo-input.valido ~ .campo-estado { display: flex; color: var(--green); }
+    .campo-input.error  ~ .campo-estado { display: flex; color: var(--red); }
+
+    /* Mensaje de error del campo */
+    .campo-error-msg {
+      font-size: 11.5px;
+      color: var(--red);
+      padding-left: 2px;
+      display: none;
+      align-items: center;
+      gap: 4px;
+      animation: fadeUp 0.2s ease both;
+    }
+
+    .campo-error-msg.visible { display: flex; }
+    .campo-helper { font-size: 11.5px; color: var(--ink3); padding-left: 2px; }
+
+    /* Fila de 2 campos */
+    .fila-2 { display: flex; gap: 10px; }
+    .fila-2 .campo { flex: 1; }
+
+    /* ═══ FUERZA CONTRASEÑA ═══ */
+    .fuerza-wrap { display: none; flex-direction: column; gap: 5px; }
+    .fuerza-wrap.visible { display: flex; }
+
+    .fuerza-bar { display: flex; gap: 4px; }
+
+    .fuerza-seg {
+      flex: 1; height: 3px; border-radius: 2px;
+      background: var(--border);
+      transition: background 0.3s;
+    }
+
+    .fuerza-seg.fraca  { background: var(--red); }
+    .fuerza-seg.media  { background: #FFB800; }
+    .fuerza-seg.forte  { background: var(--green); }
+
+    .fuerza-txt {
+      font-size: 11px; font-weight: 600;
+      color: var(--ink3);
+    }
+    .fuerza-txt.fraca  { color: var(--red); }
+    .fuerza-txt.media  { color: #B07C00; }
+    .fuerza-txt.forte  { color: var(--green); }
+
+    /* ═══ TÉRMINOS ═══ */
+    .termos-row {
+      display: flex; align-items: flex-start; gap: 10px; padding: 2px 0;
+    }
+
+    .check-wrap { flex-shrink: 0; margin-top: 1px; }
+
+    .termos-checkbox { display: none; }
+
+    .termos-box {
+      width: 20px; height: 20px; border-radius: 6px;
+      border: 2px solid var(--border); background: var(--white);
+      display: flex; align-items: center; justify-content: center;
+      cursor: pointer; transition: border-color 0.2s, background 0.2s;
+    }
+
+    .termos-checkbox:checked + .termos-box {
+      border-color: var(--orange);
+      background: var(--orange-pale);
+    }
+
+    .termos-box svg {
+      width: 11px; height: 11px;
+      stroke: var(--orange); fill: none; stroke-width: 2.5;
+      opacity: 0; transition: opacity 0.2s;
+    }
+
+    .termos-checkbox:checked + .termos-box svg { opacity: 1; }
+
+    .termos-txt { font-size: 12.5px; color: var(--ink2); line-height: 1.55; }
+    .termos-txt a { color: var(--orange); font-weight: 600; text-decoration: none; }
+
+    .termos-error {
+      font-size: 11.5px; color: var(--red);
+      display: none; align-items: center; gap: 4px;
+    }
+    .termos-error.visible { display: flex; }
+
+    /* ═══ CONFIRMAÇÃO ═══ */
+    .conf-card {
+      background: var(--surface);
+      border-radius: 18px;
+      border: 1px solid var(--border);
+      overflow: hidden;
+    }
+
+    .conf-row {
+      display: flex; align-items: center;
+      justify-content: space-between;
+      padding: 13px 16px;
+      border-bottom: 1px solid var(--border);
+    }
+    .conf-row:last-child { border-bottom: none; }
+
+    .conf-label {
+      font-family: 'DM Mono', monospace;
+      font-size: 10px; letter-spacing: 0.08em;
+      text-transform: uppercase; color: var(--ink3);
+      flex-shrink: 0;
+    }
+
+    .conf-valor {
+      font-size: 13.5px; font-weight: 600; color: var(--ink);
+      text-align: right; max-width: 65%;
+      overflow: hidden; text-overflow: ellipsis; white-space: nowrap;
+    }
+
+    /* ═══ ERROR GLOBAL ═══ */
+    #msg-erro-global {
+      display: none;
+      background: var(--red-pale);
+      border: 1px solid var(--red-border);
+      border-radius: 12px;
+      padding: 11px 15px;
+      font-size: 13px; color: var(--orange-dark);
+      font-weight: 500; text-align: center;
+      margin: 0 0 4px;
+      animation: fadeUp 0.3s ease both;
+    }
+
+    /* ═══ BOTTOM BAR ═══ */
+    .bottom-bar {
+      flex-shrink: 0;
+      padding: 12px 22px 44px;
+      background: var(--white);
+      border-top: 1px solid var(--border);
+      display: flex; flex-direction: column; gap: 10px;
+    }
+
+    .btn-proximo {
+      width: 100%; padding: 16px; border-radius: 16px;
+      background: var(--orange); color: white;
+      font-family: 'Geologica', sans-serif;
+      font-weight: 800; font-size: 16px;
+      border: none; cursor: pointer;
+      display: flex; align-items: center; justify-content: center; gap: 8px;
+      box-shadow: 0 8px 24px rgba(255,77,32,0.28);
+      animation: pulseCTA 3s ease-in-out infinite;
+      transition: transform 0.12s, opacity 0.2s;
+    }
+
+    .btn-proximo:active { transform: scale(0.98); }
+    .btn-proximo:disabled { opacity: 0.5; animation: none; cursor: not-allowed; }
+
+    #spinner-cad {
+      display: none; width: 17px; height: 17px;
+      border: 2.5px solid rgba(255,255,255,0.35);
+      border-top-color: white; border-radius: 50%;
+      animation: girar 0.7s linear infinite;
+    }
+
+    .link-login { text-align: center; font-size: 13.5px; color: var(--ink2); }
+    .link-login a { color: var(--orange); font-weight: 700; text-decoration: none; }
+
+    /* ═══ BOTÓN OJO ═══ */
+    .btn-olho {
+      position: absolute; right: 13px; top: 50%;
+      transform: translateY(-50%);
+      background: none; border: none; padding: 4px;
+      cursor: pointer; color: var(--ink3);
+      display: flex; align-items: center; justify-content: center;
+    }
+
+    /* ═══ ANIMACIONES ═══ */
+    @keyframes fadeUp {
+      from { opacity: 0; transform: translateY(8px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+
+    @keyframes shake {
+      0%,100% { transform: translateX(0); }
+      20%      { transform: translateX(-6px); }
+      40%      { transform: translateX(6px); }
+      60%      { transform: translateX(-4px); }
+      80%      { transform: translateX(4px); }
+    }
+
+    @keyframes barraEntrar {
+      from { transform: scaleX(0); transform-origin: left; }
+      to   { transform: scaleX(1); transform-origin: left; }
+    }
+
+    @keyframes girar { to { transform: rotate(360deg); } }
+
+    @keyframes pulseCTA {
+      0%,100% { box-shadow: 0 8px 24px rgba(255,77,32,0.28); }
+      50%      { box-shadow: 0 8px 36px rgba(255,77,32,0.50); }
+    }
+  </style>
+</head>
+
+<body>
+<div id="app">
+
+  <!-- HEADER -->
+  <div class="header">
+    <button class="btn-voltar" onclick="voltarOuSair()">
+      <svg viewBox="0 0 24 24"><path d="M19 12H5M12 19l-7-7 7-7"/></svg>
+    </button>
+    <img class="header-logo" src="38551-removebg-preview.png" alt="Eureka"
+      onerror="this.style.display='none';document.querySelector('.header-logo-fallback').style.display='block';" />
+    <div class="header-logo-fallback">eureka</div>
+    <h1 class="header-titulo">Criar sua conta</h1>
+    <p class="header-sub">Rápido, grátis e sem burocracia.</p>
+  </div>
+
+  <!-- PROGRESO -->
+  <div class="progreso">
+    <div class="prog-labels">
+      <span class="prog-lbl ativo" id="lbl-0">Seus dados</span>
+      <span class="prog-lbl" id="lbl-1">Acesso</span>
+      <span class="prog-lbl" id="lbl-2">Confirmação</span>
+    </div>
+    <div class="prog-bar">
+      <div class="prog-seg ativo" id="seg-0"></div>
+      <div class="prog-seg" id="seg-1"></div>
+      <div class="prog-seg" id="seg-2"></div>
+    </div>
+  </div>
+
+  <!-- ERROR GLOBAL -->
+  <div id="msg-erro-global" role="alert"></div>
+
+  <!-- PASOS -->
+  <div class="pasos">
+
+    <!-- ══ PASO 1: Dados pessoais ══ -->
+    <div class="paso visible" id="paso-0">
+      <p class="paso-titulo">Como podemos te chamar? 👋</p>
+
+      <!-- Nome + Sobrenome -->
+      <div class="fila-2">
+        <div class="campo">
+          <label class="campo-label" for="nome">
+            Nome <span class="requerido">*</span>
+          </label>
+          <div class="campo-wrap">
+            <input class="campo-input" type="text" id="nome" placeholder="João" autocomplete="given-name"
+              oninput="validarCampoNome(this)" onblur="validarCampoNome(this, true)" />
+            <svg class="campo-icone" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M20 21v-2a4 4 0 00-4-4H8a4 4 0 00-4 4v2"/><circle cx="12" cy="7" r="4"/>
+            </svg>
+            <div class="campo-estado">
+              <svg class="icone-check" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20,6 9,17 4,12"/></svg>
+              <svg class="icone-x" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" style="display:none"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+            </div>
+          </div>
+          <div class="campo-error-msg" id="err-nome">
+            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
+            Digite seu nome
+          </div>
+        </div>
+
+        <div class="campo">
+          <label class="campo-label" for="sobrenome">
+            Sobrenome <span class="requerido">*</span>
+          </label>
+          <div class="campo-wrap">
+            <input class="campo-input sin-icono" type="text" id="sobrenome" placeholder="Silva" autocomplete="family-name"
+              oninput="validarCampoGenerico(this, 'err-sobre', 'Digite seu sobrenome')"
+              onblur="validarCampoGenerico(this, 'err-sobre', 'Digite seu sobrenome', true)" />
+            <div class="campo-estado">
+              <svg class="icone-check" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20,6 9,17 4,12"/></svg>
+              <svg class="icone-x" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" style="display:none"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+            </div>
+          </div>
+          <div class="campo-error-msg" id="err-sobre">
+            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
+            Digite seu sobrenome
+          </div>
+        </div>
+      </div>
+
+      <!-- Data de nascimento -->
+      <div class="campo">
+        <label class="campo-label" for="nascimento">
+          Data de nascimento <span class="requerido">*</span>
+        </label>
+        <div class="campo-wrap">
+          <input class="campo-input" type="tel" id="nascimento" placeholder="DD/MM/AAAA" inputmode="numeric" maxlength="10"
+            oninput="mascaraData(this)" onblur="validarNascimento(this, true)" />
+          <svg class="campo-icone" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <rect x="3" y="4" width="18" height="18" rx="2" ry="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/>
+          </svg>
+          <div class="campo-estado">
+            <svg class="icone-check" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20,6 9,17 4,12"/></svg>
+            <svg class="icone-x" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" style="display:none"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+          </div>
+        </div>
+        <div class="campo-error-msg" id="err-nasc">
+          <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
+          <span id="err-nasc-txt">Data inválida</span>
+        </div>
+        <span class="campo-helper">Você deve ter pelo menos 16 anos</span>
+      </div>
+
+      <!-- Celular -->
+      <div class="campo">
+        <label class="campo-label" for="celular">
+          Celular <span class="requerido">*</span>
+        </label>
+        <div class="campo-wrap">
+          <input class="campo-input" type="tel" id="celular" placeholder="(11) 99999-9999" inputmode="tel" autocomplete="tel"
+            oninput="mascaraCelular(this)" onblur="validarCelular(this, true)" />
+          <svg class="campo-icone" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M22 16.92v3a2 2 0 01-2.18 2 19.79 19.79 0 01-8.63-3.07A19.5 19.5 0 013.07 9.81 19.79 19.79 0 01.9 3.18 2 2 0 012.88 1h3a2 2 0 012 1.72 12.84 12.84 0 00.7 2.81 2 2 0 01-.45 2.11L7.09 8.91a16 16 0 006 6l1.27-1.27a2 2 0 012.11-.45 12.84 12.84 0 002.81.7A2 2 0 0122 16.92z"/>
+          </svg>
+          <div class="campo-estado">
+            <svg class="icone-check" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20,6 9,17 4,12"/></svg>
+            <svg class="icone-x" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" style="display:none"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+          </div>
+        </div>
+        <div class="campo-error-msg" id="err-cel">
+          <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
+          Celular inválido. Ex: (11) 99999-9999
+        </div>
+      </div>
+
+    </div><!-- /paso-0 -->
+
+    <!-- ══ PASO 2: Email + Senha ══ -->
+    <div class="paso" id="paso-1">
+      <p class="paso-titulo">Crie seu acesso 🔐</p>
+
+      <!-- Email -->
+      <div class="campo">
+        <label class="campo-label" for="email">
+          Email <span class="requerido">*</span>
+        </label>
+        <div class="campo-wrap">
+          <input class="campo-input" type="email" id="email" placeholder="seu@email.com" inputmode="email" autocomplete="email"
+            oninput="validarEmail(this)" onblur="validarEmail(this, true)" />
+          <svg class="campo-icone" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/>
+          </svg>
+          <div class="campo-estado">
+            <svg class="icone-check" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20,6 9,17 4,12"/></svg>
+            <svg class="icone-x" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" style="display:none"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+          </div>
+        </div>
+        <div class="campo-error-msg" id="err-email">
+          <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
+          Email inválido. Ex: nome@email.com
+        </div>
+      </div>
+
+      <!-- Senha -->
+      <div class="campo">
+        <label class="campo-label" for="senha">
+          Senha <span class="requerido">*</span>
+        </label>
+        <div class="campo-wrap">
+          <input class="campo-input" type="password" id="senha" placeholder="Mínimo 6 caracteres" autocomplete="new-password"
+            oninput="validarSenha(this)" onblur="validarSenha(this, true)" />
+          <svg class="campo-icone" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0110 0v4"/>
+          </svg>
+          <button class="btn-olho" type="button" onclick="toggleOlho('senha','olho-senha')">
+            <svg id="olho-senha" width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/>
+            </svg>
+          </button>
+        </div>
+
+        <!-- Fuerza contraseña -->
+        <div class="fuerza-wrap" id="fuerza-wrap">
+          <div class="fuerza-bar">
+            <div class="fuerza-seg" id="f1"></div>
+            <div class="fuerza-seg" id="f2"></div>
+            <div class="fuerza-seg" id="f3"></div>
+          </div>
+          <span class="fuerza-txt" id="fuerza-txt"></span>
+        </div>
+
+        <div class="campo-error-msg" id="err-senha">
+          <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
+          A senha deve ter pelo menos 6 caracteres
+        </div>
+      </div>
+
+      <!-- Confirmar senha -->
+      <div class="campo">
+        <label class="campo-label" for="conf-senha">
+          Confirmar senha <span class="requerido">*</span>
+        </label>
+        <div class="campo-wrap">
+          <input class="campo-input" type="password" id="conf-senha" placeholder="Repita a senha" autocomplete="new-password"
+            oninput="validarConfSenha(this)" onblur="validarConfSenha(this, true)" />
+          <svg class="campo-icone" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0110 0v4"/>
+          </svg>
+          <button class="btn-olho" type="button" onclick="toggleOlho('conf-senha','olho-conf')">
+            <svg id="olho-conf" width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/>
+            </svg>
+          </button>
+          <div class="campo-estado">
+            <svg class="icone-check" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20,6 9,17 4,12"/></svg>
+            <svg class="icone-x" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" style="display:none"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+          </div>
+        </div>
+        <div class="campo-error-msg" id="err-conf">
+          <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
+          As senhas não coincidem
+        </div>
+      </div>
+
+      <!-- Términos -->
+      <div class="campo">
+        <div class="termos-row">
+          <div class="check-wrap">
+            <input type="checkbox" class="termos-checkbox" id="termos" onchange="validarTermos()" />
+            <label class="termos-box" for="termos">
+              <svg viewBox="0 0 12 12"><polyline points="2,6 5,9 10,3"/></svg>
+            </label>
+          </div>
+          <p class="termos-txt">
+            Li e aceito os <a href="#">Termos de Uso</a> e a <a href="#">Política de Privacidade</a> da Eureka
+          </p>
+        </div>
+        <div class="termos-error" id="err-termos">
+          <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
+          Aceite os termos para continuar
+        </div>
+      </div>
+
+    </div><!-- /paso-1 -->
+
+    <!-- ══ PASO 3: Confirmação ══ -->
+    <div class="paso" id="paso-2">
+      <p class="paso-titulo">Confira seus dados ✅</p>
+
+      <div class="conf-card">
+        <div class="conf-row">
+          <span class="conf-label">Nome</span>
+          <span class="conf-valor" id="conf-nome">—</span>
+        </div>
+        <div class="conf-row">
+          <span class="conf-label">Nascimento</span>
+          <span class="conf-valor" id="conf-nasc">—</span>
+        </div>
+        <div class="conf-row">
+          <span class="conf-label">Celular</span>
+          <span class="conf-valor" id="conf-cel">—</span>
+        </div>
+        <div class="conf-row">
+          <span class="conf-label">Email</span>
+          <span class="conf-valor" id="conf-email-val">—</span>
+        </div>
+      </div>
+
+      <p style="font-size:12px;color:var(--ink3);text-align:center;line-height:1.6;padding:0 8px;">
+        Ao criar sua conta você concorda com os nossos<br>
+        <a href="#" style="color:var(--orange);font-weight:600;text-decoration:none;">Termos de Uso</a>
+        e a
+        <a href="#" style="color:var(--orange);font-weight:600;text-decoration:none;">Política de Privacidade</a>
+      </p>
+    </div><!-- /paso-2 -->
+
+  </div><!-- /pasos -->
+
+  <!-- BOTTOM BAR -->
+  <div class="bottom-bar">
+    <button class="btn-proximo" id="btn-proximo" onclick="proximoPaso()">
+      <span id="spinner-cad" role="status"></span>
+      <span id="btn-txt">Próximo</span>
+      <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+        <path d="M5 12h14M12 5l7 7-7 7"/>
+      </svg>
+    </button>
+    <p class="link-login">Já tem conta? <a href="index.html">Entrar</a></p>
+  </div>
+
+</div><!-- /app -->
+
+<!-- FIREBASE + LÓGICA -->
+<script type="module">
+import { initializeApp }              from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
+import { getAuth, createUserWithEmailAndPassword, updateProfile } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js";
+import { getFirestore, doc, setDoc, serverTimestamp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
+
+const firebaseConfig = {
+  apiKey:            "AIzaSyCw4QhQ5fGYSv_QgfY-waAZuOhkfv1ej1s",
+  authDomain:        "vanti-app-br.firebaseapp.com",
+  projectId:         "vanti-app-br",
+  storageBucket:     "vanti-app-br.firebasestorage.app",
+  messagingSenderId: "1028700458017",
+  appId:             "1:1028700458017:web:6011fd81d09010e4f1e760"
+};
+
+const app  = initializeApp(firebaseConfig);
+const auth = getAuth(app);
+const db   = getFirestore(app);
+
+/* ── ESTADO ── */
+let pasoActual = 0;
+
+/* ── NAVEGACIÓN ── */
+window.proximoPaso = async function() {
+  if (pasoActual === 0) {
+    if (!validarPaso0()) return;
+    irAPaso(1);
+  } else if (pasoActual === 1) {
+    if (!validarPaso1()) return;
+    preencherConfirmacao();
+    irAPaso(2);
+    document.getElementById("btn-txt").textContent = "Criar minha conta";
+  } else {
+    await criarConta();
+  }
+};
+
+window.voltarOuSair = function() {
+  if (pasoActual === 0) {
+    window.location.href = "index.html";
+  } else {
+    const ant = document.getElementById(`paso-${pasoActual}`);
+    const prv = document.getElementById(`paso-${pasoActual - 1}`);
+    ant.classList.remove("visible");
+    ant.classList.add("saliendo");
+    setTimeout(() => {
+      ant.classList.remove("saliendo");
+      prv.classList.add("visible");
+      atualizarProgreso(pasoActual - 1);
+      pasoActual--;
+      if (pasoActual < 2) document.getElementById("btn-txt").textContent = "Próximo";
+    }, 360);
+  }
+};
+
+function irAPaso(n) {
+  const ant = document.getElementById(`paso-${pasoActual}`);
+  const sig = document.getElementById(`paso-${n}`);
+  ant.classList.remove("visible");
+  ant.classList.add("saliendo");
+  setTimeout(() => {
+    ant.classList.remove("saliendo");
+    sig.classList.add("visible");
+    atualizarProgreso(n);
+    pasoActual = n;
+  }, 360);
+}
+
+function atualizarProgreso(n) {
+  for (let i = 0; i < 3; i++) {
+    const seg = document.getElementById(`seg-${i}`);
+    const lbl = document.getElementById(`lbl-${i}`);
+    seg.className = "prog-seg";
+    lbl.className = "prog-lbl";
+    if (i < n)       { seg.classList.add("completo"); lbl.classList.add("completo"); }
+    else if (i === n) { seg.classList.add("ativo");    lbl.classList.add("ativo"); }
+  }
+}
+
+/* ── CRIAR CONTA ── */
+async function criarConta() {
+  const nome    = document.getElementById("nome").value.trim();
+  const sobre   = document.getElementById("sobrenome").value.trim();
+  const nasc    = document.getElementById("nascimento").value.trim();
+  const cel     = document.getElementById("celular").value.trim();
+  const email   = document.getElementById("email").value.trim();
+  const senha   = document.getElementById("senha").value;
+
+  setCarregando(true);
+  try {
+    const cred = await createUserWithEmailAndPassword(auth, email, senha);
+    await updateProfile(cred.user, { displayName: `${nome} ${sobre}` });
+    await setDoc(doc(db, "usuarios", cred.user.uid), {
+      nome, sobrenome: sobre,
+      nomeCompleto: `${nome} ${sobre}`,
+      dataNascimento: nasc,
+      celular: cel, email,
+      uid: cred.user.uid,
+      criadoEm: serverTimestamp(),
+      perfilCompleto: false,
+      status: "ativo"
+    });
+    window.location.href = "onboarding.html";
+  } catch(err) {
+    mostrarErroGlobal(traduzir(err.code));
+  } finally {
+    setCarregando(false);
+  }
+}
+
+function traduzir(code) {
+  return ({
+    "auth/email-already-in-use":   "Este email já está cadastrado. Tente fazer login.",
+    "auth/invalid-email":          "Email inválido.",
+    "auth/weak-password":          "Senha muito fraca. Use pelo menos 6 caracteres.",
+    "auth/network-request-failed": "Sem conexão. Verifique sua internet.",
+    "auth/too-many-requests":      "Muitas tentativas. Aguarde um momento.",
+  })[code] || "Algo deu errado. Tente novamente.";
+}
+
+function setCarregando(v) {
+  const btn  = document.getElementById("btn-proximo");
+  const spin = document.getElementById("spinner-cad");
+  if (btn)  btn.disabled       = v;
+  if (spin) spin.style.display = v ? "block" : "none";
+}
+
+function mostrarErroGlobal(msg) {
+  const el = document.getElementById("msg-erro-global");
+  el.textContent = msg;
+  el.style.display = "block";
+  setTimeout(() => el.style.display = "none", 5000);
+}
+
+function preencherConfirmacao() {
+  const nome  = document.getElementById("nome").value.trim();
+  const sobre = document.getElementById("sobrenome").value.trim();
+  document.getElementById("conf-nome").textContent     = `${nome} ${sobre}`;
+  document.getElementById("conf-nasc").textContent     = document.getElementById("nascimento").value;
+  document.getElementById("conf-cel").textContent      = document.getElementById("celular").value;
+  document.getElementById("conf-email-val").textContent = document.getElementById("email").value.trim();
+}
+
+/* ── VALIDACIONES PASO 0 ── */
+function validarPaso0() {
+  let ok = true;
+
+  const nome = document.getElementById("nome").value.trim();
+  if (!nome) { setCampoError("nome", "err-nome", true); ok = false; }
+
+  const sobre = document.getElementById("sobrenome").value.trim();
+  if (!sobre) { setCampoError("sobrenome", "err-sobre", true); ok = false; }
+
+  const nasc = document.getElementById("nascimento").value;
+  if (!validarNascimiento(nasc)) { setCampoError("nascimento", "err-nasc", true); ok = false; }
+
+  const cel = document.getElementById("celular").value.replace(/\D/g, "");
+  if (cel.length < 10) { setCampoError("celular", "err-cel", true); ok = false; }
+
+  if (!ok) mostrarErroGlobal("Corrija os campos em vermelho para continuar.");
+  return ok;
+}
+
+/* ── VALIDACIONES PASO 1 ── */
+function validarPaso1() {
+  let ok = true;
+
+  const email = document.getElementById("email").value.trim();
+  if (!email || !email.includes("@") || !email.includes(".")) {
+    setCampoError("email", "err-email", true); ok = false;
+  }
+
+  const senha = document.getElementById("senha").value;
+  if (senha.length < 6) { setCampoError("senha", "err-senha", true); ok = false; }
+
+  const conf = document.getElementById("conf-senha").value;
+  if (conf !== senha) { setCampoError("conf-senha", "err-conf", true); ok = false; }
+
+  const termos = document.getElementById("termos").checked;
+  if (!termos) {
+    document.getElementById("err-termos").classList.add("visible");
+    ok = false;
+  }
+
+  if (!ok) mostrarErroGlobal("Corrija os campos em vermelho para continuar.");
+  return ok;
+}
+
+/* ── HELPERS DE VALIDACIÓN ── */
+function setCampoError(inputId, errId, mostrar) {
+  const input = document.getElementById(inputId);
+  const err   = document.getElementById(errId);
+  if (!input || !err) return;
+  if (mostrar) {
+    input.classList.add("error");
+    input.classList.remove("valido");
+    err.classList.add("visible");
+    // Mostrar X en estado
+    const wrap = input.parentElement;
+    const check = wrap.querySelector(".icone-check");
+    const x     = wrap.querySelector(".icone-x");
+    if (check) check.style.display = "none";
+    if (x)     x.style.display     = "block";
+  } else {
+    input.classList.remove("error");
+    err.classList.remove("visible");
+  }
+}
+
+function setCampoOk(inputId) {
+  const input = document.getElementById(inputId);
+  if (!input) return;
+  input.classList.add("valido");
+  input.classList.remove("error");
+  // Mostrar check
+  const wrap  = input.parentElement;
+  const check = wrap.querySelector(".icone-check");
+  const x     = wrap.querySelector(".icone-x");
+  if (check) check.style.display = "block";
+  if (x)     x.style.display     = "none";
+}
+
+function validarNascimiento(val) {
+  if (!val || val.length < 10) return false;
+  const p = val.split("/");
+  if (p.length !== 3) return false;
+  const d = new Date(+p[2], +p[1]-1, +p[0]);
+  if (isNaN(d.getTime())) return false;
+  const hoy  = new Date();
+  const edad = hoy.getFullYear() - d.getFullYear();
+  return edad >= 16 && edad <= 100;
+}
+
+/* ── VALIDACIONES EN TIEMPO REAL (expuestas al HTML) ── */
+window.validarCampoNome = function(el, blur = false) {
+  if (!blur && !el.value) return;
+  el.value.trim() ? setCampoOk("nome") : setCampoError("nome", "err-nome", true);
+};
+
+window.validarCampoGenerico = function(el, errId, msg, blur = false) {
+  if (!blur && !el.value) return;
+  if (el.value.trim()) {
+    setCampoOk(el.id);
+    document.getElementById(errId).classList.remove("visible");
+  } else {
+    setCampoError(el.id, errId, true);
+  }
+};
+
+window.validarNascimento = function(el, blur = false) {
+  if (!blur && el.value.length < 10) return;
+  if (validarNascimiento(el.value)) {
+    setCampoOk("nascimento");
+    document.getElementById("err-nasc").classList.remove("visible");
+  } else {
+    const msg = el.value.length < 10
+      ? "Data incompleta"
+      : "Você deve ter pelo menos 16 anos";
+    document.getElementById("err-nasc-txt").textContent = msg;
+    setCampoError("nascimento", "err-nasc", true);
+  }
+};
+
+window.validarCelular = function(el, blur = false) {
+  const v = el.value.replace(/\D/g, "");
+  if (!blur && v.length < 10) return;
+  v.length >= 10 ? setCampoOk("celular") : setCampoError("celular", "err-cel", true);
+};
+
+window.validarEmail = function(el, blur = false) {
+  if (!blur && !el.value.includes("@")) return;
+  const ok = el.value.includes("@") && el.value.includes(".");
+  ok ? (setCampoOk("email"), document.getElementById("err-email").classList.remove("visible"))
+     : setCampoError("email", "err-email", blur);
+};
+
+window.validarSenha = function(el, blur = false) {
+  const v = el.value;
+  // Fuerza
+  const fWrap = document.getElementById("fuerza-wrap");
+  if (v) {
+    fWrap.classList.add("visible");
+    let pts = 0;
+    if (v.length >= 6) pts++;
+    if (v.length >= 10) pts++;
+    if (/[A-Z]/.test(v) || /[0-9]/.test(v) || /[^a-zA-Z0-9]/.test(v)) pts++;
+    const segs = ["f1","f2","f3"].map(id => document.getElementById(id));
+    const txt  = document.getElementById("fuerza-txt");
+    segs.forEach(s => s.className = "fuerza-seg");
+    txt.className = "fuerza-txt";
+    if (pts === 1) { segs[0].classList.add("fraca"); txt.classList.add("fraca"); txt.textContent = "Fraca"; }
+    else if (pts === 2) { segs[0].classList.add("media"); segs[1].classList.add("media"); txt.classList.add("media"); txt.textContent = "Média"; }
+    else { segs.forEach(s => s.classList.add("forte")); txt.classList.add("forte"); txt.textContent = "Forte 💪"; }
+  } else {
+    fWrap.classList.remove("visible");
+  }
+
+  if (!blur && v.length < 6) return;
+  v.length >= 6 ? (setCampoOk("senha"), document.getElementById("err-senha").classList.remove("visible"))
+                : setCampoError("senha", "err-senha", blur);
+};
+
+window.validarConfSenha = function(el, blur = false) {
+  const senha = document.getElementById("senha").value;
+  if (!blur && !el.value) return;
+  if (el.value && el.value === senha) {
+    setCampoOk("conf-senha");
+    document.getElementById("err-conf").classList.remove("visible");
+  } else if (blur || el.value) {
+    setCampoError("conf-senha", "err-conf", true);
+  }
+};
+
+window.validarTermos = function() {
+  const ok = document.getElementById("termos").checked;
+  document.getElementById("err-termos").classList.toggle("visible", !ok);
+};
+
+/* ── HELPERS UI ── */
+window.toggleOlho = function(inputId, iconoId) {
+  const input = document.getElementById(inputId);
+  const icono = document.getElementById(iconoId);
+  if (!input) return;
+  input.type = input.type === "password" ? "text" : "password";
+  if (icono) icono.style.opacity = input.type === "text" ? "0.35" : "1";
+};
+
+/* ── MÁSCARAS ── */
+window.mascaraCelular = function(el) {
+  let v = el.value.replace(/\D/g, "");
+  v = v.replace(/^(\d{2})(\d)/, "($1) $2");
+  v = v.replace(/(\d{5})(\d)/, "$1-$2");
+  el.value = v.slice(0, 15);
+};
+
+window.mascaraData = function(el) {
+  let v = el.value.replace(/\D/g, "");
+  if (v.length > 2) v = v.slice(0,2) + "/" + v.slice(2);
+  if (v.length > 5) v = v.slice(0,5) + "/" + v.slice(5);
+  el.value = v.slice(0, 10);
+  // Validar en tiempo real cuando está completa
+  if (v.length === 10) validarNascimento(el);
+};
+</script>
+
+</body>
+</html>
