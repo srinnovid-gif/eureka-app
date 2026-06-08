@@ -1,0 +1,552 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"/>
+<title>Eureka! — Ícones Perfil</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Geologica:slnt,wght@-12..0,100..900&family=Asap:ital,wght@1,800&display=swap" rel="stylesheet">
+<style>
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+:root {
+  --orange: #FF4D20;
+  --orange-pale: #FFF5EE;
+  --orange-soft: #FFE8D6;
+  --ink: #111010; --ink2: #6B6560; --ink3: #B8B0A8;
+  --border: #F0EDE8; --white: #fff;
+  --green: #1FAD6B; --green-pale: #E6F7EF;
+}
+body {
+  background: #F2EDE8;
+  font-family: 'Geologica', sans-serif;
+  padding: 16px 14px 80px;
+  color: var(--ink);
+}
+
+.top {
+  background: var(--ink); border-radius: 18px;
+  padding: 18px 18px; margin-bottom: 20px; text-align: center;
+}
+.top-logo {
+  font-family: 'Asap', sans-serif; font-style: italic; font-weight: 800;
+  font-size: 20px; color: var(--orange); margin-bottom: 3px;
+}
+.top-sub { font-size: 10px; color: var(--ink3); letter-spacing: 0.1em; text-transform: uppercase; }
+
+.seccion {
+  background: var(--white); border-radius: 20px;
+  border: 1px solid var(--border); overflow: hidden;
+  margin-bottom: 14px;
+}
+
+.sec-head {
+  display: flex; align-items: center; gap: 10px;
+  padding: 12px 16px 10px; border-bottom: 1px solid var(--border);
+}
+
+.sec-num {
+  width: 26px; height: 26px; border-radius: 50%;
+  background: var(--orange); color: white;
+  font-size: 11px; font-weight: 800;
+  display: flex; align-items: center; justify-content: center;
+  flex-shrink: 0;
+}
+
+.sec-info { flex: 1; }
+.sec-nombre { font-weight: 800; font-size: 14px; color: var(--ink); margin-bottom: 2px; }
+.sec-desc { font-size: 11px; color: var(--ink2); line-height: 1.4; }
+
+.sec-tags { display: flex; gap: 5px; margin-top: 4px; flex-wrap: wrap; }
+.tag {
+  font-size: 9px; padding: 2px 8px; border-radius: 50px;
+  font-weight: 700; letter-spacing: 0.05em; text-transform: uppercase;
+}
+.tag-o { background: var(--orange-pale); color: var(--orange); }
+.tag-g { background: var(--green-pale); color: var(--green); }
+.tag-b { background: #EEF2FF; color: #4F46E5; }
+.tag-d { background: #F5F5F5; color: #555; }
+
+/* CARDS DEMO */
+.cards-demo {
+  padding: 14px 14px 16px;
+  display: flex; flex-direction: column; gap: 10px;
+}
+
+.card {
+  border: 2px solid var(--border);
+  border-radius: 18px;
+  padding: 16px 16px;
+  cursor: pointer;
+  display: flex; align-items: center; gap: 14px;
+  background: var(--white);
+  position: relative; overflow: hidden;
+  transition: all 0.2s;
+}
+
+.card.selected {
+  border-color: var(--orange);
+  background: var(--orange-pale);
+}
+
+.card-icon-wrap {
+  width: 52px; height: 52px; border-radius: 14px;
+  display: flex; align-items: center; justify-content: center;
+  flex-shrink: 0; position: relative;
+}
+
+.card-info { flex: 1; }
+.card-titulo { font-weight: 800; font-size: 15px; color: var(--ink); margin-bottom: 3px; }
+.card-sub { font-size: 12px; color: var(--ink2); line-height: 1.35; }
+
+.card-radio {
+  width: 22px; height: 22px; border-radius: 50%;
+  border: 2px solid var(--border); background: var(--white);
+  display: flex; align-items: center; justify-content: center;
+  flex-shrink: 0; transition: all 0.2s;
+}
+
+.card.selected .card-radio {
+  border-color: var(--orange); background: var(--orange);
+}
+
+.check-svg {
+  width: 11px; height: 11px; stroke: white; fill: none;
+  stroke-width: 2.5; stroke-linecap: round; stroke-linejoin: round;
+  opacity: 0; transition: opacity 0.2s;
+}
+
+.card.selected .check-svg { opacity: 1; }
+</style>
+</head>
+<body>
+
+<div class="top">
+  <div class="top-logo">Eureka! · Ícones para cards de perfil</div>
+  <div class="top-sub">8 estilos · Toque para ver selecionado</div>
+</div>
+
+
+<!-- 1. SVG OUTLINE MONOCROMÁTICO -->
+<div class="seccion">
+  <div class="sec-head">
+    <div class="sec-num">1</div>
+    <div class="sec-info">
+      <div class="sec-nombre">SVG Outline — Fundo suave</div>
+      <div class="sec-desc">Ícone em traço fino sobre fundo colorido suave. Clean, moderno, sem peso.</div>
+      <div class="sec-tags"><span class="tag tag-g">Minimalista</span><span class="tag tag-d">Outline</span></div>
+    </div>
+  </div>
+  <div class="cards-demo">
+    <div class="card selected" onclick="toggleCard(this)">
+      <div class="card-icon-wrap" style="background:var(--orange-soft);">
+        <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="var(--orange)" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round">
+          <rect x="2" y="7" width="20" height="14" rx="2"/>
+          <path d="M16 7V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v2"/>
+          <path d="M12 12v.01"/>
+        </svg>
+      </div>
+      <div class="card-info">
+        <div class="card-titulo">Busco trabalho</div>
+        <div class="card-sub">Quero encontrar diárias e freelas perto de mim</div>
+      </div>
+      <div class="card-radio"><svg class="check-svg" viewBox="0 0 12 12"><polyline points="2,6 5,9 10,3"/></svg></div>
+    </div>
+    <div class="card" onclick="toggleCard(this)">
+      <div class="card-icon-wrap" style="background:#EEF2FF;">
+        <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#4F46E5" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/>
+          <polyline points="9 22 9 12 15 12 15 22"/>
+        </svg>
+      </div>
+      <div class="card-info">
+        <div class="card-titulo">Contrato pessoas</div>
+        <div class="card-sub">Sou empresa ou pessoa que precisa contratar</div>
+      </div>
+      <div class="card-radio"><svg class="check-svg" viewBox="0 0 12 12"><polyline points="2,6 5,9 10,3"/></svg></div>
+    </div>
+  </div>
+</div>
+
+
+<!-- 2. SVG FILLED — FUNDO SÓLIDO -->
+<div class="seccion">
+  <div class="sec-head">
+    <div class="sec-num">2</div>
+    <div class="sec-info">
+      <div class="sec-nombre">SVG Filled — Fundo sólido</div>
+      <div class="sec-desc">Ícone preenchido branco sobre fundo sólido colorido. Mais impacto visual.</div>
+      <div class="sec-tags"><span class="tag tag-o">Bold</span><span class="tag tag-d">Filled</span></div>
+    </div>
+  </div>
+  <div class="cards-demo">
+    <div class="card selected" onclick="toggleCard(this)">
+      <div class="card-icon-wrap" style="background:var(--orange);">
+        <svg width="28" height="28" viewBox="0 0 24 24" fill="white" stroke="none">
+          <path d="M20 6h-3V4c0-1.103-.897-2-2-2H9c-1.103 0-2 .897-2 2v2H4c-1.103 0-2 .897-2 2v11c0 1.103.897 2 2 2h16c1.103 0 2-.897 2-2V8c0-1.103-.897-2-2-2zm-5-2v2H9V4h6zM8 8h13v3H3V8h5zm-5 9V13h16l.002 4H3z"/>
+        </svg>
+      </div>
+      <div class="card-info">
+        <div class="card-titulo">Busco trabalho</div>
+        <div class="card-sub">Quero encontrar diárias e freelas perto de mim</div>
+      </div>
+      <div class="card-radio"><svg class="check-svg" viewBox="0 0 12 12"><polyline points="2,6 5,9 10,3"/></svg></div>
+    </div>
+    <div class="card" onclick="toggleCard(this)">
+      <div class="card-icon-wrap" style="background:#4F46E5;">
+        <svg width="28" height="28" viewBox="0 0 24 24" fill="white" stroke="none">
+          <path d="M19 2H5a3 3 0 0 0-3 3v14a3 3 0 0 0 3 3h14a3 3 0 0 0 3-3V5a3 3 0 0 0-3-3zm1 4-8 5-8-5V5l8 5 8-5v1z"/>
+        </svg>
+      </div>
+      <div class="card-info">
+        <div class="card-titulo">Contrato pessoas</div>
+        <div class="card-sub">Sou empresa ou pessoa que precisa contratar</div>
+      </div>
+      <div class="card-radio"><svg class="check-svg" viewBox="0 0 12 12"><polyline points="2,6 5,9 10,3"/></svg></div>
+    </div>
+  </div>
+</div>
+
+
+<!-- 3. ÍCONE GRANDE LATERAL -->
+<div class="seccion">
+  <div class="sec-head">
+    <div class="sec-num">3</div>
+    <div class="sec-info">
+      <div class="sec-nombre">Ícone grande — Sem fundo</div>
+      <div class="sec-desc">Ícone grande sem caixa de fundo. Ocupa mais espaço, visual mais livre.</div>
+      <div class="sec-tags"><span class="tag tag-g">Clean</span><span class="tag tag-d">Sem caixa</span></div>
+    </div>
+  </div>
+  <div class="cards-demo">
+    <div class="card selected" onclick="toggleCard(this)">
+      <div class="card-icon-wrap" style="background:transparent;">
+        <svg width="42" height="42" viewBox="0 0 24 24" fill="none" stroke="var(--orange)" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M20 7H4a2 2 0 0 0-2 2v10a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2V9a2 2 0 0 0-2-2z"/>
+          <path d="M16 7V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v2"/>
+          <line x1="12" y1="12" x2="12" y2="17"/>
+          <line x1="9.5" y1="14.5" x2="14.5" y2="14.5"/>
+        </svg>
+      </div>
+      <div class="card-info">
+        <div class="card-titulo">Busco trabalho</div>
+        <div class="card-sub">Quero encontrar diárias e freelas perto de mim</div>
+      </div>
+      <div class="card-radio"><svg class="check-svg" viewBox="0 0 12 12"><polyline points="2,6 5,9 10,3"/></svg></div>
+    </div>
+    <div class="card" onclick="toggleCard(this)">
+      <div class="card-icon-wrap" style="background:transparent;">
+        <svg width="42" height="42" viewBox="0 0 24 24" fill="none" stroke="var(--ink3)" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+          <rect x="3" y="3" width="18" height="18" rx="2"/>
+          <path d="M3 9h18"/>
+          <path d="M9 21V9"/>
+        </svg>
+      </div>
+      <div class="card-info">
+        <div class="card-titulo">Contrato pessoas</div>
+        <div class="card-sub">Sou empresa ou pessoa que precisa contratar</div>
+      </div>
+      <div class="card-radio"><svg class="check-svg" viewBox="0 0 12 12"><polyline points="2,6 5,9 10,3"/></svg></div>
+    </div>
+  </div>
+</div>
+
+
+<!-- 4. CARD FULL COLOR -->
+<div class="seccion">
+  <div class="sec-head">
+    <div class="sec-num">4</div>
+    <div class="sec-info">
+      <div class="sec-nombre">Card full color</div>
+      <div class="sec-desc">O card inteiro muda de cor ao selecionar. Máximo impacto visual, muito dinâmico.</div>
+      <div class="sec-tags"><span class="tag tag-o">Impacto</span><span class="tag tag-d">Full color</span></div>
+    </div>
+  </div>
+  <div class="cards-demo" id="full-cards">
+    <div class="card" id="fc1" style="background:var(--orange);border-color:var(--orange);" onclick="toggleFullCard('fc1','fc2')">
+      <div class="card-icon-wrap" style="background:rgba(255,255,255,0.2);">
+        <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round">
+          <rect x="2" y="7" width="20" height="14" rx="2"/>
+          <path d="M16 7V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v2"/>
+          <path d="M12 12v.01"/>
+        </svg>
+      </div>
+      <div class="card-info">
+        <div class="card-titulo" style="color:white;">Busco trabalho</div>
+        <div class="card-sub" style="color:rgba(255,255,255,0.8);">Quero encontrar diárias e freelas perto de mim</div>
+      </div>
+      <div class="card-radio" style="border-color:white;background:white;">
+        <svg class="check-svg" viewBox="0 0 12 12" style="stroke:var(--orange);opacity:1;"><polyline points="2,6 5,9 10,3"/></svg>
+      </div>
+    </div>
+    <div class="card" id="fc2" onclick="toggleFullCard('fc2','fc1')">
+      <div class="card-icon-wrap" style="background:#EEF2FF;">
+        <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#4F46E5" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/>
+          <polyline points="9 22 9 12 15 12 15 22"/>
+        </svg>
+      </div>
+      <div class="card-info">
+        <div class="card-titulo">Contrato pessoas</div>
+        <div class="card-sub">Sou empresa ou pessoa que precisa contratar</div>
+      </div>
+      <div class="card-radio"><svg class="check-svg" viewBox="0 0 12 12"><polyline points="2,6 5,9 10,3"/></svg></div>
+    </div>
+  </div>
+</div>
+
+
+<!-- 5. ÍCONE COM GRADIENTE -->
+<div class="seccion">
+  <div class="sec-head">
+    <div class="sec-num">5</div>
+    <div class="sec-info">
+      <div class="sec-nombre">Gradiente + Sombra</div>
+      <div class="sec-desc">Fundo com gradiente suave e sombra no ícone. Visual premium e moderno.</div>
+      <div class="sec-tags"><span class="tag tag-b">Premium</span><span class="tag tag-d">Gradiente</span></div>
+    </div>
+  </div>
+  <div class="cards-demo">
+    <div class="card selected" onclick="toggleCard(this)">
+      <div class="card-icon-wrap" style="background:linear-gradient(135deg,#FF6B3D,#FF4D20);box-shadow:0 6px 16px rgba(255,77,32,0.35);">
+        <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <rect x="2" y="7" width="20" height="14" rx="2"/>
+          <path d="M16 7V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v2"/>
+          <path d="M12 12v.01"/>
+        </svg>
+      </div>
+      <div class="card-info">
+        <div class="card-titulo">Busco trabalho</div>
+        <div class="card-sub">Quero encontrar diárias e freelas perto de mim</div>
+      </div>
+      <div class="card-radio"><svg class="check-svg" viewBox="0 0 12 12"><polyline points="2,6 5,9 10,3"/></svg></div>
+    </div>
+    <div class="card" onclick="toggleCard(this)">
+      <div class="card-icon-wrap" style="background:linear-gradient(135deg,#6366F1,#4F46E5);box-shadow:0 6px 16px rgba(79,70,229,0.35);">
+        <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/>
+          <polyline points="9 22 9 12 15 12 15 22"/>
+        </svg>
+      </div>
+      <div class="card-info">
+        <div class="card-titulo">Contrato pessoas</div>
+        <div class="card-sub">Sou empresa ou pessoa que precisa contratar</div>
+      </div>
+      <div class="card-radio"><svg class="check-svg" viewBox="0 0 12 12"><polyline points="2,6 5,9 10,3"/></svg></div>
+    </div>
+  </div>
+</div>
+
+
+<!-- 6. ÍCONE CIRCULAR -->
+<div class="seccion">
+  <div class="sec-head">
+    <div class="sec-num">6</div>
+    <div class="sec-info">
+      <div class="sec-nombre">Fundo circular</div>
+      <div class="sec-desc">Ícone dentro de círculo em vez de quadrado. Mais suave, sensação de app de redes sociais.</div>
+      <div class="sec-tags"><span class="tag tag-g">Suave</span><span class="tag tag-d">Circular</span></div>
+    </div>
+  </div>
+  <div class="cards-demo">
+    <div class="card selected" onclick="toggleCard(this)">
+      <div class="card-icon-wrap" style="width:52px;height:52px;border-radius:50%;background:var(--orange-soft);">
+        <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="var(--orange)" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round">
+          <circle cx="12" cy="8" r="4"/>
+          <path d="M6 20v-1a6 6 0 0 1 12 0v1"/>
+          <path d="M19 14l2 2 4-4"/>
+        </svg>
+      </div>
+      <div class="card-info">
+        <div class="card-titulo">Busco trabalho</div>
+        <div class="card-sub">Quero encontrar diárias e freelas perto de mim</div>
+      </div>
+      <div class="card-radio"><svg class="check-svg" viewBox="0 0 12 12"><polyline points="2,6 5,9 10,3"/></svg></div>
+    </div>
+    <div class="card" onclick="toggleCard(this)">
+      <div class="card-icon-wrap" style="width:52px;height:52px;border-radius:50%;background:#EEF2FF;">
+        <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="#4F46E5" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round">
+          <rect x="2" y="6" width="20" height="14" rx="2"/>
+          <path d="M8 6V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/>
+          <path d="M12 13h.01"/>
+          <path d="M2 13h20"/>
+        </svg>
+      </div>
+      <div class="card-info">
+        <div class="card-titulo">Contrato pessoas</div>
+        <div class="card-sub">Sou empresa ou pessoa que precisa contratar</div>
+      </div>
+      <div class="card-radio"><svg class="check-svg" viewBox="0 0 12 12"><polyline points="2,6 5,9 10,3"/></svg></div>
+    </div>
+  </div>
+</div>
+
+
+<!-- 7. CARD VERTICAL (estilo app store) -->
+<div class="seccion">
+  <div class="sec-head">
+    <div class="sec-num">7</div>
+    <div class="sec-info">
+      <div class="sec-nombre">Card vertical — Estilo App Store</div>
+      <div class="sec-desc">Cards lado a lado em formato vertical. Ícone grande em cima, texto embaixo. Visual de seleção de categoria.</div>
+      <div class="sec-tags"><span class="tag tag-b">App Store</span><span class="tag tag-d">Vertical</span></div>
+    </div>
+  </div>
+  <div style="padding:14px;display:flex;gap:10px;">
+    <div onclick="toggleVertical(this)" style="flex:1;border:2px solid var(--orange);border-radius:18px;padding:18px 10px;background:var(--orange-pale);display:flex;flex-direction:column;align-items:center;gap:10px;cursor:pointer;text-align:center;transition:all 0.2s;">
+      <div style="width:60px;height:60px;border-radius:16px;background:var(--orange);display:flex;align-items:center;justify-content:center;">
+        <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round">
+          <rect x="2" y="7" width="20" height="14" rx="2"/>
+          <path d="M16 7V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v2"/>
+        </svg>
+      </div>
+      <div style="font-weight:800;font-size:13px;color:var(--ink);">Busco<br>trabalho</div>
+      <div style="width:20px;height:20px;border-radius:50%;background:var(--orange);display:flex;align-items:center;justify-content:center;">
+        <svg width="11" height="11" viewBox="0 0 12 12" fill="none" stroke="white" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="2,6 5,9 10,3"/></svg>
+      </div>
+    </div>
+    <div onclick="toggleVertical(this)" style="flex:1;border:2px solid var(--border);border-radius:18px;padding:18px 10px;background:var(--white);display:flex;flex-direction:column;align-items:center;gap:10px;cursor:pointer;text-align:center;transition:all 0.2s;">
+      <div style="width:60px;height:60px;border-radius:16px;background:#EEF2FF;display:flex;align-items:center;justify-content:center;">
+        <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="#4F46E5" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/>
+          <polyline points="9 22 9 12 15 12 15 22"/>
+        </svg>
+      </div>
+      <div style="font-weight:800;font-size:13px;color:var(--ink);">Contrato<br>pessoas</div>
+      <div style="width:20px;height:20px;border-radius:50%;border:2px solid var(--border);background:white;"></div>
+    </div>
+  </div>
+</div>
+
+
+<!-- 8. DUOTONE (2 cores no SVG) -->
+<div class="seccion">
+  <div class="sec-head">
+    <div class="sec-num">8</div>
+    <div class="sec-info">
+      <div class="sec-nombre">Duotone SVG</div>
+      <div class="sec-desc">Ícone com duas cores: traço principal + detalhe em opacidade. Visual rico e sofisticado.</div>
+      <div class="sec-tags"><span class="tag tag-b">Duotone</span><span class="tag tag-o">Rico</span></div>
+    </div>
+  </div>
+  <div class="cards-demo">
+    <div class="card selected" onclick="toggleCard(this)">
+      <div class="card-icon-wrap" style="background:var(--orange-pale);">
+        <!-- Duotone: fundo opaco + traço principal -->
+        <svg width="30" height="30" viewBox="0 0 24 24" fill="none">
+          <!-- Sombra/forma traseira -->
+          <rect x="2" y="9" width="20" height="12" rx="2" fill="rgba(255,77,32,0.18)"/>
+          <!-- Traço principal -->
+          <rect x="2" y="7" width="20" height="14" rx="2" stroke="var(--orange)" stroke-width="1.75" fill="none"/>
+          <path d="M16 7V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v2" stroke="var(--orange)" stroke-width="1.75" fill="none"/>
+          <line x1="12" y1="12" x2="12" y2="16" stroke="var(--orange)" stroke-width="1.75" stroke-linecap="round"/>
+          <line x1="10" y1="14" x2="14" y2="14" stroke="var(--orange)" stroke-width="1.75" stroke-linecap="round"/>
+        </svg>
+      </div>
+      <div class="card-info">
+        <div class="card-titulo">Busco trabalho</div>
+        <div class="card-sub">Quero encontrar diárias e freelas perto de mim</div>
+      </div>
+      <div class="card-radio"><svg class="check-svg" viewBox="0 0 12 12"><polyline points="2,6 5,9 10,3"/></svg></div>
+    </div>
+    <div class="card" onclick="toggleCard(this)">
+      <div class="card-icon-wrap" style="background:#EEF2FF;">
+        <svg width="30" height="30" viewBox="0 0 24 24" fill="none">
+          <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z" fill="rgba(79,70,229,0.15)"/>
+          <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z" stroke="#4F46E5" stroke-width="1.75" fill="none"/>
+          <polyline points="9 22 9 12 15 12 15 22" stroke="#4F46E5" stroke-width="1.75" fill="none"/>
+        </svg>
+      </div>
+      <div class="card-info">
+        <div class="card-titulo">Contrato pessoas</div>
+        <div class="card-sub">Sou empresa ou pessoa que precisa contratar</div>
+      </div>
+      <div class="card-radio"><svg class="check-svg" viewBox="0 0 12 12"><polyline points="2,6 5,9 10,3"/></svg></div>
+    </div>
+  </div>
+</div>
+
+
+<script>
+function toggleCard(card) {
+  const section = card.closest('.cards-demo');
+  section.querySelectorAll('.card').forEach(c => {
+    c.classList.remove('selected');
+    c.style.background = '';
+    c.style.borderColor = '';
+    c.querySelectorAll('[style*="color:white"]').forEach(el => el.style.color = '');
+  });
+  card.classList.add('selected');
+}
+
+function toggleFullCard(selId, otherId) {
+  const sel = document.getElementById(selId);
+  const oth = document.getElementById(otherId);
+
+  // Reset otro
+  oth.style.background = '';
+  oth.style.borderColor = '';
+  oth.querySelectorAll('.card-titulo, .card-sub').forEach(el => el.style.color = '');
+  const othRadio = oth.querySelector('.card-radio');
+  othRadio.style.borderColor = '';
+  othRadio.style.background = '';
+  const othCheck = oth.querySelector('.check-svg');
+  othCheck.style.stroke = '';
+  othCheck.style.opacity = '0';
+
+  const othIcon = oth.querySelector('.card-icon-wrap');
+  // Restaurar fondo según cual es
+  if (othId === 'fc1') {
+    oth.style.background = '';
+    othIcon.style.background = 'var(--orange-soft)';
+  } else {
+    othIcon.style.background = '#EEF2FF';
+  }
+
+  // Activar seleccionado
+  if (selId === 'fc1') {
+    sel.style.background = 'var(--orange)';
+    sel.style.borderColor = 'var(--orange)';
+    sel.querySelector('.card-titulo').style.color = 'white';
+    sel.querySelector('.card-sub').style.color = 'rgba(255,255,255,0.8)';
+    sel.querySelector('.card-icon-wrap').style.background = 'rgba(255,255,255,0.2)';
+    const radio = sel.querySelector('.card-radio');
+    radio.style.borderColor = 'white';
+    radio.style.background = 'white';
+    const check = sel.querySelector('.check-svg');
+    check.style.stroke = 'var(--orange)';
+    check.style.opacity = '1';
+  } else {
+    sel.style.background = '#4F46E5';
+    sel.style.borderColor = '#4F46E5';
+    sel.querySelector('.card-titulo').style.color = 'white';
+    sel.querySelector('.card-sub').style.color = 'rgba(255,255,255,0.8)';
+    sel.querySelector('.card-icon-wrap').style.background = 'rgba(255,255,255,0.2)';
+    const radio = sel.querySelector('.card-radio');
+    radio.style.borderColor = 'white';
+    radio.style.background = 'white';
+    const check = sel.querySelector('.check-svg');
+    check.style.stroke = '#4F46E5';
+    check.style.opacity = '1';
+  }
+}
+
+function toggleVertical(card) {
+  const parent = card.parentElement;
+  parent.querySelectorAll('[onclick]').forEach(c => {
+    c.style.borderColor = 'var(--border)';
+    c.style.background = 'var(--white)';
+    c.querySelectorAll('div').forEach(d => {
+      if (d.style.borderRadius === '50%') {
+        d.style.background = 'white';
+        d.innerHTML = '';
+      }
+    });
+  });
+  card.style.borderColor = 'var(--orange)';
+  card.style.background = 'var(--orange-pale)';
+}
+</script>
+
+</body>
+</html>
