@@ -212,6 +212,18 @@
       position: relative; z-index: 1;
     }
 
+    .perfil-icon-wrap {
+      width: 54px; height: 54px;
+      border-radius: 16px;
+      display: flex; align-items: center; justify-content: center;
+      flex-shrink: 0; position: relative; z-index: 1;
+      transition: box-shadow 0.2s, transform 0.2s;
+    }
+
+    .perfil-card.selecionado .perfil-icon-wrap {
+      transform: scale(1.08);
+    }
+
     .perfil-info { position: relative; z-index: 1; flex: 1; }
 
     .perfil-titulo {
@@ -367,6 +379,18 @@
     .modal-card:active { transform: scale(0.98); }
 
     .modal-icon { font-size: 36px; flex-shrink: 0; position: relative; z-index: 1; }
+
+    .modal-icon-wrap {
+      width: 50px; height: 50px;
+      border-radius: 14px;
+      display: flex; align-items: center; justify-content: center;
+      flex-shrink: 0; position: relative; z-index: 1;
+      transition: transform 0.2s, box-shadow 0.2s;
+    }
+
+    .modal-card.sel .modal-icon-wrap {
+      transform: scale(1.08);
+    }
     .modal-info { flex: 1; position: relative; z-index: 1; }
     .modal-titulo { font-weight: 800; font-size: 16px; color: var(--ink); margin-bottom: 3px; }
     .modal-sub { font-size: 12px; color: var(--ink2); line-height: 1.4; }
@@ -631,7 +655,14 @@
       <p class="paso-titulo">Como você vai usar o Eureka? 🎯</p>
       <div class="perfil-cards">
         <div class="perfil-card" id="pc-trabalhador" onclick="selecionarPerfil('trabalhador')">
-          <div class="perfil-emoji">💼</div>
+          <div class="perfil-icon-wrap" style="background:linear-gradient(135deg,#FF6B3D,#FF4D20);box-shadow:0 6px 16px rgba(255,77,32,0.35);">
+            <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round">
+              <rect x="2" y="7" width="20" height="14" rx="2"/>
+              <path d="M16 7V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v2"/>
+              <line x1="12" y1="12" x2="12" y2="16"/>
+              <line x1="10" y1="14" x2="14" y2="14"/>
+            </svg>
+          </div>
           <div class="perfil-info">
             <div class="perfil-titulo">Busco trabalho</div>
             <div class="perfil-sub">Quero encontrar diárias, freelas e oportunidades perto de mim</div>
@@ -641,7 +672,12 @@
           </div>
         </div>
         <div class="perfil-card" id="pc-empresa" onclick="selecionarPerfil('empresa')">
-          <div class="perfil-emoji">🏢</div>
+          <div class="perfil-icon-wrap" style="background:linear-gradient(135deg,#6366F1,#4F46E5);box-shadow:0 6px 16px rgba(79,70,229,0.35);">
+            <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/>
+              <polyline points="9 22 9 12 15 12 15 22"/>
+            </svg>
+          </div>
           <div class="perfil-info">
             <div class="perfil-titulo">Contrato pessoas</div>
             <div class="perfil-sub">Sou empresa ou pessoa física que precisa contratar trabalhadores</div>
@@ -769,7 +805,12 @@
       <p class="paso-titulo">Como você prefere trabalhar? 🏠</p>
       <div class="modal-cards">
         <div class="modal-card" id="mc-presencial" onclick="selModal('presencial')">
-          <div class="modal-icon">🏢</div>
+          <div class="modal-icon-wrap" style="background:linear-gradient(135deg,#FF6B3D,#FF4D20);box-shadow:0 6px 16px rgba(255,77,32,0.30);">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round">
+              <rect x="3" y="3" width="18" height="18" rx="2"/>
+              <path d="M3 9h18M9 21V9"/>
+            </svg>
+          </div>
           <div class="modal-info">
             <div class="modal-titulo">Presencial</div>
             <div class="modal-sub">Trabalho no local — restaurantes, residências, obras, eventos</div>
@@ -777,7 +818,12 @@
           <div class="modal-check"><svg viewBox="0 0 12 12"><polyline points="2,6 5,9 10,3"/></svg></div>
         </div>
         <div class="modal-card" id="mc-remoto" onclick="selModal('remoto')">
-          <div class="modal-icon">🏠</div>
+          <div class="modal-icon-wrap" style="background:linear-gradient(135deg,#34D399,#059669);box-shadow:0 6px 16px rgba(5,150,105,0.30);">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/>
+              <polyline points="9 22 9 12 15 12 15 22"/>
+            </svg>
+          </div>
           <div class="modal-info">
             <div class="modal-titulo">Desde casa</div>
             <div class="modal-sub">Trabalho remoto — design, suporte, marketing, programação</div>
@@ -785,7 +831,12 @@
           <div class="modal-check"><svg viewBox="0 0 12 12"><polyline points="2,6 5,9 10,3"/></svg></div>
         </div>
         <div class="modal-card" id="mc-hibrido" onclick="selModal('hibrido')">
-          <div class="modal-icon">🔄</div>
+          <div class="modal-icon-wrap" style="background:linear-gradient(135deg,#6366F1,#4F46E5);box-shadow:0 6px 16px rgba(79,70,229,0.30);">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M12 3v18M3 12h18"/>
+              <circle cx="12" cy="12" r="9"/>
+            </svg>
+          </div>
           <div class="modal-info">
             <div class="modal-titulo">Ambos</div>
             <div class="modal-sub">Aceito trabalhos presenciais e remotos conforme a oportunidade</div>
