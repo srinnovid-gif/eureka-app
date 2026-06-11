@@ -571,6 +571,39 @@
     }
 
     /* ══════════════════════════════════════
+       ACEITE DE TERMOS
+    ══════════════════════════════════════ */
+    .aceite-termos {
+      display: flex; align-items: flex-start; gap: 10px;
+      padding: 14px; margin-top: 4px;
+      background: var(--surface); border: 1.5px solid var(--border);
+      border-radius: 16px; cursor: pointer;
+      transition: border-color 0.2s;
+    }
+
+    .aceite-termos.err { border-color: var(--red); animation: shake 0.4s ease; }
+
+    .aceite-checkbox {
+      width: 22px; height: 22px; border-radius: 7px;
+      border: 2px solid var(--border); background: var(--white);
+      display: flex; align-items: center; justify-content: center;
+      flex-shrink: 0; margin-top: 1px;
+      transition: all 0.2s;
+    }
+
+    .aceite-checkbox svg {
+      width: 13px; height: 13px; stroke: white; fill: none;
+      stroke-width: 2.5; stroke-linecap: round; stroke-linejoin: round;
+      opacity: 0; transition: opacity 0.2s;
+    }
+
+    .aceite-termos.checked .aceite-checkbox { border-color: var(--orange); background: var(--orange); }
+    .aceite-termos.checked .aceite-checkbox svg { opacity: 1; }
+
+    .aceite-texto { font-size: 12.5px; color: var(--ink2); line-height: 1.5; }
+    .aceite-texto a { color: var(--orange); font-weight: 700; text-decoration: none; }
+
+    /* ══════════════════════════════════════
        ERROR GLOBAL
     ══════════════════════════════════════ */
     #msg-err {
@@ -893,6 +926,15 @@
       <div class="subareas-section" id="subareas-section">
         <!-- Generado dinámicamente según nichos seleccionados -->
       </div>
+
+      <div class="aceite-termos" id="aceite-termos" onclick="toggleAceite()">
+        <div class="aceite-checkbox">
+          <svg viewBox="0 0 12 12"><polyline points="2,6 5,9 10,3"/></svg>
+        </div>
+        <div class="aceite-texto">
+          Li e aceito os <a href="termos.html" target="_blank" rel="noopener" onclick="event.stopPropagation()">Termos e Condições</a> e a <a href="privacidade.html" target="_blank" rel="noopener" onclick="event.stopPropagation()">Política de Privacidade</a> do Eureka.
+        </div>
+      </div>
     </div>
 
   </div><!-- /pasos-wrap -->
@@ -953,7 +995,10 @@ window.criarConta = async function() {
       uid: cred.user.uid,
       criadoEm: serverTimestamp(),
       perfilCompleto: false,
-      status: 'ativo'
+      status: 'ativo',
+      aceiteTermos: true,
+      aceiteTermosEm: serverTimestamp(),
+      aceiteTermosVersao: '2026-06'
     });
     window.location.href = 'onboarding.html';
   } catch(err) {
@@ -999,6 +1044,7 @@ window._perfilSel   = null;
 window._modalSel    = null;
 window._nichosSel   = [];
 window._subareasSel = {};
+window._aceiteTermos = false;
 
 // Labels de los pasos
 const PASO_INFO = [
@@ -1230,6 +1276,15 @@ function validarPasoActual() {
   }
   if (pasoActual === 4) {
     if (window._nichosSel.length === 0) { window.mostrarErr('Selecione pelo menos 1 área.'); return false; }
+    return true;
+  }
+  if (pasoActual === 5) {
+    if (!window._aceiteTermos) {
+      document.getElementById('aceite-termos').classList.add('err');
+      setTimeout(() => document.getElementById('aceite-termos').classList.remove('err'), 400);
+      window.mostrarErr('Você precisa aceitar os Termos e a Política de Privacidade.');
+      return false;
+    }
     return true;
   }
   return true;
@@ -1509,6 +1564,15 @@ window.mascaraCel = function(el) {
   v = v.replace(/^(\d{2})(\d)/,'($1) $2');
   v = v.replace(/(\d{5})(\d)/,'$1-$2');
   el.value = v.slice(0,15);
+};
+
+// ══════════════════════════════════════
+// ACEITE DE TERMOS
+// ══════════════════════════════════════
+window.toggleAceite = function() {
+  window._aceiteTermos = !window._aceiteTermos;
+  document.getElementById('aceite-termos').classList.toggle('checked', window._aceiteTermos);
+  document.getElementById('aceite-termos').classList.remove('err');
 };
 
 // ══════════════════════════════════════
