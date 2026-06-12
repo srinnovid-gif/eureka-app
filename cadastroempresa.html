@@ -11,7 +11,7 @@
   <meta name="theme-color" content="#FF4D20"/>
   <meta name="mobile-web-app-capable" content="yes"/>
   <meta name="apple-mobile-web-app-capable" content="yes"/>
-  <title>Eureka! — Criar conta</title>
+  <title>Eureka! — Criar conta de empresa</title>
   <link rel="preconnect" href="https://fonts.googleapis.com"/>
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
   <link href="https://fonts.googleapis.com/css2?family=Asap:ital,wght@0,700;0,800;1,700;1,800&family=Geologica:slnt,wght@-12..0,100..900&family=Glory:ital,wght@0,400;0,700;0,800;1,700;1,800&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet"/>
@@ -112,9 +112,7 @@
       background: var(--white);
     }
 
-    .prog-bar {
-      display: flex; gap: 5px;
-    }
+    .prog-bar { display: flex; gap: 5px; }
 
     .prog-seg {
       flex: 1; height: 3px; border-radius: 2px;
@@ -150,9 +148,7 @@
     /* ══════════════════════════════════════
        PASOS
     ══════════════════════════════════════ */
-    .pasos-wrap {
-      flex: 1; position: relative; overflow: hidden;
-    }
+    .pasos-wrap { flex: 1; position: relative; overflow: hidden; }
 
     .paso {
       position: absolute; inset: 0;
@@ -164,105 +160,13 @@
       transition: opacity 0.32s ease, transform 0.32s ease;
     }
 
-    .paso.visible {
-      opacity: 1; transform: translateX(0); pointer-events: all;
-    }
-
-    .paso.saliendo {
-      opacity: 0; transform: translateX(-32px); pointer-events: none;
-    }
+    .paso.visible { opacity: 1; transform: translateX(0); pointer-events: all; }
+    .paso.saliendo { opacity: 0; transform: translateX(-32px); pointer-events: none; }
 
     .paso-titulo {
       font-weight: 700; font-size: 15px;
       color: var(--ink); letter-spacing: -0.01em;
     }
-
-    /* ══════════════════════════════════════
-       STEP 1 — PERFIL
-    ══════════════════════════════════════ */
-    .perfil-cards {
-      display: flex; flex-direction: column; gap: 12px;
-      margin-top: 4px;
-    }
-
-    .perfil-card {
-      border: 2px solid var(--border);
-      border-radius: 20px;
-      padding: 22px 18px;
-      cursor: pointer;
-      transition: all 0.2s;
-      display: flex; align-items: center; gap: 14px;
-      background: var(--white);
-      position: relative; overflow: hidden;
-    }
-
-    .perfil-card::before {
-      content: '';
-      position: absolute; inset: 0;
-      background: var(--orange-pale);
-      opacity: 0; transition: opacity 0.2s;
-    }
-
-    .perfil-card.selecionado {
-      border-color: var(--orange);
-      box-shadow: 0 0 0 3px rgba(255,77,32,0.1);
-    }
-
-    .perfil-card.selecionado::before { opacity: 1; }
-
-    .perfil-card:active { transform: scale(0.98); }
-
-    .perfil-emoji {
-      font-size: 40px; flex-shrink: 0;
-      position: relative; z-index: 1;
-    }
-
-    .perfil-icon-wrap {
-      width: 54px; height: 54px;
-      border-radius: 16px;
-      display: flex; align-items: center; justify-content: center;
-      flex-shrink: 0; position: relative; z-index: 1;
-      transition: box-shadow 0.2s, transform 0.2s;
-    }
-
-    .perfil-card.selecionado .perfil-icon-wrap {
-      transform: scale(1.08);
-    }
-
-    .perfil-info { position: relative; z-index: 1; flex: 1; }
-
-    .perfil-titulo {
-      font-weight: 800; font-size: 17px;
-      color: var(--ink); letter-spacing: -0.01em;
-      margin-bottom: 4px;
-    }
-
-    .perfil-sub {
-      font-size: 12.5px; color: var(--ink2); line-height: 1.4;
-    }
-
-    .perfil-check {
-      width: 24px; height: 24px; border-radius: 50%;
-      border: 2px solid var(--border);
-      background: var(--white);
-      display: flex; align-items: center; justify-content: center;
-      flex-shrink: 0; position: relative; z-index: 1;
-      transition: all 0.2s;
-    }
-
-    .perfil-card.selecionado .perfil-check {
-      border-color: var(--orange);
-      background: var(--orange);
-    }
-
-    .perfil-check svg {
-      width: 13px; height: 13px; stroke: white;
-      fill: none; stroke-width: 2.5;
-      stroke-linecap: round; stroke-linejoin: round;
-      opacity: 0; transition: opacity 0.2s;
-    }
-
-    .perfil-card.selecionado .perfil-check svg { opacity: 1; }
 
     /* ══════════════════════════════════════
        CAMPOS
@@ -360,65 +264,55 @@
     .f-txt.forte { color: var(--green); }
 
     /* ══════════════════════════════════════
-       STEP 4 — MODALIDADE
+       TIPO DE NEGÓCIO / EQUIPE (chips)
     ══════════════════════════════════════ */
-    .modal-cards {
-      display: flex; flex-direction: column; gap: 12px; margin-top: 4px;
+    .tipo-chips { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 4px; }
+
+    .tipo-chip {
+      padding: 10px 16px; border-radius: 50px;
+      border: 1.5px solid var(--border); background: var(--white);
+      font-size: 13px; font-weight: 700; color: var(--ink2);
+      cursor: pointer; transition: all 0.18s;
+      display: flex; align-items: center; gap: 6px;
     }
 
-    .modal-card {
-      border: 2px solid var(--border);
-      border-radius: 20px; padding: 18px 20px;
-      cursor: pointer; transition: all 0.2s;
-      display: flex; align-items: center; gap: 16px;
-      background: var(--white); position: relative; overflow: hidden;
+    .tipo-chip:active { transform: scale(0.96); }
+
+    .tipo-chip.sel {
+      border-color: var(--orange);
+      background: var(--orange-pale);
+      color: var(--orange-d);
     }
-
-    .modal-card::before {
-      content: ''; position: absolute; inset: 0;
-      background: var(--orange-pale); opacity: 0; transition: opacity 0.2s;
-    }
-
-    .modal-card.sel { border-color: var(--orange); box-shadow: 0 0 0 3px rgba(255,77,32,0.1); }
-    .modal-card.sel::before { opacity: 1; }
-    .modal-card:active { transform: scale(0.98); }
-
-    .modal-icon { font-size: 36px; flex-shrink: 0; position: relative; z-index: 1; }
-
-    .modal-icon-wrap {
-      width: 50px; height: 50px;
-      border-radius: 14px;
-      display: flex; align-items: center; justify-content: center;
-      flex-shrink: 0; position: relative; z-index: 1;
-      transition: transform 0.2s, box-shadow 0.2s;
-    }
-
-    .modal-card.sel .modal-icon-wrap {
-      transform: scale(1.08);
-    }
-    .modal-info { flex: 1; position: relative; z-index: 1; }
-    .modal-titulo { font-weight: 800; font-size: 16px; color: var(--ink); margin-bottom: 3px; }
-    .modal-sub { font-size: 12px; color: var(--ink2); line-height: 1.4; }
-
-    .modal-check {
-      width: 22px; height: 22px; border-radius: 50%;
-      border: 2px solid var(--border); background: var(--white);
-      display: flex; align-items: center; justify-content: center;
-      flex-shrink: 0; position: relative; z-index: 1; transition: all 0.2s;
-    }
-
-    .modal-card.sel .modal-check { border-color: var(--orange); background: var(--orange); }
-
-    .modal-check svg {
-      width: 11px; height: 11px; stroke: white; fill: none;
-      stroke-width: 2.5; stroke-linecap: round; stroke-linejoin: round;
-      opacity: 0; transition: opacity 0.2s;
-    }
-
-    .modal-card.sel .modal-check svg { opacity: 1; }
 
     /* ══════════════════════════════════════
-       STEP 5 — NICHOS
+       LOCALIZAÇÃO (GPS)
+    ══════════════════════════════════════ */
+    .loc-gps {
+      display: flex; align-items: center; gap: 12px;
+      padding: 14px 16px; border-radius: 16px;
+      border: 1.5px dashed var(--ink3); background: var(--surface);
+      cursor: pointer; transition: all 0.2s;
+    }
+
+    .loc-gps.ok  { border-color: var(--green); border-style: solid; background: var(--green-pale); }
+    .loc-gps.err { border-color: var(--red);   border-style: solid; background: var(--red-pale); }
+
+    .loc-gps-icon {
+      width: 40px; height: 40px; border-radius: 12px;
+      display: flex; align-items: center; justify-content: center;
+      background: var(--orange-pale); color: var(--orange);
+      flex-shrink: 0; transition: all 0.2s;
+    }
+
+    .loc-gps.ok  .loc-gps-icon { background: var(--white); color: var(--green); }
+    .loc-gps.err .loc-gps-icon { background: var(--white); color: var(--red); }
+
+    .loc-gps-info { flex: 1; }
+    .loc-gps-titulo { font-weight: 800; font-size: 13.5px; color: var(--ink); margin-bottom: 2px; }
+    .loc-gps-sub { font-size: 11.5px; color: var(--ink2); line-height: 1.4; }
+
+    /* ══════════════════════════════════════
+       HINT / CONTADOR (equipe)
     ══════════════════════════════════════ */
     .nichos-hint {
       display: flex; align-items: center; gap: 8px;
@@ -440,135 +334,38 @@
       padding: 2px 8px; border-radius: 50px;
     }
 
-    .nichos-grid {
-      display: grid; grid-template-columns: 1fr 1fr;
-      gap: 10px;
-    }
-
-    .nicho-card {
-      border: 2px solid var(--border);
-      border-radius: 16px; /* SIN puntas afiladas */
-      padding: 16px 12px;
-      cursor: pointer; transition: all 0.22s;
-      display: flex; flex-direction: column;
-      align-items: center; gap: 8px;
-      background: var(--white);
-      position: relative; overflow: hidden;
-      min-height: 100px;
-      text-align: center;
-    }
-
-    .nicho-card:active { transform: scale(0.96); }
-
-    /* Estado seleccionado — verde claro con check */
-    .nicho-card.sel {
-      border-color: var(--green);
-      background: var(--green-pale);
-      box-shadow: 0 0 0 2px rgba(31,173,107,0.15);
-    }
-
-    /* Check badge top-right */
-    .nicho-check-badge {
-      position: absolute; top: 8px; right: 8px;
-      width: 20px; height: 20px;
-      background: var(--green); border-radius: 50%;
-      display: flex; align-items: center; justify-content: center;
-      opacity: 0; transform: scale(0.5);
-      transition: opacity 0.2s, transform 0.25s cubic-bezier(0.34,1.56,0.64,1);
-    }
-
-    .nicho-card.sel .nicho-check-badge {
-      opacity: 1; transform: scale(1);
-    }
-
-    .nicho-check-badge svg {
-      width: 11px; height: 11px; stroke: white; fill: none;
-      stroke-width: 2.5; stroke-linecap: round; stroke-linejoin: round;
-    }
-
-    /* Estado deshabilitado — cuando ya tiene 3 */
-    .nicho-card.disabled {
-      opacity: 0.4; cursor: not-allowed;
-    }
-
-    .nicho-card.disabled:active { transform: none; }
-
-    .nicho-emoji { font-size: 32px; line-height: 1; }
-
-    .nicho-icon-wrap {
-      display: flex; align-items: center; justify-content: center;
-      color: var(--ink2);
-      transition: color 0.2s;
-    }
-
-    .nicho-card.sel .nicho-icon-wrap { color: var(--green); }
-    .nicho-card.outros-card .nicho-icon-wrap { color: var(--ink3); }
-
-    .nicho-nome {
-      font-weight: 700; font-size: 12.5px;
-      color: var(--ink); line-height: 1.2;
-    }
-
-    .nicho-card.sel .nicho-nome { color: var(--green); }
-
-    /* Botón "Outros" — especial */
-    .nicho-card.outros-card {
-      border-style: dashed;
-      border-color: var(--ink3);
-      background: #FAFAFA;
-    }
-
-    .nicho-card.outros-card .nicho-nome { color: var(--ink2); }
-
-    /* Expandidos (ocultos por defecto) */
-    .nichos-expand {
-      display: grid; grid-template-columns: 1fr 1fr;
-      gap: 10px; overflow: hidden;
-      max-height: 0; opacity: 0;
-      transition: max-height 0.4s ease, opacity 0.3s ease;
-    }
-
-    .nichos-expand.show { max-height: 800px; opacity: 1; }
-
     /* ══════════════════════════════════════
-       STEP 6 — SUBÁREAS
+       ACEITE DE TERMOS
     ══════════════════════════════════════ */
-    .subareas-section { display: flex; flex-direction: column; gap: 16px; }
-
-    .subarea-nicho-titulo {
-      font-weight: 800; font-size: 14px; color: var(--ink);
-      display: flex; align-items: center; gap: 8px;
-      padding-bottom: 8px;
-      border-bottom: 1px solid var(--border);
+    .aceite-termos {
+      display: flex; align-items: flex-start; gap: 10px;
+      padding: 14px; margin-top: 4px;
+      background: var(--surface); border: 1.5px solid var(--border);
+      border-radius: 16px; cursor: pointer;
+      transition: border-color 0.2s;
     }
 
-    .subarea-nicho-emoji { font-size: 20px; }
+    .aceite-termos.err { border-color: var(--red); animation: shake 0.4s ease; }
 
-    .subareas-chips {
-      display: flex; flex-wrap: wrap; gap: 8px;
+    .aceite-checkbox {
+      width: 22px; height: 22px; border-radius: 7px;
+      border: 2px solid var(--border); background: var(--white);
+      display: flex; align-items: center; justify-content: center;
+      flex-shrink: 0; margin-top: 1px;
+      transition: all 0.2s;
     }
 
-    .subarea-chip {
-      padding: 8px 14px; border-radius: 12px;
-      border: 1.5px solid var(--border);
-      background: var(--white); cursor: pointer;
-      font-size: 13px; font-weight: 600; color: var(--ink2);
-      transition: all 0.18s;
-      display: flex; align-items: center; gap: 6px;
+    .aceite-checkbox svg {
+      width: 13px; height: 13px; stroke: white; fill: none;
+      stroke-width: 2.5; stroke-linecap: round; stroke-linejoin: round;
+      opacity: 0; transition: opacity 0.2s;
     }
 
-    .subarea-chip:active { transform: scale(0.96); }
+    .aceite-termos.checked .aceite-checkbox { border-color: var(--orange); background: var(--orange); }
+    .aceite-termos.checked .aceite-checkbox svg { opacity: 1; }
 
-    .subarea-chip.sel {
-      border-color: var(--green);
-      background: var(--green-pale);
-      color: var(--green);
-    }
-
-    .subarea-chip.sel::before {
-      content: '✓';
-      font-size: 11px; font-weight: 800;
-    }
+    .aceite-texto { font-size: 12.5px; color: var(--ink2); line-height: 1.5; }
+    .aceite-texto a { color: var(--orange); font-weight: 700; text-decoration: none; }
 
     /* ══════════════════════════════════════
        ERROR GLOBAL
@@ -650,8 +447,8 @@
       <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 12H5M11 6l-6 6 6 6"/></svg>
     </button>
     <div class="header-logo">Eureka!</div>
-    <h1 class="header-titulo" id="header-titulo">Criar sua conta</h1>
-    <p class="header-sub" id="header-sub">Rápido, grátis e sem burocracia.</p>
+    <h1 class="header-titulo" id="header-titulo">Sua empresa no Eureka</h1>
+    <p class="header-sub" id="header-sub">Quem é o responsável pela conta?</p>
   </div>
 
   <!-- PROGRESO -->
@@ -666,53 +463,9 @@
   <!-- PASOS -->
   <div class="pasos-wrap">
 
-    <!-- ══ PASO 0: PERFIL ══ -->
+    <!-- ══ PASO 0: DADOS DO RESPONSÁVEL ══ -->
     <div class="paso visible" id="paso-0">
-      <p class="paso-titulo">Como você vai usar o Eureka? 🎯</p>
-      <div class="perfil-cards">
-        <div class="perfil-card" id="pc-trabalhador" onclick="selecionarPerfil('trabalhador')">
-          <div class="perfil-icon-wrap" style="background:linear-gradient(135deg,#FF6B3D,#FF4D20);box-shadow:0 6px 16px rgba(255,77,32,0.35);">
-            <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round">
-              <rect x="2" y="7" width="20" height="14" rx="2"/>
-              <path d="M16 7V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v2"/>
-              <line x1="12" y1="12" x2="12" y2="16"/>
-              <line x1="10" y1="14" x2="14" y2="14"/>
-            </svg>
-          </div>
-          <div class="perfil-info">
-            <div class="perfil-titulo">Busco trabalho</div>
-            <div class="perfil-sub">Quero encontrar diárias, freelas e oportunidades perto de mim</div>
-          </div>
-          <div class="perfil-check">
-            <svg viewBox="0 0 12 12"><polyline points="2,6 5,9 10,3"/></svg>
-          </div>
-        </div>
-        <div class="perfil-card" id="pc-empresa" onclick="selecionarPerfil('empresa')">
-          <div class="perfil-icon-wrap" style="background:linear-gradient(135deg,#6366F1,#4F46E5);box-shadow:0 6px 16px rgba(79,70,229,0.35);">
-            <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round">
-              <!-- Edificio empresa -->
-              <path d="M3 21V7l9-4 9 4v14"/>
-              <path d="M9 21V12h6v9"/>
-              <path d="M3 21h18"/>
-              <!-- Persona con check (contratada) -->
-              <circle cx="19" cy="7" r="3" fill="white" fill-opacity="0.25"/>
-              <path d="M17.5 7l1 1 2-2" stroke-width="1.5"/>
-            </svg>
-          </div>
-          <div class="perfil-info">
-            <div class="perfil-titulo">Contrato pessoas</div>
-            <div class="perfil-sub">Sou empresa ou pessoa física que precisa contratar trabalhadores</div>
-          </div>
-          <div class="perfil-check">
-            <svg viewBox="0 0 12 12"><polyline points="2,6 5,9 10,3"/></svg>
-          </div>
-        </div>
-      </div>
-    </div>
-
-    <!-- ══ PASO 1: DADOS PESSOAIS ══ -->
-    <div class="paso" id="paso-1">
-      <p class="paso-titulo">Como podemos te chamar? 👋</p>
+      <p class="paso-titulo">Quem é o responsável pela conta? 👋</p>
 
       <div class="fila-2">
         <div class="campo">
@@ -723,7 +476,7 @@
               onblur="valCampo(this,'nome-err','Digite seu nome',false)"/>
             <span class="campo-icone"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="7" r="4"/><path d="M6 21v-2a4 4 0 0 1 4-4h4a4 4 0 0 1 4 4v2"/></svg></span>
             <div class="campo-estado">
-              <svg id="nome-ok" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20,6 9,17 4,12"/></svg>
+              <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20,6 9,17 4,12"/></svg>
             </div>
           </div>
           <div class="campo-err-msg" id="nome-err">⚠ Digite seu nome</div>
@@ -770,8 +523,8 @@
       </div>
     </div>
 
-    <!-- ══ PASO 2: ACESSO ══ -->
-    <div class="paso" id="paso-2">
+    <!-- ══ PASO 1: ACESSO ══ -->
+    <div class="paso" id="paso-1">
       <p class="paso-titulo">Crie seu acesso 🔐</p>
 
       <div class="campo">
@@ -821,77 +574,93 @@
       </div>
     </div>
 
-    <!-- ══ PASO 3: MODALIDADE ══ -->
-    <div class="paso" id="paso-3">
-      <p class="paso-titulo">Como você prefere trabalhar? 🏠</p>
-      <div class="modal-cards">
-        <div class="modal-card" id="mc-presencial" onclick="selModal('presencial')">
-          <div class="modal-icon-wrap" style="background:linear-gradient(135deg,#FF6B3D,#FF4D20);box-shadow:0 6px 16px rgba(255,77,32,0.30);">
-            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round">
-              <rect x="3" y="3" width="18" height="18" rx="2"/>
-              <path d="M3 9h18M9 21V9"/>
-            </svg>
+    <!-- ══ PASO 2: DADOS DO NEGÓCIO ══ -->
+    <div class="paso" id="paso-2">
+      <p class="paso-titulo">Conte sobre seu negócio 🏢</p>
+
+      <div class="campo">
+        <label class="campo-label" for="nomeNegocio">Nome do negócio <span class="req">*</span></label>
+        <div class="campo-wrap">
+          <input class="campo-input sin-icono" type="text" id="nomeNegocio" placeholder="Ex: Restaurante Sabor Caseiro"
+            oninput="valCampo(this,'nomeNegocio-err','',true)"
+            onblur="valCampo(this,'nomeNegocio-err','Digite o nome do seu negócio',false)"/>
+          <div class="campo-estado">
+            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20,6 9,17 4,12"/></svg>
           </div>
-          <div class="modal-info">
-            <div class="modal-titulo">Presencial</div>
-            <div class="modal-sub">Trabalho no local — restaurantes, residências, obras, eventos</div>
-          </div>
-          <div class="modal-check"><svg viewBox="0 0 12 12"><polyline points="2,6 5,9 10,3"/></svg></div>
         </div>
-        <div class="modal-card" id="mc-remoto" onclick="selModal('remoto')">
-          <div class="modal-icon-wrap" style="background:linear-gradient(135deg,#34D399,#059669);box-shadow:0 6px 16px rgba(5,150,105,0.30);">
-            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round">
-              <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/>
-              <polyline points="9 22 9 12 15 12 15 22"/>
-            </svg>
-          </div>
-          <div class="modal-info">
-            <div class="modal-titulo">Desde casa</div>
-            <div class="modal-sub">Trabalho remoto — design, suporte, marketing, programação</div>
-          </div>
-          <div class="modal-check"><svg viewBox="0 0 12 12"><polyline points="2,6 5,9 10,3"/></svg></div>
+        <div class="campo-err-msg" id="nomeNegocio-err">⚠ Digite o nome do seu negócio</div>
+      </div>
+
+      <div class="campo">
+        <label class="campo-label">Tipo de negócio <span class="req">*</span></label>
+        <div class="tipo-chips" id="tipo-negocio-chips">
+          <!-- Gerado por JS -->
         </div>
-        <div class="modal-card" id="mc-hibrido" onclick="selModal('hibrido')">
-          <div class="modal-icon-wrap" style="background:linear-gradient(135deg,#6366F1,#4F46E5);box-shadow:0 6px 16px rgba(79,70,229,0.30);">
-            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round">
-              <path d="M12 3v18M3 12h18"/>
-              <circle cx="12" cy="12" r="9"/>
-            </svg>
+      </div>
+
+      <div class="campo">
+        <label class="campo-label" for="cnpj">CNPJ <span class="req">*</span></label>
+        <div class="campo-wrap">
+          <input class="campo-input" type="tel" id="cnpj" placeholder="00.000.000/0000-00" inputmode="numeric" maxlength="18"
+            oninput="mascaraCNPJ(this)" onblur="valCNPJ(this)"/>
+          <span class="campo-icone"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M3 21V7l9-4 9 4v14"/><path d="M9 21V12h6v9"/><path d="M3 21h18"/></svg></span>
+          <div class="campo-estado">
+            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20,6 9,17 4,12"/></svg>
           </div>
-          <div class="modal-info">
-            <div class="modal-titulo">Ambos</div>
-            <div class="modal-sub">Aceito trabalhos presenciais e remotos conforme a oportunidade</div>
-          </div>
-          <div class="modal-check"><svg viewBox="0 0 12 12"><polyline points="2,6 5,9 10,3"/></svg></div>
         </div>
+        <div class="campo-err-msg" id="cnpj-err">⚠ CNPJ inválido</div>
       </div>
     </div>
 
-    <!-- ══ PASO 4: NICHOS ══ -->
+    <!-- ══ PASO 3: LOCALIZAÇÃO ══ -->
+    <div class="paso" id="paso-3">
+      <p class="paso-titulo">Onde fica o seu negócio? 📍</p>
+
+      <div class="loc-gps" id="loc-gps" onclick="capturarLocalizacao()">
+        <div class="loc-gps-icon">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M12 21s-7-5.686-7-10a7 7 0 0 1 14 0c0 4.314-7 10-7 10z"/><circle cx="12" cy="11" r="2.5"/></svg>
+        </div>
+        <div class="loc-gps-info">
+          <div class="loc-gps-titulo" id="loc-gps-titulo">Usar minha localização atual</div>
+          <div class="loc-gps-sub" id="loc-gps-sub">Ajuda trabalhadores próximos a te encontrar</div>
+        </div>
+      </div>
+
+      <div class="campo">
+        <label class="campo-label" for="enderecoNegocio">Endereço <span class="req">*</span></label>
+        <div class="campo-wrap">
+          <input class="campo-input sin-icono" type="text" id="enderecoNegocio" placeholder="Rua, número, bairro, cidade" autocomplete="street-address"
+            oninput="valCampo(this,'enderecoNegocio-err','',true)"
+            onblur="valCampo(this,'enderecoNegocio-err','Informe o endereço do seu negócio',false)"/>
+          <div class="campo-estado">
+            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20,6 9,17 4,12"/></svg>
+          </div>
+        </div>
+        <div class="campo-err-msg" id="enderecoNegocio-err">⚠ Informe o endereço do seu negócio</div>
+      </div>
+    </div>
+
+    <!-- ══ PASO 4: EQUIPE ══ -->
     <div class="paso" id="paso-4">
-      <p class="paso-titulo">Em quais áreas você trabalha? 🎯</p>
+      <p class="paso-titulo">Que tipo de profissionais você busca? 🔍</p>
 
       <div class="nichos-hint">
         <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="var(--orange)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="flex-shrink:0;"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
-        <span>Escolha até <strong>3 nichos</strong></span>
-        <span class="nichos-counter" id="nichos-counter">0/3</span>
+        <span>Escolha até <strong>5 áreas</strong></span>
+        <span class="nichos-counter" id="equipe-counter">0/5</span>
       </div>
 
-      <div class="nichos-grid" id="nichos-grid">
-        <!-- Nichos principales — generados por JS -->
+      <div class="tipo-chips" id="equipe-chips">
+        <!-- Gerado por JS -->
       </div>
 
-      <!-- Nichos expandidos (Outros) -->
-      <div class="nichos-expand" id="nichos-expand">
-        <!-- Generados por JS -->
-      </div>
-    </div>
-
-    <!-- ══ PASO 5: SUBÁREAS ══ -->
-    <div class="paso" id="paso-5">
-      <p class="paso-titulo">Quais funções você desempenha? ✨</p>
-      <div class="subareas-section" id="subareas-section">
-        <!-- Generado dinámicamente según nichos seleccionados -->
+      <div class="aceite-termos" id="aceite-termos" onclick="toggleAceite()">
+        <div class="aceite-checkbox">
+          <svg viewBox="0 0 12 12"><polyline points="2,6 5,9 10,3"/></svg>
+        </div>
+        <div class="aceite-texto">
+          Li e aceito os <a href="termos.html" target="_blank" rel="noopener" onclick="event.stopPropagation()">Termos e Condições</a> e a <a href="privacidade.html" target="_blank" rel="noopener" onclick="event.stopPropagation()">Política de Privacidade</a> do Eureka.
+        </div>
       </div>
     </div>
 
@@ -946,16 +715,22 @@ window.criarConta = async function() {
       dataNascimento: document.getElementById('nasc').value,
       celular: document.getElementById('cel').value,
       email,
-      perfil: window._perfilSel,
-      modalidade: window._modalSel,
-      nichos: window._nichosSel,
-      subAreas: window._subareasSel,
+      perfil: 'empresa',
+      nomeNegocio: document.getElementById('nomeNegocio').value.trim(),
+      tipoNegocio: window._tipoNegocio,
+      cnpj: document.getElementById('cnpj').value.replace(/\D/g,''),
+      endereco: document.getElementById('enderecoNegocio').value.trim(),
+      localizacao: window._empresaLoc,
+      nichosContratacao: window._nichosEmpresaSel,
       uid: cred.user.uid,
       criadoEm: serverTimestamp(),
       perfilCompleto: false,
-      status: 'ativo'
+      status: 'ativo',
+      aceiteTermos: true,
+      aceiteTermosEm: serverTimestamp(),
+      aceiteTermosVersao: '2026-06'
     });
-    window.location.href = 'onboarding.html';
+    window.location.href = 'index.html';
   } catch(err) {
     mostrarErr(traduzir(err.code));
   } finally {
@@ -993,110 +768,70 @@ window.mostrarErr = mostrarErr;
 // ESTADO GLOBAL
 // ══════════════════════════════════════
 let pasoActual = 0;
-const TOTAL_PASOS = 6;
+const TOTAL_PASOS = 5;
 
-window._perfilSel   = null;
-window._modalSel    = null;
-window._nichosSel   = [];
-window._subareasSel = {};
+window._tipoNegocio      = null;
+window._nichosEmpresaSel = [];
+window._empresaLoc       = null;
+window._aceiteTermos     = false;
 
-// Labels de los pasos
 const PASO_INFO = [
-  { titulo: 'Criar sua conta',     sub: 'Rápido, grátis e sem burocracia.' },
-  { titulo: 'Dados pessoais',      sub: 'Quem é você?' },
-  { titulo: 'Acesso',              sub: 'Crie seu login.' },
-  { titulo: 'Modalidade',         sub: 'Como você prefere trabalhar?' },
-  { titulo: 'Suas áreas',          sub: 'Escolha até 3 nichos.' },
-  { titulo: 'Suas funções',        sub: 'O que você sabe fazer?' },
+  { titulo: 'Sua empresa no Eureka', sub: 'Quem é o responsável pela conta?' },
+  { titulo: 'Acesso',                sub: 'Crie seu login.' },
+  { titulo: 'Seu negócio',           sub: 'Conte sobre sua empresa.' },
+  { titulo: 'Localização',           sub: 'Onde fica o seu negócio?' },
+  { titulo: 'Equipe',                sub: 'Que tipo de profissionais você busca?' },
 ];
 
-// ══════════════════════════════════════
-// NICHOS
-// ══════════════════════════════════════
-// SVG icons para nichos — inline, sem dependência de CDN
-const NICHO_SVGS = {
-  hostelaria: '<svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M3 2v7c0 1.1.9 2 2 2h4a2 2 0 0 0 2-2V2"/><path d="M7 2v20"/><path d="M21 15V2a5 5 0 0 0-5 5v6c0 .6.4 1 1 1h4v7"/></svg>',
-  limpeza:    '<svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M18 11V6a2 2 0 0 0-4 0v5"/><path d="M14 10V4a2 2 0 0 0-4 0v6"/><path d="M10 10.5V5a2 2 0 0 0-4 0v9"/><path d="M6 14v1a6 6 0 0 0 12 0v-5a2 2 0 0 0-4 0"/></svg>',
-  cuidados:   '<svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>',
-  tecnologia: '<svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="3" width="20" height="14" rx="2"/><path d="M8 21h8M12 17v4"/></svg>',
-  construcao: '<svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="m15 12-8.5 8.5a2.12 2.12 0 0 1-3-3L12 9"/><path d="M17.64 15 22 10.64"/><path d="m2 2 4.5 4.5"/><path d="M13.32 4.68 16 2l5 5-2.68 2.68a2.44 2.44 0 0 1-3.44 0l-1.56-1.56a2.44 2.44 0 0 1 0-3.44z"/></svg>',
-  seguranca:  '<svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/><polyline points="9 12 11 14 15 10"/></svg>',
-  logistica:  '<svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><rect x="1" y="3" width="15" height="13"/><path d="M16 8h4l3 3v5h-7V8z"/><circle cx="5.5" cy="18.5" r="2.5"/><circle cx="18.5" cy="18.5" r="2.5"/></svg>',
-  eventos:    '<svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>',
-  beleza:     '<svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/><path d="M12 8v8M8 12h8"/></svg>',
-  saude:      '<svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M22 12h-4l-3 9L9 3l-3 9H2"/></svg>',
-  educacao:   '<svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"/><path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"/></svg>',
-  agricultura:'<svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2a10 10 0 0 1 10 10c0 5.52-4.48 10-10 10A10 10 0 0 1 2 12"/><path d="M12 2C6.48 2 2 6.48 2 12"/><path d="M12 8v8M8 12h8"/></svg>',
-  comercio:   '<svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M6 2 3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"/><line x1="3" y1="6" x2="21" y2="6"/><path d="M16 10a4 4 0 0 1-8 0"/></svg>',
-  design:     '<svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="4"/><line x1="4.93" y1="4.93" x2="9.17" y2="9.17"/><line x1="14.83" y1="14.83" x2="19.07" y2="19.07"/><line x1="14.83" y1="9.17" x2="19.07" y2="4.93"/><line x1="4.93" y1="19.07" x2="9.17" y2="14.83"/></svg>',
-  marketing:  '<svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M22 12h-4l-3 9L9 3l-3 9H2"/></svg>',
-  financeiro: '<svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="1" x2="12" y2="23"/><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg>',
-  outros:     '<svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="16"/><line x1="8" y1="12" x2="16" y2="12"/></svg>',
-};
+const LABELS = ['Dados','Acesso','Negócio','Local','Equipe'];
 
-// Nichos que permiten trabajo REMOTO
-const NICHOS_REMOTOS = ['tecnologia', 'design', 'marketing', 'educacao', 'financeiro', 'comercio', 'outros'];
-// Nichos que permiten trabajo PRESENCIAL
-const NICHOS_PRESENCIAIS = ['hostelaria', 'limpeza', 'cuidados', 'construcao', 'seguranca', 'logistica', 'eventos', 'beleza', 'saude', 'agricultura', 'comercio', 'outros'];
-// HIBRIDO = todos
+// Tipos de negócio
+const TIPOS_NEGOCIO = ['Restaurante/Bar','Comércio/Loja','Eventos','Construção','Limpeza/Serviços','Saúde/Beleza','Tecnologia','Indústria','Outro'];
 
-const NICHOS_MAIN = [
-  { id: 'hostelaria',  svg: NICHO_SVGS.hostelaria, nome: 'Hostelaria',  remoto: false },
-  { id: 'limpeza',     svg: NICHO_SVGS.limpeza,    nome: 'Limpeza',     remoto: false },
-  { id: 'cuidados',    svg: NICHO_SVGS.cuidados,   nome: 'Cuidados',    remoto: false },
-  { id: 'tecnologia',  svg: NICHO_SVGS.tecnologia, nome: 'Tecnologia',  remoto: true  },
-  { id: 'construcao',  svg: NICHO_SVGS.construcao, nome: 'Construção',  remoto: false },
-  { id: 'seguranca',   svg: NICHO_SVGS.seguranca,  nome: 'Segurança',   remoto: false },
-  { id: 'logistica',   svg: NICHO_SVGS.logistica,  nome: 'Logística',   remoto: false },
-  { id: 'outros',      svg: NICHO_SVGS.outros,     nome: 'Outros', isOutros: true, remoto: true },
+// Áreas/nichos disponíveis para "que tipo de profissionais você busca"
+const NICHOS_TODOS = [
+  { id: 'hostelaria',  nome: 'Hostelaria' },
+  { id: 'limpeza',     nome: 'Limpeza' },
+  { id: 'cuidados',    nome: 'Cuidados' },
+  { id: 'tecnologia',  nome: 'Tecnologia' },
+  { id: 'construcao',  nome: 'Construção' },
+  { id: 'seguranca',   nome: 'Segurança' },
+  { id: 'logistica',   nome: 'Logística' },
+  { id: 'eventos',     nome: 'Eventos' },
+  { id: 'beleza',      nome: 'Beleza' },
+  { id: 'saude',       nome: 'Saúde' },
+  { id: 'educacao',    nome: 'Educação' },
+  { id: 'agricultura', nome: 'Agro' },
+  { id: 'comercio',    nome: 'Comércio' },
+  { id: 'design',      nome: 'Design' },
+  { id: 'marketing',   nome: 'Marketing' },
+  { id: 'financeiro',  nome: 'Financeiro' },
+  { id: 'gastronomia', nome: 'Gastronomia' },
+  { id: 'transporte',  nome: 'Transporte' },
+  { id: 'musica',      nome: 'Música' },
+  { id: 'fotografia',  nome: 'Fotografia' },
+  { id: 'esportes',    nome: 'Esportes' },
+  { id: 'veterinaria', nome: 'Veterinária' },
+  { id: 'mecanica',    nome: 'Mecânica' },
+  { id: 'recepcao',    nome: 'Recepção' },
+  { id: 'textil',      nome: 'Têxtil' },
+  { id: 'juridico',    nome: 'Jurídico' },
+  { id: 'outros',      nome: 'Outros' },
 ];
-
-const NICHOS_EXPAND = [
-  { id: 'eventos',     svg: NICHO_SVGS.eventos,    nome: 'Eventos',     remoto: false },
-  { id: 'beleza',      svg: NICHO_SVGS.beleza,     nome: 'Beleza',      remoto: false },
-  { id: 'saude',       svg: NICHO_SVGS.saude,      nome: 'Saúde',       remoto: false },
-  { id: 'educacao',    svg: NICHO_SVGS.educacao,   nome: 'Educação',    remoto: true  },
-  { id: 'agricultura', svg: NICHO_SVGS.agricultura,nome: 'Agro',        remoto: false },
-  { id: 'comercio',    svg: NICHO_SVGS.comercio,   nome: 'Comércio',    remoto: true  },
-  { id: 'design',      svg: NICHO_SVGS.design,     nome: 'Design',      remoto: true  },
-  { id: 'marketing',   svg: NICHO_SVGS.marketing,  nome: 'Marketing',   remoto: true  },
-  { id: 'financeiro',  svg: NICHO_SVGS.financeiro, nome: 'Financeiro',  remoto: true  },
-];
-
-// SUBÁREAS por nicho — máximo 8 se pueden seleccionar
-const SUBAREAS = {
-  hostelaria:  ['Garçom', 'Bartender', 'Cozinheiro', 'Chef', 'Auxiliar de cozinha', 'Recepcionista', 'Gerente', 'Copeiro', 'Sommelier', 'Barista'],
-  limpeza:     ['Diarista', 'Zelador', 'Limpeza comercial', 'Limpeza pós-obra', 'Jardineiro', 'Lavador de roupa', 'Limpeza hospitalar', 'Faxineiro'],
-  cuidados:    ['Babá', 'Cuidador de idosos', 'Enfermeiro domiciliar', 'Acompanhante', 'Dog Walker', 'Pet Sitter', 'Auxiliar de creche', 'Cuidador infantil'],
-  tecnologia:  ['Programador', 'Designer gráfico', 'UX/UI', 'Community Manager', 'Fotógrafo', 'Editor de vídeo', 'Suporte técnico', 'Analista de dados', 'DevOps', 'QA Tester'],
-  construcao:  ['Pedreiro', 'Eletricista', 'Encanador', 'Pintor', 'Carpinteiro', 'Serralheiro', 'Auxiliar de obras', 'Gesseiro', 'Azulejista', 'Mestre de obras'],
-  seguranca:   ['Vigilante', 'Porteiro', 'Segurança patrimonial', 'Monitoramento', 'Recepcionista', 'Controlador de acesso'],
-  logistica:   ['Motorista', 'Motoboy', 'Operador de depósito', 'Auxiliar de logística', 'Entregador', 'Conferente', 'Repositor', 'Separador'],
-  eventos:     ['Garçom de eventos', 'Bartender de eventos', 'Montador', 'Promotor', 'DJ', 'Fotógrafo de eventos', 'Recepcionista de eventos', 'Mestre de cerimônias'],
-  beleza:      ['Cabeleireiro', 'Manicure', 'Esteticista', 'Maquiador', 'Massoterapeuta', 'Barbeiro', 'Designer de sobrancelha', 'Depilador'],
-  saude:       ['Técnico de enfermagem', 'Fisioterapeuta', 'Nutricionista', 'Psicólogo', 'Auxiliar de saúde', 'Dentista', 'Farmacêutico', 'Terapeuta'],
-  educacao:    ['Professor particular', 'Monitor', 'Instrutor', 'Tutor online', 'Educador infantil', 'Professor de idiomas', 'Coach', 'Mentor'],
-  agricultura: ['Colheita', 'Irrigação', 'Operador agrícola', 'Tratorista', 'Técnico agrícola', 'Auxiliar rural'],
-  comercio:    ['Vendedor', 'Caixa', 'Repositor', 'Promotor de vendas', 'Atendente', 'Gerente de loja', 'Consultor de vendas', 'Operador de televendas'],
-  design:      ['Designer gráfico', 'UI Designer', 'UX Designer', 'Motion designer', 'Ilustrador', 'Social media designer', 'Criador de conteúdo', 'Videomaker'],
-  marketing:   ['Community Manager', 'Gestor de tráfego', 'Copywriter', 'SEO', 'Analista de marketing', 'Influencer', 'Email marketing', 'Gestor de redes sociais'],
-  financeiro:  ['Contador', 'Analista financeiro', 'Assistente fiscal', 'Auxiliar contábil', 'Controller', 'Consultor financeiro'],
-};
 
 // ══════════════════════════════════════
 // INICIALIZAR
 // ══════════════════════════════════════
 function init() {
   renderProgreso();
-  renderNichos();
+  renderTiposNegocio();
+  renderEquipeChips();
 }
 
 function renderProgreso() {
   const bar    = document.getElementById('prog-bar');
   const labels = document.getElementById('prog-labels');
   bar.innerHTML = ''; labels.innerHTML = '';
-
-  const labelsNomes = ['Perfil','Dados','Acesso','Modo','Áreas','Funções'];
 
   for (let i = 0; i < TOTAL_PASOS; i++) {
     const seg = document.createElement('div');
@@ -1107,7 +842,7 @@ function renderProgreso() {
     const lbl = document.createElement('span');
     lbl.className = 'prog-lbl' + (i === pasoActual ? ' ativo' : i < pasoActual ? ' completo' : '');
     lbl.id = `lbl-${i}`;
-    lbl.textContent = labelsNomes[i];
+    lbl.textContent = LABELS[i];
     labels.appendChild(lbl);
   }
 }
@@ -1120,7 +855,6 @@ function actualizarProgreso(n) {
     seg.className = 'prog-seg' + (i === n ? ' ativo' : i < n ? ' completo' : '');
     lbl.className = 'prog-lbl' + (i === n ? ' ativo' : i < n ? ' completo' : '');
   }
-  // Actualizar header
   const info = PASO_INFO[n];
   if (info) {
     document.getElementById('header-titulo').textContent = info.titulo;
@@ -1134,11 +868,6 @@ function actualizarProgreso(n) {
 window.proximoPaso = function() {
   if (!validarPasoActual()) return;
 
-  if (pasoActual === 4) {
-    // Antes del paso 5 generar subáreas
-    generarSubareas();
-  }
-
   if (pasoActual === TOTAL_PASOS - 1) {
     criarConta();
     return;
@@ -1148,7 +877,7 @@ window.proximoPaso = function() {
 };
 
 window.voltarOuSair = function() {
-  if (pasoActual === 0) { window.location.href = 'index.html'; return; }
+  if (pasoActual === 0) { window.location.href = 'cadastro.html'; return; }
   irAPaso(pasoActual - 1);
 };
 
@@ -1166,7 +895,6 @@ function irAPaso(n) {
     actualizarProgreso(n);
     pasoActual = n;
 
-    // Texto del botón
     document.getElementById('btn-txt').textContent =
       pasoActual === TOTAL_PASOS - 1 ? 'Criar minha conta' : 'Próximo';
   }, 340);
@@ -1177,10 +905,6 @@ function irAPaso(n) {
 // ══════════════════════════════════════
 function validarPasoActual() {
   if (pasoActual === 0) {
-    if (!window._perfilSel) { window.mostrarErr('Selecione como você vai usar o Eureka.'); return false; }
-    return true;
-  }
-  if (pasoActual === 1) {
     let ok = true;
     if (!document.getElementById('nome').value.trim()) { setCampoErr('nome', 'nome-err'); ok = false; }
     if (!document.getElementById('sobre').value.trim()) { setCampoErr('sobre', 'sobre-err'); ok = false; }
@@ -1189,7 +913,7 @@ function validarPasoActual() {
     if (!ok) window.mostrarErr('Corrija os campos em vermelho.');
     return ok;
   }
-  if (pasoActual === 2) {
+  if (pasoActual === 1) {
     let ok = true;
     const email = document.getElementById('email').value.trim();
     const senha = document.getElementById('senha').value;
@@ -1200,12 +924,35 @@ function validarPasoActual() {
     if (!ok) window.mostrarErr('Corrija os campos em vermelho.');
     return ok;
   }
+  if (pasoActual === 2) {
+    let ok = true;
+    if (!document.getElementById('nomeNegocio').value.trim()) { setCampoErr('nomeNegocio', 'nomeNegocio-err'); ok = false; }
+    if (!window._tipoNegocio) { ok = false; window.mostrarErr('Selecione o tipo de negócio.'); }
+    if (!validCNPJ(document.getElementById('cnpj').value)) { setCampoErr('cnpj', 'cnpj-err'); ok = false; }
+    if (!ok && window._tipoNegocio) window.mostrarErr('Corrija os campos em vermelho.');
+    return ok;
+  }
   if (pasoActual === 3) {
-    if (!window._modalSel) { window.mostrarErr('Selecione como prefere trabalhar.'); return false; }
+    const end = document.getElementById('enderecoNegocio');
+    if (!end.value.trim()) {
+      setCampoErr('enderecoNegocio', 'enderecoNegocio-err');
+      window.mostrarErr('Informe o endereço do seu negócio.');
+      return false;
+    }
+    setCampoOk('enderecoNegocio', 'enderecoNegocio-err');
     return true;
   }
   if (pasoActual === 4) {
-    if (window._nichosSel.length === 0) { window.mostrarErr('Selecione pelo menos 1 área.'); return false; }
+    if (window._nichosEmpresaSel.length === 0) {
+      window.mostrarErr('Selecione pelo menos 1 área de profissionais.');
+      return false;
+    }
+    if (!window._aceiteTermos) {
+      document.getElementById('aceite-termos').classList.add('err');
+      setTimeout(() => document.getElementById('aceite-termos').classList.remove('err'), 400);
+      window.mostrarErr('Você precisa aceitar os Termos e a Política de Privacidade.');
+      return false;
+    }
     return true;
   }
   return true;
@@ -1226,175 +973,102 @@ function setCampoOk(inputId, errId) {
 }
 
 // ══════════════════════════════════════
-// PASO 0 — PERFIL
+// PASO 2 — TIPO DE NEGÓCIO
 // ══════════════════════════════════════
-window.selecionarPerfil = function(tipo) {
-  window._perfilSel = tipo;
-  document.querySelectorAll('.perfil-card').forEach(c => c.classList.remove('selecionado'));
-  document.getElementById(`pc-${tipo}`).classList.add('selecionado');
-};
+function renderTiposNegocio() {
+  const wrap = document.getElementById('tipo-negocio-chips');
+  wrap.innerHTML = '';
 
-// ══════════════════════════════════════
-// PASO 3 — MODALIDADE
-// ══════════════════════════════════════
-window.selModal = function(tipo) {
-  window._modalSel = tipo;
-  ['presencial','remoto','hibrido'].forEach(t => {
-    document.getElementById(`mc-${t}`).classList.toggle('sel', t === tipo);
-  });
-};
-
-// ══════════════════════════════════════
-// PASO 4 — NICHOS
-// ══════════════════════════════════════
-function renderNichos() {
-  const grid   = document.getElementById('nichos-grid');
-  const expand = document.getElementById('nichos-expand');
-  grid.innerHTML = ''; expand.innerHTML = '';
-
-  const modal = window._modalSel;
-
-  // Filtrar según modalidad
-  const filtrar = (n) => {
-    if (n.isOutros) return true; // Outros siempre
-    if (modal === 'remoto')     return n.remoto === true;
-    if (modal === 'presencial') return n.remoto === false;
-    return true; // hibrido o null = todos
-  };
-
-  NICHOS_MAIN.filter(filtrar).forEach(n => {
-    grid.appendChild(crearNichoCard(n));
-  });
-
-  NICHOS_EXPAND.filter(filtrar).forEach(n => {
-    expand.appendChild(crearNichoCard(n));
+  TIPOS_NEGOCIO.forEach(t => {
+    const chip = document.createElement('div');
+    chip.className = 'tipo-chip';
+    chip.textContent = t;
+    chip.onclick = () => {
+      wrap.querySelectorAll('.tipo-chip').forEach(c => c.classList.remove('sel'));
+      chip.classList.add('sel');
+      window._tipoNegocio = t;
+    };
+    wrap.appendChild(chip);
   });
 }
 
-function crearNichoCard(n) {
-  const card = document.createElement('div');
-  card.className = 'nicho-card' + (n.isOutros ? ' outros-card' : '');
-  card.id = `nc-${n.id}`;
-  card.innerHTML = `
-    <div class="nicho-check-badge">
-      <svg viewBox="0 0 12 12" fill="none" stroke="white" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
-        <polyline points="2,6 5,9 10,3"/>
-      </svg>
-    </div>
-    <div class="nicho-icon-wrap">${n.svg}</div>
-    <div class="nicho-nome">${n.nome}</div>
-  `;
-  card.onclick = () => n.isOutros ? toggleOutros() : toggleNicho(n.id, card);
-  return card;
+// ══════════════════════════════════════
+// PASO 4 — EQUIPE QUE BUSCA
+// ══════════════════════════════════════
+function renderEquipeChips() {
+  const wrap = document.getElementById('equipe-chips');
+  wrap.innerHTML = '';
+  window._nichosEmpresaSel = [];
+
+  NICHOS_TODOS.forEach(n => {
+    const chip = document.createElement('div');
+    chip.className = 'tipo-chip';
+    chip.textContent = n.nome;
+    chip.onclick = () => {
+      const MAX = 5;
+      const ya = chip.classList.contains('sel');
+      if (!ya && window._nichosEmpresaSel.length >= MAX) {
+        const counter = document.getElementById('equipe-counter');
+        counter.style.animation = 'shake 0.4s ease';
+        setTimeout(() => counter.style.animation = '', 400);
+        return;
+      }
+      chip.classList.toggle('sel');
+      if (chip.classList.contains('sel')) {
+        window._nichosEmpresaSel.push(n.id);
+      } else {
+        window._nichosEmpresaSel = window._nichosEmpresaSel.filter(id => id !== n.id);
+      }
+      document.getElementById('equipe-counter').textContent = `${window._nichosEmpresaSel.length}/5`;
+    };
+    wrap.appendChild(chip);
+  });
 }
 
-window.toggleNicho = function(id, card) {
-  const ya = window._nichosSel.includes(id);
+// ══════════════════════════════════════
+// LOCALIZAÇÃO (GPS)
+// ══════════════════════════════════════
+window.capturarLocalizacao = function() {
+  const card   = document.getElementById('loc-gps');
+  const titulo = document.getElementById('loc-gps-titulo');
+  const sub    = document.getElementById('loc-gps-sub');
 
-  if (!ya && window._nichosSel.length >= 3) {
-    // Shake en el contador
-    const counter = document.getElementById('nichos-counter');
-    counter.style.animation = 'shake 0.4s ease';
-    setTimeout(() => counter.style.animation = '', 400);
+  if (!navigator.geolocation) {
+    card.classList.remove('ok'); card.classList.add('err');
+    titulo.textContent = 'Localização não suportada';
+    sub.textContent = 'Seu navegador não permite acessar a localização. Preencha o endereço manualmente.';
     return;
   }
 
-  if (ya) {
-    window._nichosSel = window._nichosSel.filter(n => n !== id);
-    card.classList.remove('sel');
-  } else {
-    window._nichosSel.push(id);
-    card.classList.add('sel');
-  }
+  card.classList.remove('ok','err');
+  titulo.textContent = 'Buscando localização...';
+  sub.textContent = 'Aguarde um instante.';
 
-  // Actualizar disabled en los no seleccionados
-  const max = window._nichosSel.length >= 3;
-  document.querySelectorAll('.nicho-card:not(.outros-card)').forEach(c => {
-    const cId = c.id.replace('nc-','');
-    if (max && !window._nichosSel.includes(cId)) {
-      c.classList.add('disabled');
-    } else {
-      c.classList.remove('disabled');
-    }
-  });
-
-  document.getElementById('nichos-counter').textContent = `${window._nichosSel.length}/3`;
+  navigator.geolocation.getCurrentPosition(
+    (pos) => {
+      window._empresaLoc = { lat: pos.coords.latitude, lng: pos.coords.longitude };
+      card.classList.add('ok');
+      titulo.textContent = 'Localização capturada ✓';
+      sub.textContent = `Lat ${pos.coords.latitude.toFixed(5)}, Lng ${pos.coords.longitude.toFixed(5)}`;
+    },
+    () => {
+      window._empresaLoc = null;
+      card.classList.add('err');
+      titulo.textContent = 'Não foi possível obter localização';
+      sub.textContent = 'Verifique as permissões do navegador ou preencha o endereço manualmente.';
+    },
+    { enableHighAccuracy: true, timeout: 10000 }
+  );
 };
 
-function toggleOutros() {
-  const exp = document.getElementById('nichos-expand');
-  exp.classList.toggle('show');
-  const card = document.getElementById('nc-outros');
-  card.querySelector('.nicho-nome').textContent =
-    exp.classList.contains('show') ? 'Menos' : 'Outros';
-}
-
 // ══════════════════════════════════════
-// PASO 5 — SUBÁREAS
+// ACEITE DE TERMOS
 // ══════════════════════════════════════
-function generarSubareas() {
-  const section = document.getElementById('subareas-section');
-  section.innerHTML = '';
-  window._subareasSel = {};
-
-  window._nichosSel.forEach(nichoId => {
-    const nicho = [...NICHOS_MAIN, ...NICHOS_EXPAND].find(n => n.id === nichoId);
-    const subs  = SUBAREAS[nichoId] || [];
-    window._subareasSel[nichoId] = [];
-
-    const bloco = document.createElement('div');
-    bloco.innerHTML = `
-      <div class="subarea-nicho-titulo">
-        <span class="subarea-nicho-emoji">${nicho?.emoji || '🔹'}</span>
-        ${nicho?.nome || nichoId}
-      </div>
-      <div class="subareas-chips" id="chips-${nichoId}"></div>
-    `;
-    section.appendChild(bloco);
-
-    const chipsWrap = bloco.querySelector(`#chips-${nichoId}`);
-    // Hint de límite 8
-    const hintSub = document.createElement('div');
-    hintSub.style.cssText = 'font-size:11px;color:var(--ink3);margin-bottom:4px;display:flex;align-items:center;gap:4px;';
-    hintSub.innerHTML = '<svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg> Selecione até 8 funções · <strong id="cnt-' + nichoId + '">0/8</strong>';
-    bloco.insertBefore(hintSub, chipsWrap);
-
-    subs.forEach(sub => {
-      const chip = document.createElement('div');
-      chip.className = 'subarea-chip';
-      chip.textContent = sub;
-      chip.onclick = () => {
-        const MAX = 8;
-        const jasel = chip.classList.contains('sel');
-        if (!jasel && window._subareasSel[nichoId].length >= MAX) {
-          // Shake counter
-          const cnt = document.getElementById('cnt-' + nichoId);
-          if (cnt) { cnt.style.color = 'var(--red)'; setTimeout(() => cnt.style.color = '', 800); }
-          return;
-        }
-        chip.classList.toggle('sel');
-        if (chip.classList.contains('sel')) {
-          window._subareasSel[nichoId].push(sub);
-        } else {
-          window._subareasSel[nichoId] = window._subareasSel[nichoId].filter(s => s !== sub);
-        }
-        // Actualizar contador
-        const cnt = document.getElementById('cnt-' + nichoId);
-        if (cnt) cnt.innerHTML = window._subareasSel[nichoId].length + '/8';
-        // Deshabilitar si llegó al límite
-        const all = chipsWrap.querySelectorAll('.subarea-chip');
-        all.forEach(c => {
-          if (!c.classList.contains('sel') && window._subareasSel[nichoId].length >= MAX) {
-            c.style.opacity = '0.4'; c.style.pointerEvents = 'none';
-          } else if (!c.classList.contains('sel')) {
-            c.style.opacity = ''; c.style.pointerEvents = '';
-          }
-        });
-      };
-      chipsWrap.appendChild(chip);
-    });
-  });
-}
+window.toggleAceite = function() {
+  window._aceiteTermos = !window._aceiteTermos;
+  document.getElementById('aceite-termos').classList.toggle('checked', window._aceiteTermos);
+  document.getElementById('aceite-termos').classList.remove('err');
+};
 
 // ══════════════════════════════════════
 // VALIDACIONES TIEMPO REAL
@@ -1487,6 +1161,42 @@ window.mascaraCel = function(el) {
   el.value = v.slice(0,15);
 };
 
+window.mascaraCNPJ = function(el) {
+  const v = el.value.replace(/\D/g,'').slice(0,14);
+  let out = v;
+  if (v.length > 2)  out = v.slice(0,2) + '.' + v.slice(2);
+  if (v.length > 5)  out = v.slice(0,2) + '.' + v.slice(2,5) + '.' + v.slice(5);
+  if (v.length > 8)  out = v.slice(0,2) + '.' + v.slice(2,5) + '.' + v.slice(5,8) + '/' + v.slice(8);
+  if (v.length > 12) out = v.slice(0,2) + '.' + v.slice(2,5) + '.' + v.slice(5,8) + '/' + v.slice(8,12) + '-' + v.slice(12);
+  el.value = out;
+  if (v.length === 14) valCNPJ(el);
+};
+
+function validCNPJ(val) {
+  const cnpj = (val || '').replace(/\D/g,'');
+  if (cnpj.length !== 14) return false;
+  if (/^(\d)\1{13}$/.test(cnpj)) return false; // todos os dígitos iguais
+
+  const nums = cnpj.split('').map(Number);
+  const calcDigito = (base) => {
+    let soma = 0, pos = base.length - 7;
+    for (let i = 0; i < base.length; i++) {
+      soma += base[i] * pos--;
+      if (pos < 2) pos = 9;
+    }
+    const r = soma % 11;
+    return r < 2 ? 0 : 11 - r;
+  };
+
+  if (calcDigito(nums.slice(0,12)) !== nums[12]) return false;
+  if (calcDigito(nums.slice(0,13)) !== nums[13]) return false;
+  return true;
+}
+
+window.valCNPJ = function(el) {
+  validCNPJ(el.value) ? setCampoOk('cnpj','cnpj-err') : setCampoErr('cnpj','cnpj-err');
+};
+
 // ══════════════════════════════════════
 // UI HELPERS
 // ══════════════════════════════════════
@@ -1503,7 +1213,7 @@ window.toggleOlho = function(inputId, iconoId) {
 
 // ENTER navegación
 document.addEventListener('DOMContentLoaded', () => {
-  ['nome','sobre','nasc','cel','email','senha','conf'].forEach(id => {
+  ['nome','sobre','nasc','cel','email','senha','conf','nomeNegocio','cnpj','enderecoNegocio'].forEach(id => {
     const el = document.getElementById(id);
     if (el) el.addEventListener('keydown', e => {
       if (e.key === 'Enter') {
