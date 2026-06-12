@@ -1206,6 +1206,11 @@ function actualizarProgreso(n) {
 window.proximoPaso = function() {
   if (!validarPasoActual()) return;
 
+  if (pasoActual === 0 && window._perfilSel === 'empresa') {
+    window.location.href = 'cadastroempresa.html';
+    return;
+  }
+
   if (pasoActual === 4) {
     // Antes del paso 5 generar subáreas
     generarSubareas();
@@ -1447,7 +1452,7 @@ function generarSubareas() {
     // Hint de límite 8
     const hintSub = document.createElement('div');
     hintSub.style.cssText = 'font-size:11px;color:var(--ink3);margin-bottom:4px;display:flex;align-items:center;gap:4px;';
-    hintSub.innerHTML = '<svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg> Selecione até 8 funções · <strong id="cnt-' + nichoId + '">0/8</strong>';
+    hintSub.innerHTML = '<svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg> Selecione até 7 funções · <strong id="cnt-' + nichoId + '">0/7</strong>';
     bloco.insertBefore(hintSub, chipsWrap);
 
     subs.forEach(sub => {
@@ -1455,7 +1460,7 @@ function generarSubareas() {
       chip.className = 'subarea-chip';
       chip.textContent = sub;
       chip.onclick = () => {
-        const MAX = 8;
+        const MAX = 7;
         const jasel = chip.classList.contains('sel');
         if (!jasel && window._subareasSel[nichoId].length >= MAX) {
           // Shake counter
@@ -1471,7 +1476,7 @@ function generarSubareas() {
         }
         // Actualizar contador
         const cnt = document.getElementById('cnt-' + nichoId);
-        if (cnt) cnt.innerHTML = window._subareasSel[nichoId].length + '/8';
+        if (cnt) cnt.innerHTML = window._subareasSel[nichoId].length + '/7';
         // Deshabilitar si llegó al límite
         const all = chipsWrap.querySelectorAll('.subarea-chip');
         all.forEach(c => {
