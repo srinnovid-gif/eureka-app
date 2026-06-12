@@ -1,0 +1,292 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8"/>
+  <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate"/>
+  <meta http-equiv="Pragma" content="no-cache"/>
+  <meta http-equiv="Expires" content="0"/>
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"/>
+  <meta name="theme-color" content="#FF4D20"/>
+  <meta name="mobile-web-app-capable" content="yes"/>
+  <meta name="apple-mobile-web-app-capable" content="yes"/>
+  <title>Eureka! — Política de Privacidade</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com"/>
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+  <link href="https://fonts.googleapis.com/css2?family=Asap:ital,wght@0,700;0,800;1,700;1,800&family=Geologica:slnt,wght@-12..0,100..900&family=Glory:ital,wght@0,400;0,700;0,800;1,700;1,800&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet"/>
+  <style>
+    :root {
+      --orange:     #FF4D20;
+      --orange-d:   #D93A10;
+      --orange-pale:#FFF5EE;
+      --orange-soft:#FFE8D6;
+      --ink:        #111010;
+      --ink2:       #6B6560;
+      --ink3:       #B8B0A8;
+      --border:     #F0EDE8;
+      --white:      #FFFFFF;
+      --surface:    #FFF5EE;
+      --green:      #1FAD6B;
+    }
+
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; -webkit-tap-highlight-color: transparent; }
+
+    html, body {
+      font-family: 'Geologica', sans-serif;
+      background: var(--white); color: var(--ink);
+      -webkit-font-smoothing: antialiased;
+    }
+
+    /* ══════════════════════════════════════
+       HEADER
+    ══════════════════════════════════════ */
+    .header {
+      position: sticky; top: 0; z-index: 10;
+      background: var(--orange);
+      padding: 44px 20px 18px;
+      position: relative; overflow: hidden;
+    }
+
+    .header::before {
+      content: '';
+      position: absolute; width: 220px; height: 220px;
+      border-radius: 50%; background: rgba(255,255,255,0.07);
+      top: -80px; right: -60px; pointer-events: none;
+    }
+
+    .btn-voltar {
+      position: relative; z-index: 2;
+      width: 32px; height: 32px;
+      background: rgba(255,255,255,0.2); border: none;
+      border-radius: 50%; display: flex; align-items: center;
+      justify-content: center; cursor: pointer; margin-bottom: 10px;
+      transition: background 0.15s;
+    }
+    .btn-voltar:active { background: rgba(255,255,255,0.35); }
+    .btn-voltar svg { width: 16px; height: 16px; stroke: white; fill: none; stroke-width: 2.5; stroke-linecap: round; stroke-linejoin: round; }
+
+    .header-logo {
+      font-family: 'Asap', sans-serif;
+      font-weight: 800; font-style: italic;
+      font-size: 24px; color: white;
+      letter-spacing: -0.02em; line-height: 1;
+      display: block; margin-bottom: 6px;
+      text-shadow: 0 2px 12px rgba(0,0,0,0.15);
+      position: relative; z-index: 2;
+    }
+
+    .header-titulo {
+      font-family: 'Glory', sans-serif;
+      font-style: italic; font-weight: 800;
+      font-size: 19px; color: white;
+      letter-spacing: -0.01em; line-height: 1.15;
+      position: relative; z-index: 2;
+    }
+
+    .header-sub {
+      font-size: 11px; color: rgba(255,255,255,0.7);
+      margin-top: 4px; line-height: 1.4;
+      font-family: 'DM Mono', monospace;
+      letter-spacing: 0.03em; text-transform: uppercase;
+      position: relative; z-index: 2;
+    }
+
+    /* ══════════════════════════════════════
+       CONTEÚDO
+    ══════════════════════════════════════ */
+    .conteudo { padding: 22px 20px 48px; max-width: 640px; margin: 0 auto; }
+
+    .intro {
+      font-size: 13.5px; color: var(--ink2); line-height: 1.7;
+      margin-bottom: 26px; padding-bottom: 18px;
+      border-bottom: 1px solid var(--border);
+    }
+
+    .secao { margin-bottom: 24px; }
+
+    .secao-titulo {
+      display: flex; align-items: center; gap: 10px;
+      font-weight: 800; font-size: 14.5px;
+      color: var(--ink); margin-bottom: 8px;
+      letter-spacing: -0.01em;
+    }
+
+    .secao-num {
+      display: flex; align-items: center; justify-content: center;
+      width: 24px; height: 24px; border-radius: 50%;
+      background: var(--orange-pale); color: var(--orange);
+      font-family: 'DM Mono', monospace; font-weight: 700;
+      font-size: 11.5px; flex-shrink: 0;
+    }
+
+    .secao-texto {
+      font-size: 13.5px; color: var(--ink2);
+      line-height: 1.7;
+    }
+
+    .secao-texto p + p { margin-top: 8px; }
+
+    .secao-texto ul {
+      margin: 10px 0 0; padding-left: 0;
+      display: flex; flex-direction: column; gap: 7px;
+    }
+
+    .secao-texto li {
+      list-style: none;
+      padding-left: 22px;
+      position: relative;
+    }
+
+    .secao-texto li::before {
+      content: '';
+      position: absolute; left: 0; top: 7px;
+      width: 8px; height: 8px;
+      border-radius: 50%;
+      background: var(--orange-soft);
+    }
+
+    .destaque {
+      color: var(--ink); font-weight: 700;
+    }
+
+    .box {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      padding: 14px 16px;
+      font-size: 13px; color: var(--ink2);
+      line-height: 1.6;
+    }
+
+    .rodape {
+      margin-top: 32px; padding-top: 20px;
+      border-top: 1px solid var(--border);
+      text-align: center;
+    }
+
+    .rodape a {
+      display: inline-flex; align-items: center; gap: 6px;
+      color: var(--orange); font-weight: 700;
+      font-size: 13px; text-decoration: none;
+      padding: 10px 20px; border-radius: 50px;
+      border: 1.5px solid var(--orange-soft);
+      background: var(--orange-pale);
+    }
+  </style>
+</head>
+<body>
+
+  <div class="header">
+    <button class="btn-voltar" onclick="history.back()">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 12H5M11 6l-6 6 6 6"/></svg>
+    </button>
+    <div class="header-logo">Eureka!</div>
+    <h1 class="header-titulo">Política de Privacidade</h1>
+    <p class="header-sub">Última atualização · junho de 2026</p>
+  </div>
+
+  <div class="conteudo">
+
+    <p class="intro">
+      O Eureka é uma plataforma que conecta pessoas que buscam diárias, freelas e oportunidades de trabalho com empresas e pessoas que precisam contratar. Esta política explica quais dados coletamos, por que coletamos e quais são os seus direitos, em conformidade com a Lei Geral de Proteção de Dados (Lei nº 13.709/2018 — LGPD).
+    </p>
+
+    <div class="secao">
+      <div class="secao-titulo"><span class="secao-num">1</span> Quais dados coletamos</div>
+      <div class="secao-texto">
+        <p>Ao criar sua conta, coletamos:</p>
+        <ul>
+          <li>Nome completo</li>
+          <li>Data de nascimento — usada apenas para confirmar que você tem ao menos <span class="destaque">16 anos</span></li>
+          <li>Número de celular</li>
+          <li>E-mail</li>
+          <li>Senha de acesso, armazenada de forma criptografada</li>
+          <li>Tipo de perfil — trabalhador ou empresa/contratante</li>
+          <li>Modalidade de trabalho preferida — presencial, remoto ou híbrido</li>
+          <li>Áreas de atuação e funções de interesse</li>
+        </ul>
+        <p>Conforme você usa o app, também podemos coletar foto de perfil (se você optar por adicionar), localização aproximada para mostrar oportunidades próximas, histórico de candidaturas e interações dentro do app, e informações básicas do dispositivo usadas para melhorar o funcionamento da plataforma.</p>
+      </div>
+    </div>
+
+    <div class="secao">
+      <div class="secao-titulo"><span class="secao-num">2</span> Para que usamos esses dados</div>
+      <div class="secao-texto">
+        <ul>
+          <li>Criar, manter e proteger sua conta</li>
+          <li>Conectar trabalhadores e contratantes de forma relevante, considerando área, modalidade e localização</li>
+          <li>Confirmar que você atende à idade mínima exigida</li>
+          <li>Avisar sobre o andamento de candidaturas e oportunidades</li>
+          <li>Melhorar a plataforma, corrigir falhas e prevenir fraudes</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="secao">
+      <div class="secao-titulo"><span class="secao-num">3</span> Base legal</div>
+      <div class="secao-texto">
+        <p>Tratamos seus dados com base na <span class="destaque">execução do cadastro e dos serviços solicitados</span> (art. 7º, V, LGPD) e no seu <span class="destaque">consentimento</span>, dado ao aceitar esta política e os Termos e Condições no momento do cadastro.</p>
+      </div>
+    </div>
+
+    <div class="secao">
+      <div class="secao-titulo"><span class="secao-num">4</span> Com quem compartilhamos seus dados</div>
+      <div class="secao-texto">
+        <ul>
+          <li><span class="destaque">Google Firebase</span> — usado para autenticação e armazenamento seguro dos dados de cadastro. Esses dados também ficam sujeitos à política de privacidade do Google.</li>
+          <li><span class="destaque">Empresas/contratantes</span> — quando você se candidata a uma oportunidade, seu nome, contato e perfil profissional ficam visíveis para a empresa interessada.</li>
+        </ul>
+        <p>Não vendemos seus dados pessoais a terceiros para fins de publicidade.</p>
+      </div>
+    </div>
+
+    <div class="secao">
+      <div class="secao-titulo"><span class="secao-num">5</span> Armazenamento e segurança</div>
+      <div class="secao-texto">
+        <p>Seus dados são armazenados em servidores do Google Firebase, com criptografia e controle de acesso. Mantemos seus dados enquanto sua conta estiver ativa. Recomendamos usar uma senha forte e não compartilhá-la com ninguém — você é responsável por mantê-la em segurança.</p>
+      </div>
+    </div>
+
+    <div class="secao">
+      <div class="secao-titulo"><span class="secao-num">6</span> Seus direitos</div>
+      <div class="secao-texto">
+        <p>De acordo com o art. 18 da LGPD, você pode, a qualquer momento:</p>
+        <ul>
+          <li>Confirmar se tratamos seus dados e acessá-los</li>
+          <li>Corrigir dados incompletos, inexatos ou desatualizados</li>
+          <li>Solicitar a exclusão da sua conta e dos seus dados pessoais</li>
+          <li>Solicitar a portabilidade dos seus dados</li>
+          <li>Revogar seu consentimento</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="secao">
+      <div class="secao-titulo"><span class="secao-num">7</span> Armazenamento local e funcionamento offline</div>
+      <div class="secao-texto">
+        <p>O Eureka funciona como um aplicativo web (PWA) e usa armazenamento local do seu dispositivo para carregar mais rápido e funcionar parcialmente offline. Esses dados ficam apenas no seu dispositivo e não são usados para rastreamento publicitário.</p>
+      </div>
+    </div>
+
+    <div class="secao">
+      <div class="secao-titulo"><span class="secao-num">8</span> Alterações desta política</div>
+      <div class="secao-texto">
+        <p>Podemos atualizar esta política periodicamente, principalmente em caso de mudanças legais. Caso haja alterações relevantes, avisaremos você dentro do app.</p>
+      </div>
+    </div>
+
+    <div class="secao">
+      <div class="secao-titulo"><span class="secao-num">9</span> Contato</div>
+      <div class="box">
+        Tem dúvidas sobre como tratamos seus dados ou quer exercer algum dos seus direitos? Escreva para <span class="destaque">suporte@eurekapp.com.br</span>
+      </div>
+    </div>
+
+    <div class="rodape">
+      <a href="termos.html">Ver Termos e Condições de Uso</a>
+    </div>
+
+  </div>
+
+</body>
+</html>
