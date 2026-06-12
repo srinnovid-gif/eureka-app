@@ -522,13 +522,15 @@
 
     /* Expandidos (ocultos por defecto) */
     .nichos-expand {
-      display: grid; grid-template-columns: 1fr 1fr;
-      gap: 10px; overflow: hidden;
-      max-height: 0; opacity: 0;
-      transition: max-height 0.4s ease, opacity 0.3s ease;
+      display: none;
+      grid-template-columns: 1fr 1fr;
+      gap: 10px;
     }
 
-    .nichos-expand.show { max-height: 3000px; opacity: 1; }
+    .nichos-expand.show {
+      display: grid;
+      animation: fadeUp 0.3s ease both;
+    }
 
     /* ══════════════════════════════════════
        STEP 6 — SUBÁREAS
@@ -1317,10 +1319,20 @@ window.selecionarPerfil = function(tipo) {
 // PASO 3 — MODALIDADE
 // ══════════════════════════════════════
 window.selModal = function(tipo) {
+  const cambio = window._modalSel !== tipo;
   window._modalSel = tipo;
   ['presencial','remoto','hibrido'].forEach(t => {
     document.getElementById(`mc-${t}`).classList.toggle('sel', t === tipo);
   });
+
+  if (cambio) {
+    // La lista de nichos depende da modalidade — re-renderizar e limpar seleção
+    window._nichosSel = [];
+    window._subareasSel = {};
+    const counter = document.getElementById('nichos-counter');
+    if (counter) counter.textContent = '0/3';
+    renderNichos();
+  }
 };
 
 // ══════════════════════════════════════
