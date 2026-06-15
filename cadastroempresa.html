@@ -228,6 +228,10 @@
 
     .campo-input.ok ~ .campo-estado { display: flex; color: var(--green); }
     .campo-input.err ~ .campo-estado { display: flex; color: var(--red); }
+    .campo-input.checando ~ .campo-estado { display: flex; color: var(--ink3); }
+    .campo-input.checando ~ .campo-estado .check-icon { display: none; }
+    .campo-input.checando ~ .campo-estado .load-icon { display: block; animation: girar 0.8s linear infinite; }
+    .campo-estado .load-icon { display: none; }
 
     .campo-err-msg {
       font-size: 11px; color: var(--red);
@@ -532,10 +536,11 @@
             oninput="valEmail(this)" onblur="valEmail(this,true)"/>
           <span class="campo-icone"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="5" width="18" height="14" rx="2"/><polyline points="3,7 12,13 21,7"/></svg></span>
           <div class="campo-estado">
-            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20,6 9,17 4,12"/></svg>
+            <svg class="check-icon" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20,6 9,17 4,12"/></svg>
+            <svg class="load-icon" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12a9 9 0 1 1-2.64-6.36"/></svg>
           </div>
         </div>
-        <div class="campo-err-msg" id="email-err">⚠ Email inválido. Ex: nome@email.com</div>
+        <div class="campo-err-msg" id="email-err">⚠ <span id="email-err-txt">Email inválido. Ex: nome@email.com</span></div>
       </div>
 
       <div class="campo">
@@ -603,10 +608,11 @@
             oninput="mascaraCNPJ(this)" onblur="valCNPJ(this)"/>
           <span class="campo-icone"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M3 21V7l9-4 9 4v14"/><path d="M9 21V12h6v9"/><path d="M3 21h18"/></svg></span>
           <div class="campo-estado">
-            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20,6 9,17 4,12"/></svg>
+            <svg class="check-icon" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20,6 9,17 4,12"/></svg>
+            <svg class="load-icon" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12a9 9 0 1 1-2.64-6.36"/></svg>
           </div>
         </div>
-        <div class="campo-err-msg" id="cnpj-err">⚠ CNPJ inválido</div>
+        <div class="campo-err-msg" id="cnpj-err">⚠ <span id="cnpj-err-txt">CNPJ inválido</span></div>
       </div>
     </div>
 
@@ -743,7 +749,7 @@
 <script type="module">
 import { initializeApp }              from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
 import { getAuth, createUserWithEmailAndPassword, updateProfile } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js";
-import { getFirestore, doc, setDoc, serverTimestamp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
+import { getFirestore, doc, setDoc, serverTimestamp, collection, query, where, getDocs, limit } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
 
 const firebaseConfig = {
   apiKey:            "AIzaSyCw4QhQ5fGYSv_QgfY-waAZuOhkfv1ej1s",
@@ -757,6 +763,31 @@ const firebaseConfig = {
 const app  = initializeApp(firebaseConfig);
 const auth = getAuth(app);
 const db   = getFirestore(app);
+
+// ══════════════════════════════════════
+// VERIFICAÇÃO DE DUPLICADOS (CNPJ / EMAIL)
+// ══════════════════════════════════════
+window.checarCNPJExistente = async function(cnpjLimpo) {
+  if (!cnpjLimpo || cnpjLimpo.length !== 14) return false;
+  try {
+    const q = query(collection(db, 'usuarios'), where('cnpj', '==', cnpjLimpo), limit(1));
+    const snap = await getDocs(q);
+    return !snap.empty;
+  } catch (e) {
+    return false; // se a consulta falhar (offline etc.), não bloquear o usuário
+  }
+};
+
+window.checarEmailExistente = async function(emailVal) {
+  if (!emailVal || !emailVal.includes('@')) return false;
+  try {
+    const q = query(collection(db, 'usuarios'), where('email', '==', emailVal.toLowerCase().trim()), limit(1));
+    const snap = await getDocs(q);
+    return !snap.empty;
+  } catch (e) {
+    return false;
+  }
+};
 
 window.criarConta = async function() {
   const nome  = document.getElementById('nome').value.trim();
@@ -981,10 +1012,12 @@ function validarPasoActual() {
   }
   if (pasoActual === 1) {
     let ok = true;
-    const email = document.getElementById('email').value.trim();
+    const emailEl = document.getElementById('email');
+    const email = emailEl.value.trim();
     const senha = document.getElementById('senha').value;
     const conf  = document.getElementById('conf').value;
     if (!email || !email.includes('@')) { setCampoErr('email', 'email-err'); ok = false; }
+    if (emailEl.classList.contains('err') || emailEl.classList.contains('checando')) ok = false;
     if (senha.length < 6) { setCampoErr('senha', 'senha-err'); ok = false; }
     if (senha !== conf)   { setCampoErr('conf',  'conf-err');  ok = false; }
     if (!ok) window.mostrarErr('Corrija os campos em vermelho.');
@@ -992,9 +1025,11 @@ function validarPasoActual() {
   }
   if (pasoActual === 2) {
     let ok = true;
+    const cnpjEl = document.getElementById('cnpj');
     if (!document.getElementById('nomeNegocio').value.trim()) { setCampoErr('nomeNegocio', 'nomeNegocio-err'); ok = false; }
     if (!window._tipoNegocio) { ok = false; window.mostrarErr('Selecione o tipo de negócio.'); }
-    if (!validCNPJ(document.getElementById('cnpj').value)) { setCampoErr('cnpj', 'cnpj-err'); ok = false; }
+    if (!validCNPJ(cnpjEl.value)) { setCampoErr('cnpj', 'cnpj-err'); ok = false; }
+    if (cnpjEl.classList.contains('err') || cnpjEl.classList.contains('checando')) ok = false;
     if (!ok && window._tipoNegocio) window.mostrarErr('Corrija os campos em vermelho.');
     return ok;
   }
@@ -1032,14 +1067,14 @@ function validarPasoActual() {
 function setCampoErr(inputId, errId) {
   const el = document.getElementById(inputId);
   const err = document.getElementById(errId);
-  if (el) { el.classList.remove('ok'); el.classList.add('err'); }
+  if (el) { el.classList.remove('ok','checando'); el.classList.add('err'); }
   if (err) err.classList.add('show');
 }
 
 function setCampoOk(inputId, errId) {
   const el = document.getElementById(inputId);
   const err = document.getElementById(errId);
-  if (el) { el.classList.remove('err'); el.classList.add('ok'); }
+  if (el) { el.classList.remove('err','checando'); el.classList.add('ok'); }
   if (err) err.classList.remove('show');
 }
 
@@ -1210,7 +1245,30 @@ window.valCel = function(el) {
 window.valEmail = function(el, blur) {
   const ok = el.value.includes('@') && el.value.includes('.');
   if (!blur && !el.value.includes('@')) return;
-  ok ? setCampoOk('email','email-err') : setCampoErr('email','email-err');
+
+  if (!ok) {
+    document.getElementById('email-err-txt').textContent = 'Email inválido. Ex: nome@email.com';
+    setCampoErr('email','email-err');
+    return;
+  }
+
+  if (!blur) { setCampoOk('email','email-err'); return; }
+
+  // Verificar duplicado no Firestore
+  const valorAtual = el.value;
+  el.classList.remove('ok','err');
+  el.classList.add('checando');
+
+  window.checarEmailExistente(valorAtual).then(existe => {
+    if (el.value !== valorAtual) return; // usuário já mudou o valor
+    el.classList.remove('checando');
+    if (existe) {
+      document.getElementById('email-err-txt').textContent = 'Já existe uma conta com este email. Tente entrar.';
+      setCampoErr('email','email-err');
+    } else {
+      setCampoOk('email','email-err');
+    }
+  });
 };
 
 window.valSenha = function(el, blur) {
@@ -1354,7 +1412,27 @@ function validCNPJ(val) {
 }
 
 window.valCNPJ = function(el) {
-  validCNPJ(el.value) ? setCampoOk('cnpj','cnpj-err') : setCampoErr('cnpj','cnpj-err');
+  if (!validCNPJ(el.value)) {
+    document.getElementById('cnpj-err-txt').textContent = 'CNPJ inválido';
+    setCampoErr('cnpj','cnpj-err');
+    return;
+  }
+
+  // Verificar duplicado no Firestore
+  const cnpjLimpo = el.value.replace(/\D/g,'');
+  el.classList.remove('ok','err');
+  el.classList.add('checando');
+
+  window.checarCNPJExistente(cnpjLimpo).then(existe => {
+    if (el.value.replace(/\D/g,'') !== cnpjLimpo) return; // usuário já mudou o valor
+    el.classList.remove('checando');
+    if (existe) {
+      document.getElementById('cnpj-err-txt').textContent = 'Já existe uma conta cadastrada com este CNPJ.';
+      setCampoErr('cnpj','cnpj-err');
+    } else {
+      setCampoOk('cnpj','cnpj-err');
+    }
+  });
 };
 
 // ══════════════════════════════════════
