@@ -285,31 +285,29 @@
     }
 
     /* ══════════════════════════════════════
-       LOCALIZAÇÃO (GPS)
+       "NÃO SEI MEU CEP" — link de localização
     ══════════════════════════════════════ */
-    .loc-gps {
-      display: flex; align-items: center; gap: 12px;
-      padding: 14px 16px; border-radius: 16px;
-      border: 1.5px dashed var(--ink3); background: var(--surface);
-      cursor: pointer; transition: all 0.2s;
+    .link-cep {
+      display: flex; align-items: center; gap: 6px;
+      align-self: flex-start;
+      background: none; border: none; padding: 2px;
+      font-family: 'Geologica', sans-serif;
+      font-size: 12px; font-weight: 700;
+      color: var(--orange); cursor: pointer;
+      transition: opacity 0.15s;
     }
 
-    .loc-gps.ok  { border-color: var(--green); border-style: solid; background: var(--green-pale); }
-    .loc-gps.err { border-color: var(--red);   border-style: solid; background: var(--red-pale); }
+    .link-cep:active { opacity: 0.6; }
+    .link-cep:disabled { color: var(--ink3); cursor: wait; }
 
-    .loc-gps-icon {
-      width: 40px; height: 40px; border-radius: 12px;
-      display: flex; align-items: center; justify-content: center;
-      background: var(--orange-pale); color: var(--orange);
-      flex-shrink: 0; transition: all 0.2s;
+    .link-cep.ok   { color: var(--green); }
+    .link-cep.err  { color: var(--red); }
+
+    .link-cep svg { flex-shrink: 0; }
+
+    .link-cep .spin {
+      animation: girar 0.8s linear infinite;
     }
-
-    .loc-gps.ok  .loc-gps-icon { background: var(--white); color: var(--green); }
-    .loc-gps.err .loc-gps-icon { background: var(--white); color: var(--red); }
-
-    .loc-gps-info { flex: 1; }
-    .loc-gps-titulo { font-weight: 800; font-size: 13.5px; color: var(--ink); margin-bottom: 2px; }
-    .loc-gps-sub { font-size: 11.5px; color: var(--ink2); line-height: 1.4; }
 
     /* ══════════════════════════════════════
        HINT / CONTADOR (equipe)
@@ -627,16 +625,10 @@
           </div>
         </div>
         <div class="campo-err-msg" id="cep-err">⚠ <span id="cep-err-txt">CEP inválido</span></div>
-      </div>
-
-      <div class="loc-gps" id="loc-gps" onclick="capturarLocalizacao()">
-        <div class="loc-gps-icon">
-          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M12 21s-7-5.686-7-10a7 7 0 0 1 14 0c0 4.314-7 10-7 10z"/><circle cx="12" cy="11" r="2.5"/></svg>
-        </div>
-        <div class="loc-gps-info">
-          <div class="loc-gps-titulo" id="loc-gps-titulo">Usar minha localização atual</div>
-          <div class="loc-gps-sub" id="loc-gps-sub">Ajuda trabalhadores próximos a te encontrar</div>
-        </div>
+        <button type="button" class="link-cep" id="link-cep" onclick="capturarLocalizacao()">
+          <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 21s-7-5.686-7-10a7 7 0 0 1 14 0c0 4.314-7 10-7 10z"/><circle cx="12" cy="11" r="2.5"/></svg>
+          <span id="link-cep-txt">Não sei meu CEP — usar minha localização atual</span>
+        </button>
       </div>
 
       <div class="campo">
@@ -1105,40 +1097,68 @@ function renderEquipeChips() {
 }
 
 // ══════════════════════════════════════
-// LOCALIZAÇÃO (GPS)
+// "NÃO SEI MEU CEP" — GPS + geocodificação inversa
 // ══════════════════════════════════════
 window.capturarLocalizacao = function() {
-  const card   = document.getElementById('loc-gps');
-  const titulo = document.getElementById('loc-gps-titulo');
-  const sub    = document.getElementById('loc-gps-sub');
+  const btn = document.getElementById('link-cep');
+  const txt = document.getElementById('link-cep-txt');
 
   if (!navigator.geolocation) {
-    card.classList.remove('ok'); card.classList.add('err');
-    titulo.textContent = 'Localização não suportada';
-    sub.textContent = 'Seu navegador não permite acessar a localização. Preencha o endereço manualmente.';
+    btn.classList.add('err');
+    txt.textContent = 'Localização não suportada pelo navegador';
     return;
   }
 
-  card.classList.remove('ok','err');
-  titulo.textContent = 'Buscando localização...';
-  sub.textContent = 'Aguarde um instante.';
+  btn.disabled = true;
+  btn.classList.remove('ok','err');
+  txt.innerHTML = '<span class="spin" style="display:inline-flex;">⟳</span> Buscando sua localização...';
 
   navigator.geolocation.getCurrentPosition(
-    (pos) => {
+    async (pos) => {
       window._empresaLoc = { lat: pos.coords.latitude, lng: pos.coords.longitude };
-      card.classList.add('ok');
-      titulo.textContent = 'Localização capturada ✓';
-      sub.textContent = `Lat ${pos.coords.latitude.toFixed(5)}, Lng ${pos.coords.longitude.toFixed(5)}`;
+      await buscarEnderecoPorGPS(pos.coords.latitude, pos.coords.longitude);
     },
     () => {
       window._empresaLoc = null;
-      card.classList.add('err');
-      titulo.textContent = 'Não foi possível obter localização';
-      sub.textContent = 'Verifique as permissões do navegador ou preencha o endereço manualmente.';
+      btn.disabled = false;
+      btn.classList.add('err');
+      txt.textContent = 'Não foi possível obter localização. Permita o acesso e tente novamente.';
     },
     { enableHighAccuracy: true, timeout: 10000 }
   );
 };
+
+async function buscarEnderecoPorGPS(lat, lng) {
+  const btn = document.getElementById('link-cep');
+  const txt = document.getElementById('link-cep-txt');
+
+  try {
+    const resp = await fetch(`https://nominatim.openstreetmap.org/reverse?format=json&lat=${lat}&lon=${lng}&zoom=18&addressdetails=1`, {
+      headers: { 'Accept-Language': 'pt-BR' }
+    });
+    const data = await resp.json();
+    const a = data.address || {};
+
+    if (a.postcode) {
+      document.getElementById('cep').value = a.postcode.replace(/\D/g,'').replace(/(\d{5})(\d{3})/, '$1-$2');
+      setCampoOk('cep','cep-err');
+    }
+    preencherCampo('logradouro', a.road || a.pedestrian || a.suburb || '');
+    preencherCampo('bairro', a.suburb || a.neighbourhood || a.city_district || '');
+    preencherCampo('cidade', a.city || a.town || a.municipality || '');
+    preencherCampo('uf', (a.state_code || a['ISO3166-2-lvl4'] || '').replace('BR-','').toUpperCase());
+
+    btn.disabled = false;
+    btn.classList.add('ok');
+    txt.textContent = 'Localização aplicada ✓ — confira e complete o número';
+    const numEl = document.getElementById('numero');
+    if (numEl) numEl.focus();
+  } catch (e) {
+    btn.disabled = false;
+    btn.classList.add('err');
+    txt.textContent = 'Não foi possível buscar o endereço. Preencha manualmente.';
+  }
+}
 
 // ══════════════════════════════════════
 // ACEITE DE TERMOS
