@@ -16,7 +16,7 @@
    Cambiar este número fuerza la actualización
    en todos los dispositivos con la app instalada.
 ───────────────────────────────────────── */
-const CACHE_VERSION  = "eureka-v3";
+const CACHE_VERSION  = "eureka-v4";
 
 /* ─────────────────────────────────────────
    ARCHIVOS A CACHEAR
