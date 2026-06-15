@@ -772,7 +772,10 @@ window.checarCNPJExistente = async function(cnpjLimpo) {
   try {
     const q = query(collection(db, 'usuarios'), where('cnpj', '==', cnpjLimpo), limit(1));
     const snap = await getDocs(q);
-    return !snap.empty;
+    if (snap.empty) return false;
+    // Só bloquear se for uma conta REAL e completa — cadastros incompletos não contam
+    const data = snap.docs[0].data();
+    return data.perfilCompleto === true;
   } catch (e) {
     return false; // se a consulta falhar (offline etc.), não bloquear o usuário
   }
@@ -783,7 +786,9 @@ window.checarEmailExistente = async function(emailVal) {
   try {
     const q = query(collection(db, 'usuarios'), where('email', '==', emailVal.toLowerCase().trim()), limit(1));
     const snap = await getDocs(q);
-    return !snap.empty;
+    if (snap.empty) return false;
+    const data = snap.docs[0].data();
+    return data.perfilCompleto === true;
   } catch (e) {
     return false;
   }
@@ -796,42 +801,63 @@ window.criarConta = async function() {
   const senha = document.getElementById('senha').value;
 
   setLoad(true);
+
+  let cred;
   try {
-    const cred = await createUserWithEmailAndPassword(auth, email, senha);
-    await updateProfile(cred.user, { displayName: `${nome} ${sobre}` });
-    await setDoc(doc(db, 'usuarios', cred.user.uid), {
-      nome, sobrenome: sobre,
-      nomeCompleto: `${nome} ${sobre}`,
-      dataNascimento: document.getElementById('nasc').value,
-      celular: document.getElementById('cel').value,
-      email,
-      perfil: 'empresa',
-      nomeNegocio: document.getElementById('nomeNegocio').value.trim(),
-      tipoNegocio: window._tipoNegocio,
-      cnpj: document.getElementById('cnpj').value.replace(/\D/g,''),
-      endereco: {
-        cep: document.getElementById('cep').value.replace(/\D/g,''),
-        logradouro: document.getElementById('logradouro').value.trim(),
-        numero: document.getElementById('numero').value.trim(),
-        bairro: document.getElementById('bairro').value.trim(),
-        cidade: document.getElementById('cidade').value.trim(),
-        uf: document.getElementById('uf').value.trim().toUpperCase()
-      },
-      localizacao: window._empresaLoc,
-      nichosContratacao: window._nichosEmpresaSel,
-      uid: cred.user.uid,
-      criadoEm: serverTimestamp(),
-      perfilCompleto: false,
-      status: 'ativo',
-      aceiteTermos: true,
-      aceiteTermosEm: serverTimestamp(),
-      aceiteTermosVersao: '2026-06'
-    });
-    window.location.href = 'index.html';
+    cred = await createUserWithEmailAndPassword(auth, email, senha);
   } catch(err) {
     mostrarErr(traduzir(err.code));
-  } finally {
     setLoad(false);
+    return;
+  }
+
+  const dadosPerfil = {
+    nome, sobrenome: sobre,
+    nomeCompleto: `${nome} ${sobre}`,
+    dataNascimento: document.getElementById('nasc').value,
+    celular: document.getElementById('cel').value,
+    email,
+    perfil: 'empresa',
+    nomeNegocio: document.getElementById('nomeNegocio').value.trim(),
+    tipoNegocio: window._tipoNegocio,
+    cnpj: document.getElementById('cnpj').value.replace(/\D/g,''),
+    endereco: {
+      cep: document.getElementById('cep').value.replace(/\D/g,''),
+      logradouro: document.getElementById('logradouro').value.trim(),
+      numero: document.getElementById('numero').value.trim(),
+      bairro: document.getElementById('bairro').value.trim(),
+      cidade: document.getElementById('cidade').value.trim(),
+      uf: document.getElementById('uf').value.trim().toUpperCase()
+    },
+    localizacao: window._empresaLoc,
+    nichosContratacao: window._nichosEmpresaSel,
+    uid: cred.user.uid,
+    criadoEm: serverTimestamp(),
+    perfilCompleto: false,
+    status: 'ativo',
+    aceiteTermos: true,
+    aceiteTermosEm: serverTimestamp(),
+    aceiteTermosVersao: '2026-06'
+  };
+
+  // Finaliza o cadastro no Firestore — com 1 nova tentativa antes de desistir
+  for (let tentativa = 1; tentativa <= 2; tentativa++) {
+    try {
+      await updateProfile(cred.user, { displayName: `${nome} ${sobre}` });
+      await setDoc(doc(db, 'usuarios', cred.user.uid), dadosPerfil);
+      window.location.href = 'index.html';
+      return;
+    } catch(err) {
+      if (tentativa < 2) {
+        await new Promise(r => setTimeout(r, 1200)); // espera curta antes de tentar de novo
+        continue;
+      }
+      // Falhou nas duas tentativas — desfaz a criação da conta para não "reservar" o email/CNPJ
+      try { await cred.user.delete(); } catch(_) {}
+      mostrarErr('Não foi possível concluir o cadastro. Verifique sua conexão e tente novamente.');
+      setLoad(false);
+      return;
+    }
   }
 };
 
