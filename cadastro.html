@@ -522,13 +522,15 @@
 
     /* Expandidos (ocultos por defecto) */
     .nichos-expand {
-      display: grid; grid-template-columns: 1fr 1fr;
-      gap: 10px; overflow: hidden;
-      max-height: 0; opacity: 0;
-      transition: max-height 0.4s ease, opacity 0.3s ease;
+      display: none;
+      grid-template-columns: 1fr 1fr;
+      gap: 10px;
     }
 
-    .nichos-expand.show { max-height: 800px; opacity: 1; }
+    .nichos-expand.show {
+      display: grid;
+      animation: fadeUp 0.3s ease both;
+    }
 
     /* ══════════════════════════════════════
        STEP 6 — SUBÁREAS
@@ -569,6 +571,39 @@
       content: '✓';
       font-size: 11px; font-weight: 800;
     }
+
+    /* ══════════════════════════════════════
+       ACEITE DE TERMOS
+    ══════════════════════════════════════ */
+    .aceite-termos {
+      display: flex; align-items: flex-start; gap: 10px;
+      padding: 14px; margin-top: 4px;
+      background: var(--surface); border: 1.5px solid var(--border);
+      border-radius: 16px; cursor: pointer;
+      transition: border-color 0.2s;
+    }
+
+    .aceite-termos.err { border-color: var(--red); animation: shake 0.4s ease; }
+
+    .aceite-checkbox {
+      width: 22px; height: 22px; border-radius: 7px;
+      border: 2px solid var(--border); background: var(--white);
+      display: flex; align-items: center; justify-content: center;
+      flex-shrink: 0; margin-top: 1px;
+      transition: all 0.2s;
+    }
+
+    .aceite-checkbox svg {
+      width: 13px; height: 13px; stroke: white; fill: none;
+      stroke-width: 2.5; stroke-linecap: round; stroke-linejoin: round;
+      opacity: 0; transition: opacity 0.2s;
+    }
+
+    .aceite-termos.checked .aceite-checkbox { border-color: var(--orange); background: var(--orange); }
+    .aceite-termos.checked .aceite-checkbox svg { opacity: 1; }
+
+    .aceite-texto { font-size: 12.5px; color: var(--ink2); line-height: 1.5; }
+    .aceite-texto a { color: var(--orange); font-weight: 700; text-decoration: none; }
 
     /* ══════════════════════════════════════
        ERROR GLOBAL
@@ -893,6 +928,15 @@
       <div class="subareas-section" id="subareas-section">
         <!-- Generado dinámicamente según nichos seleccionados -->
       </div>
+
+      <div class="aceite-termos" id="aceite-termos" onclick="toggleAceite()">
+        <div class="aceite-checkbox">
+          <svg viewBox="0 0 12 12"><polyline points="2,6 5,9 10,3"/></svg>
+        </div>
+        <div class="aceite-texto">
+          Li e aceito os <a href="termos.html" target="_blank" rel="noopener" onclick="event.stopPropagation()">Termos e Condições</a> e a <a href="privacidade.html" target="_blank" rel="noopener" onclick="event.stopPropagation()">Política de Privacidade</a> do Eureka.
+        </div>
+      </div>
     </div>
 
   </div><!-- /pasos-wrap -->
@@ -953,9 +997,12 @@ window.criarConta = async function() {
       uid: cred.user.uid,
       criadoEm: serverTimestamp(),
       perfilCompleto: false,
-      status: 'ativo'
+      status: 'ativo',
+      aceiteTermos: true,
+      aceiteTermosEm: serverTimestamp(),
+      aceiteTermosVersao: '2026-06'
     });
-    window.location.href = 'onboarding.html';
+    window.location.href = 'index.html';
   } catch(err) {
     mostrarErr(traduzir(err.code));
   } finally {
@@ -999,6 +1046,7 @@ window._perfilSel   = null;
 window._modalSel    = null;
 window._nichosSel   = [];
 window._subareasSel = {};
+window._aceiteTermos = false;
 
 // Labels de los pasos
 const PASO_INFO = [
@@ -1016,7 +1064,7 @@ const PASO_INFO = [
 // SVG icons para nichos — inline, sem dependência de CDN
 const NICHO_SVGS = {
   hostelaria: '<svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M3 2v7c0 1.1.9 2 2 2h4a2 2 0 0 0 2-2V2"/><path d="M7 2v20"/><path d="M21 15V2a5 5 0 0 0-5 5v6c0 .6.4 1 1 1h4v7"/></svg>',
-  limpeza:    '<svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M18 11V6a2 2 0 0 0-4 0v5"/><path d="M14 10V4a2 2 0 0 0-4 0v6"/><path d="M10 10.5V5a2 2 0 0 0-4 0v9"/><path d="M6 14v1a6 6 0 0 0 12 0v-5a2 2 0 0 0-4 0"/></svg>',
+  limpeza:    '<svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3l1.5 4.5H18l-3.75 2.75 1.5 4.75L12 12.5l-3.75 2.5 1.5-4.75L6 7.5h4.5L12 3z"/><path d="M19 13l.8 2.2H22l-1.8 1.3.7 2.2-1.9-1.3-1.9 1.3.7-2.2-1.8-1.3h2.2z"/><line x1="5" y1="17" x2="5" y2="19"/><line x1="4" y1="18" x2="6" y2="18"/></svg>',
   cuidados:   '<svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>',
   tecnologia: '<svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="3" width="20" height="14" rx="2"/><path d="M8 21h8M12 17v4"/></svg>',
   construcao: '<svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="m15 12-8.5 8.5a2.12 2.12 0 0 1-3-3L12 9"/><path d="M17.64 15 22 10.64"/><path d="m2 2 4.5 4.5"/><path d="M13.32 4.68 16 2l5 5-2.68 2.68a2.44 2.44 0 0 1-3.44 0l-1.56-1.56a2.44 2.44 0 0 1 0-3.44z"/></svg>',
@@ -1032,6 +1080,18 @@ const NICHO_SVGS = {
   marketing:  '<svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M22 12h-4l-3 9L9 3l-3 9H2"/></svg>',
   financeiro: '<svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="1" x2="12" y2="23"/><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg>',
   outros:     '<svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="16"/><line x1="8" y1="12" x2="16" y2="12"/></svg>',
+
+  // Nichos expandidos adicionales
+  juridico:   '<svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2L2 7l10 5 10-5-10-5z"/><path d="M2 17l10 5 10-5"/><path d="M2 12l10 5 10-5"/></svg>',
+  gastronomia:'<svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M6 2v20M18 2a4 4 0 0 0-4 4v6h4M18 12v10"/></svg>',
+  transporte: '<svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><rect x="1" y="3" width="15" height="13" rx="2"/><path d="M16 8h4l3 3v5h-7V8z"/><circle cx="5.5" cy="18.5" r="2.5"/><circle cx="18.5" cy="18.5" r="2.5"/></svg>',
+  musica:     '<svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M9 18V5l12-2v13"/><circle cx="6" cy="18" r="3"/><circle cx="18" cy="16" r="3"/></svg>',
+  fotografia: '<svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"/><circle cx="12" cy="13" r="4"/></svg>',
+  esportes:   '<svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M12 2a14.5 14.5 0 0 0 0 20 14.5 14.5 0 0 0 0-20"/><path d="M2 12h20"/></svg>',
+  veterinaria:'<svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>',
+  mecanica:   '<svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.77-3.77a6 6 0 0 1-7.94 7.94l-6.91 6.91a2.12 2.12 0 0 1-3-3l6.91-6.91a6 6 0 0 1 7.94-7.94l-3.76 3.76z"/></svg>',
+  recepcao:   '<svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M22 16.92v3a2 2 0 0 1-2.18 2A19.79 19.79 0 0 1 11.63 19a19.5 19.5 0 0 1-6-6A19.79 19.79 0 0 1 3.1 4.18 2 2 0 0 1 5.09 2h3a2 2 0 0 1 2 1.72c.127.96.361 1.903.7 2.81a2 2 0 0 1-.45 2.11L9.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0 1 23 17v-.08z"/></svg>',
+  textil:     '<svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M20.38 3.46 16 2a4 4 0 0 1-8 0L3.62 3.46a2 2 0 0 0-1.34 2.23l.58 3.57a1 1 0 0 0 .99.84H6v10c0 1.1.9 2 2 2h8a2 2 0 0 0 2-2V10h2.15a1 1 0 0 0 .99-.84l.58-3.57a2 2 0 0 0-1.34-2.23z"/></svg>',
 };
 
 // Nichos que permiten trabajo REMOTO
@@ -1052,6 +1112,7 @@ const NICHOS_MAIN = [
 ];
 
 const NICHOS_EXPAND = [
+  // Primera fila de expandidos
   { id: 'eventos',     svg: NICHO_SVGS.eventos,    nome: 'Eventos',     remoto: false },
   { id: 'beleza',      svg: NICHO_SVGS.beleza,     nome: 'Beleza',      remoto: false },
   { id: 'saude',       svg: NICHO_SVGS.saude,      nome: 'Saúde',       remoto: false },
@@ -1061,6 +1122,17 @@ const NICHOS_EXPAND = [
   { id: 'design',      svg: NICHO_SVGS.design,     nome: 'Design',      remoto: true  },
   { id: 'marketing',   svg: NICHO_SVGS.marketing,  nome: 'Marketing',   remoto: true  },
   { id: 'financeiro',  svg: NICHO_SVGS.financeiro, nome: 'Financeiro',  remoto: true  },
+  // Más nichos
+  { id: 'gastronomia', svg: NICHO_SVGS.gastronomia,nome: 'Gastronomia', remoto: false },
+  { id: 'transporte',  svg: NICHO_SVGS.transporte, nome: 'Transporte',  remoto: false },
+  { id: 'musica',      svg: NICHO_SVGS.musica,     nome: 'Música',      remoto: true  },
+  { id: 'fotografia',  svg: NICHO_SVGS.fotografia, nome: 'Fotografia',  remoto: true  },
+  { id: 'esportes',    svg: NICHO_SVGS.esportes,   nome: 'Esportes',    remoto: false },
+  { id: 'veterinaria', svg: NICHO_SVGS.veterinaria,nome: 'Veterinária', remoto: false },
+  { id: 'mecanica',    svg: NICHO_SVGS.mecanica,   nome: 'Mecânica',    remoto: false },
+  { id: 'recepcao',    svg: NICHO_SVGS.recepcao,   nome: 'Recepção',    remoto: false },
+  { id: 'textil',      svg: NICHO_SVGS.textil,     nome: 'Têxtil',      remoto: false },
+  { id: 'juridico',    svg: NICHO_SVGS.juridico,   nome: 'Jurídico',    remoto: true  },
 ];
 
 // SUBÁREAS por nicho — máximo 8 se pueden seleccionar
@@ -1133,6 +1205,11 @@ function actualizarProgreso(n) {
 // ══════════════════════════════════════
 window.proximoPaso = function() {
   if (!validarPasoActual()) return;
+
+  if (pasoActual === 0 && window._perfilSel === 'empresa') {
+    window.location.href = 'cadastroempresa.html';
+    return;
+  }
 
   if (pasoActual === 4) {
     // Antes del paso 5 generar subáreas
@@ -1208,6 +1285,15 @@ function validarPasoActual() {
     if (window._nichosSel.length === 0) { window.mostrarErr('Selecione pelo menos 1 área.'); return false; }
     return true;
   }
+  if (pasoActual === 5) {
+    if (!window._aceiteTermos) {
+      document.getElementById('aceite-termos').classList.add('err');
+      setTimeout(() => document.getElementById('aceite-termos').classList.remove('err'), 400);
+      window.mostrarErr('Você precisa aceitar os Termos e a Política de Privacidade.');
+      return false;
+    }
+    return true;
+  }
   return true;
 }
 
@@ -1238,10 +1324,20 @@ window.selecionarPerfil = function(tipo) {
 // PASO 3 — MODALIDADE
 // ══════════════════════════════════════
 window.selModal = function(tipo) {
+  const cambio = window._modalSel !== tipo;
   window._modalSel = tipo;
   ['presencial','remoto','hibrido'].forEach(t => {
     document.getElementById(`mc-${t}`).classList.toggle('sel', t === tipo);
   });
+
+  if (cambio) {
+    // La lista de nichos depende da modalidade — re-renderizar e limpar seleção
+    window._nichosSel = [];
+    window._subareasSel = {};
+    const counter = document.getElementById('nichos-counter');
+    if (counter) counter.textContent = '0/3';
+    renderNichos();
+  }
 };
 
 // ══════════════════════════════════════
@@ -1356,7 +1452,7 @@ function generarSubareas() {
     // Hint de límite 8
     const hintSub = document.createElement('div');
     hintSub.style.cssText = 'font-size:11px;color:var(--ink3);margin-bottom:4px;display:flex;align-items:center;gap:4px;';
-    hintSub.innerHTML = '<svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg> Selecione até 8 funções · <strong id="cnt-' + nichoId + '">0/8</strong>';
+    hintSub.innerHTML = '<svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg> Selecione até 7 funções · <strong id="cnt-' + nichoId + '">0/7</strong>';
     bloco.insertBefore(hintSub, chipsWrap);
 
     subs.forEach(sub => {
@@ -1364,7 +1460,7 @@ function generarSubareas() {
       chip.className = 'subarea-chip';
       chip.textContent = sub;
       chip.onclick = () => {
-        const MAX = 8;
+        const MAX = 7;
         const jasel = chip.classList.contains('sel');
         if (!jasel && window._subareasSel[nichoId].length >= MAX) {
           // Shake counter
@@ -1380,7 +1476,7 @@ function generarSubareas() {
         }
         // Actualizar contador
         const cnt = document.getElementById('cnt-' + nichoId);
-        if (cnt) cnt.innerHTML = window._subareasSel[nichoId].length + '/8';
+        if (cnt) cnt.innerHTML = window._subareasSel[nichoId].length + '/7';
         // Deshabilitar si llegó al límite
         const all = chipsWrap.querySelectorAll('.subarea-chip');
         all.forEach(c => {
@@ -1485,6 +1581,15 @@ window.mascaraCel = function(el) {
   v = v.replace(/^(\d{2})(\d)/,'($1) $2');
   v = v.replace(/(\d{5})(\d)/,'$1-$2');
   el.value = v.slice(0,15);
+};
+
+// ══════════════════════════════════════
+// ACEITE DE TERMOS
+// ══════════════════════════════════════
+window.toggleAceite = function() {
+  window._aceiteTermos = !window._aceiteTermos;
+  document.getElementById('aceite-termos').classList.toggle('checked', window._aceiteTermos);
+  document.getElementById('aceite-termos').classList.remove('err');
 };
 
 // ══════════════════════════════════════
