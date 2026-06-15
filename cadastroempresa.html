@@ -616,6 +616,19 @@
     <div class="paso" id="paso-3">
       <p class="paso-titulo">Onde fica o seu negócio? 📍</p>
 
+      <div class="campo">
+        <label class="campo-label" for="cep">CEP <span class="req">*</span></label>
+        <div class="campo-wrap">
+          <input class="campo-input" type="tel" id="cep" placeholder="00000-000" inputmode="numeric" maxlength="9"
+            oninput="mascaraCEP(this)" onblur="valCep(this)"/>
+          <span class="campo-icone"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M12 21s-7-5.686-7-10a7 7 0 0 1 14 0c0 4.314-7 10-7 10z"/><circle cx="12" cy="11" r="2.5"/></svg></span>
+          <div class="campo-estado">
+            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20,6 9,17 4,12"/></svg>
+          </div>
+        </div>
+        <div class="campo-err-msg" id="cep-err">⚠ <span id="cep-err-txt">CEP inválido</span></div>
+      </div>
+
       <div class="loc-gps" id="loc-gps" onclick="capturarLocalizacao()">
         <div class="loc-gps-icon">
           <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M12 21s-7-5.686-7-10a7 7 0 0 1 14 0c0 4.314-7 10-7 10z"/><circle cx="12" cy="11" r="2.5"/></svg>
@@ -627,16 +640,70 @@
       </div>
 
       <div class="campo">
-        <label class="campo-label" for="enderecoNegocio">Endereço <span class="req">*</span></label>
+        <label class="campo-label" for="logradouro">Rua / Logradouro <span class="req">*</span></label>
         <div class="campo-wrap">
-          <input class="campo-input sin-icono" type="text" id="enderecoNegocio" placeholder="Rua, número, bairro, cidade" autocomplete="street-address"
-            oninput="valCampo(this,'enderecoNegocio-err','',true)"
-            onblur="valCampo(this,'enderecoNegocio-err','Informe o endereço do seu negócio',false)"/>
+          <input class="campo-input sin-icono" type="text" id="logradouro" placeholder="Ex: Av. Marechal Floriano" autocomplete="address-line1"
+            oninput="valCampo(this,'logradouro-err','',true)"
+            onblur="valCampo(this,'logradouro-err','Informe a rua',false)"/>
           <div class="campo-estado">
             <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20,6 9,17 4,12"/></svg>
           </div>
         </div>
-        <div class="campo-err-msg" id="enderecoNegocio-err">⚠ Informe o endereço do seu negócio</div>
+        <div class="campo-err-msg" id="logradouro-err">⚠ Informe a rua</div>
+      </div>
+
+      <div class="fila-2">
+        <div class="campo">
+          <label class="campo-label" for="numero">Número <span class="req">*</span></label>
+          <div class="campo-wrap">
+            <input class="campo-input sin-icono" type="text" id="numero" placeholder="123" inputmode="numeric" autocomplete="address-line2"
+              oninput="valCampo(this,'numero-err','',true)"
+              onblur="valCampo(this,'numero-err','Informe o número',false)"/>
+            <div class="campo-estado">
+              <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20,6 9,17 4,12"/></svg>
+            </div>
+          </div>
+          <div class="campo-err-msg" id="numero-err">⚠ Informe o número</div>
+        </div>
+        <div class="campo">
+          <label class="campo-label" for="bairro">Bairro <span class="req">*</span></label>
+          <div class="campo-wrap">
+            <input class="campo-input sin-icono" type="text" id="bairro" placeholder="Ex: Centro"
+              oninput="valCampo(this,'bairro-err','',true)"
+              onblur="valCampo(this,'bairro-err','Informe o bairro',false)"/>
+            <div class="campo-estado">
+              <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20,6 9,17 4,12"/></svg>
+            </div>
+          </div>
+          <div class="campo-err-msg" id="bairro-err">⚠ Informe o bairro</div>
+        </div>
+      </div>
+
+      <div class="fila-2">
+        <div class="campo" style="flex:2;">
+          <label class="campo-label" for="cidade">Cidade <span class="req">*</span></label>
+          <div class="campo-wrap">
+            <input class="campo-input sin-icono" type="text" id="cidade" placeholder="Ex: Curitiba" autocomplete="address-level2"
+              oninput="valCampo(this,'cidade-err','',true)"
+              onblur="valCampo(this,'cidade-err','Informe a cidade',false)"/>
+            <div class="campo-estado">
+              <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20,6 9,17 4,12"/></svg>
+            </div>
+          </div>
+          <div class="campo-err-msg" id="cidade-err">⚠ Informe a cidade</div>
+        </div>
+        <div class="campo" style="flex:1;">
+          <label class="campo-label" for="uf">UF <span class="req">*</span></label>
+          <div class="campo-wrap">
+            <input class="campo-input sin-icono" type="text" id="uf" placeholder="PR" maxlength="2" autocomplete="address-level1" style="text-transform:uppercase;"
+              oninput="this.value=this.value.toUpperCase(); valCampo(this,'uf-err','',true)"
+              onblur="valCampo(this,'uf-err','UF',false)"/>
+            <div class="campo-estado">
+              <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20,6 9,17 4,12"/></svg>
+            </div>
+          </div>
+          <div class="campo-err-msg" id="uf-err">⚠ UF</div>
+        </div>
       </div>
     </div>
 
@@ -719,7 +786,14 @@ window.criarConta = async function() {
       nomeNegocio: document.getElementById('nomeNegocio').value.trim(),
       tipoNegocio: window._tipoNegocio,
       cnpj: document.getElementById('cnpj').value.replace(/\D/g,''),
-      endereco: document.getElementById('enderecoNegocio').value.trim(),
+      endereco: {
+        cep: document.getElementById('cep').value.replace(/\D/g,''),
+        logradouro: document.getElementById('logradouro').value.trim(),
+        numero: document.getElementById('numero').value.trim(),
+        bairro: document.getElementById('bairro').value.trim(),
+        cidade: document.getElementById('cidade').value.trim(),
+        uf: document.getElementById('uf').value.trim().toUpperCase()
+      },
       localizacao: window._empresaLoc,
       nichosContratacao: window._nichosEmpresaSel,
       uid: cred.user.uid,
@@ -933,14 +1007,19 @@ function validarPasoActual() {
     return ok;
   }
   if (pasoActual === 3) {
-    const end = document.getElementById('enderecoNegocio');
-    if (!end.value.trim()) {
-      setCampoErr('enderecoNegocio', 'enderecoNegocio-err');
-      window.mostrarErr('Informe o endereço do seu negócio.');
-      return false;
-    }
-    setCampoOk('enderecoNegocio', 'enderecoNegocio-err');
-    return true;
+    let ok = true;
+    const cepEl = document.getElementById('cep');
+    if (cepEl.value.replace(/\D/g,'').length !== 8) { setCampoErr('cep','cep-err'); ok = false; }
+    else setCampoOk('cep','cep-err');
+
+    ['logradouro','numero','bairro','cidade','uf'].forEach(id => {
+      const el = document.getElementById(id);
+      if (!el.value.trim()) { setCampoErr(id, id+'-err'); ok = false; }
+      else setCampoOk(id, id+'-err');
+    });
+
+    if (!ok) window.mostrarErr('Corrija os campos em vermelho.');
+    return ok;
   }
   if (pasoActual === 4) {
     if (window._nichosEmpresaSel.length === 0) {
@@ -1161,6 +1240,67 @@ window.mascaraCel = function(el) {
   el.value = v.slice(0,15);
 };
 
+// ══════════════════════════════════════
+// CEP — máscara + busca automática (ViaCEP)
+// ══════════════════════════════════════
+window.mascaraCEP = function(el) {
+  let v = el.value.replace(/\D/g,'').slice(0,8);
+  if (v.length > 5) v = v.slice(0,5) + '-' + v.slice(5);
+  el.value = v;
+  if (v.replace(/\D/g,'').length === 8) buscarCEP(v);
+};
+
+window.valCep = function(el) {
+  const n = el.value.replace(/\D/g,'').length;
+  if (n === 8) {
+    setCampoOk('cep','cep-err');
+    buscarCEP(el.value);
+  } else {
+    document.getElementById('cep-err-txt').textContent = 'CEP inválido. Ex: 80000-000';
+    setCampoErr('cep','cep-err');
+  }
+};
+
+async function buscarCEP(cep) {
+  const num = cep.replace(/\D/g,'');
+  if (num.length !== 8) return;
+
+  const cepEl = document.getElementById('cep');
+  cepEl.classList.remove('ok','err');
+
+  try {
+    const resp = await fetch(`https://viacep.com.br/ws/${num}/json/`);
+    const data = await resp.json();
+
+    if (data.erro) {
+      document.getElementById('cep-err-txt').textContent = 'CEP não encontrado';
+      setCampoErr('cep','cep-err');
+      return;
+    }
+
+    setCampoOk('cep','cep-err');
+
+    // Autocompletar campos (sem sobrescrever o que o usuário já preencheu)
+    if (data.logradouro) preencherCampo('logradouro', data.logradouro);
+    if (data.bairro)     preencherCampo('bairro', data.bairro);
+    if (data.localidade) preencherCampo('cidade', data.localidade);
+    if (data.uf)         preencherCampo('uf', data.uf);
+
+    // Focar no número, que nunca vem do CEP
+    const numEl = document.getElementById('numero');
+    if (numEl && !numEl.value) numEl.focus();
+  } catch (e) {
+    // Sem internet ou API indisponível — usuário preenche manualmente
+  }
+}
+
+function preencherCampo(id, valor) {
+  const el = document.getElementById(id);
+  if (!el) return;
+  el.value = valor;
+  setCampoOk(id, id+'-err');
+}
+
 window.mascaraCNPJ = function(el) {
   const v = el.value.replace(/\D/g,'').slice(0,14);
   let out = v;
@@ -1213,7 +1353,7 @@ window.toggleOlho = function(inputId, iconoId) {
 
 // ENTER navegación
 document.addEventListener('DOMContentLoaded', () => {
-  ['nome','sobre','nasc','cel','email','senha','conf','nomeNegocio','cnpj','enderecoNegocio'].forEach(id => {
+  ['nome','sobre','nasc','cel','email','senha','conf','nomeNegocio','cnpj','cep','logradouro','numero','bairro','cidade','uf'].forEach(id => {
     const el = document.getElementById(id);
     if (el) el.addEventListener('keydown', e => {
       if (e.key === 'Enter') {
