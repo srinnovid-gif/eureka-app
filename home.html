@@ -1,0 +1,780 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8"/>
+  <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate"/>
+  <meta http-equiv="Pragma" content="no-cache"/>
+  <meta http-equiv="Expires" content="0"/>
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"/>
+  <meta name="theme-color" content="#FF4D20"/>
+  <meta name="mobile-web-app-capable" content="yes"/>
+  <meta name="apple-mobile-web-app-capable" content="yes"/>
+  <title>Eureka!</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com"/>
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+  <link href="https://fonts.googleapis.com/css2?family=Asap:ital,wght@0,700;0,800;1,700;1,800&family=Geologica:slnt,wght@-12..0,100..900&family=Glory:ital,wght@0,400;0,700;0,800;1,700;1,800&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet"/>
+  <style>
+    :root {
+      --orange:      #FF4D20;
+      --orange-d:    #D93A10;
+      --orange-pale: #FFF5EE;
+      --orange-soft: #FFE8D6;
+      --ink:         #111010;
+      --ink2:        #6B6560;
+      --ink3:        #B8B0A8;
+      --border:      #F0EDE8;
+      --white:       #FFFFFF;
+      --surface:     #FFF5EE;
+      --green:       #1FAD6B;
+      --green-pale:  #E6F7EF;
+      --red:         #E05252;
+      --red-pale:    #FFF0EE;
+    }
+
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; -webkit-tap-highlight-color: transparent; user-select: none; }
+
+    html, body {
+      height: 100%; overflow: hidden;
+      font-family: 'Geologica', sans-serif;
+      background: var(--ink); color: var(--ink);
+      -webkit-font-smoothing: antialiased;
+    }
+
+    #app {
+      position: fixed; inset: 0;
+      display: flex; flex-direction: column;
+      background: var(--surface); overflow: hidden;
+    }
+
+    /* ══════════════════════════════════════
+       TOP BAR
+    ══════════════════════════════════════ */
+    .topbar {
+      flex-shrink: 0;
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 18px 16px 10px;
+      background: var(--surface);
+    }
+
+    .top-btn {
+      width: 38px; height: 38px; border-radius: 50%;
+      background: var(--white); border: 1.5px solid var(--border);
+      display: flex; align-items: center; justify-content: center;
+      cursor: pointer; transition: transform 0.12s;
+      color: var(--ink);
+      position: relative;
+    }
+    .top-btn:active { transform: scale(0.92); }
+
+    .top-btn.tem-filtro::after {
+      content: '';
+      position: absolute; top: 6px; right: 7px;
+      width: 7px; height: 7px; border-radius: 50%;
+      background: var(--orange); border: 1.5px solid var(--white);
+    }
+
+    .top-logo {
+      font-family: 'Asap', sans-serif;
+      font-weight: 800; font-style: italic;
+      font-size: 21px; color: var(--orange);
+      letter-spacing: -0.02em;
+    }
+
+    /* ══════════════════════════════════════
+       TABS (Diárias / Fixos / Para você)
+    ══════════════════════════════════════ */
+    .tabs-wrap { flex-shrink: 0; padding: 2px 16px 12px; }
+
+    .tabs {
+      display: flex; gap: 6px;
+      background: var(--white);
+      border: 1.5px solid var(--border);
+      border-radius: 50px; padding: 4px;
+    }
+
+    .tab {
+      flex: 1; text-align: center;
+      padding: 9px 0; border-radius: 50px;
+      font-size: 12.5px; font-weight: 700;
+      color: var(--ink2); cursor: pointer;
+      transition: all 0.2s;
+      letter-spacing: -0.01em;
+    }
+
+    .tab.ativo {
+      background: var(--orange); color: white;
+      box-shadow: 0 4px 12px rgba(255,77,32,0.30);
+    }
+
+    /* ══════════════════════════════════════
+       DECK (stack de tarjetas)
+    ══════════════════════════════════════ */
+    .deck-wrap {
+      flex: 1; position: relative;
+      padding: 0 16px 10px;
+      display: flex; align-items: center; justify-content: center;
+      overflow: hidden;
+    }
+
+    .deck {
+      position: relative;
+      width: 100%; height: 100%;
+      max-width: 420px;
+    }
+
+    .card {
+      position: absolute; inset: 0;
+      background: var(--white);
+      border-radius: 28px;
+      box-shadow: 0 12px 32px rgba(17,16,16,0.12), 0 2px 8px rgba(17,16,16,0.06);
+      overflow: hidden;
+      display: flex; flex-direction: column;
+      will-change: transform;
+      transition: transform 0.35s cubic-bezier(.2,.8,.2,1), opacity 0.35s ease;
+      touch-action: none;
+    }
+
+    .card.arrastando { transition: none; }
+
+    .card.descartar-d { transform: translateX(140%) rotate(18deg) !important; opacity: 0; }
+    .card.descartar-e { transform: translateX(-140%) rotate(-18deg) !important; opacity: 0; }
+
+    /* Capa de fundo das próximas cartas (escala reduzida) */
+    .card[data-pos="1"] { transform: scale(0.96) translateY(10px); z-index: 2; }
+    .card[data-pos="2"] { transform: scale(0.93) translateY(18px); z-index: 1; opacity: 0.7; }
+    .card[data-pos="0"] { z-index: 3; }
+
+    /* ── Topo: imagem/logo da empresa ── */
+    .card-media {
+      position: relative;
+      height: 46%; flex-shrink: 0;
+      background: linear-gradient(135deg, var(--orange-soft), var(--orange-pale));
+      display: flex; align-items: center; justify-content: center;
+      overflow: hidden;
+    }
+
+    .card-media img { width: 100%; height: 100%; object-fit: cover; }
+
+    .card-media .logo-fallback {
+      font-family: 'Asap', sans-serif; font-weight: 800; font-style: italic;
+      font-size: 30px; color: var(--orange); opacity: 0.55;
+    }
+
+    .card-tipo-badge {
+      position: absolute; top: 14px; left: 14px;
+      padding: 6px 12px; border-radius: 50px;
+      background: rgba(17,16,16,0.55); backdrop-filter: blur(6px);
+      color: white; font-size: 11px; font-weight: 700;
+      letter-spacing: 0.02em; text-transform: uppercase;
+      font-family: 'DM Mono', monospace;
+    }
+
+    .card-urgencia {
+      position: absolute; top: 14px; right: 14px;
+      padding: 6px 11px; border-radius: 50px;
+      background: var(--orange); color: white;
+      font-size: 11px; font-weight: 800;
+      display: flex; align-items: center; gap: 4px;
+      box-shadow: 0 4px 12px rgba(255,77,32,0.4);
+    }
+
+    .stamp {
+      position: absolute; top: 24px;
+      padding: 8px 18px; border-radius: 12px;
+      border: 4px solid; font-weight: 800;
+      font-size: 22px; letter-spacing: 0.04em;
+      text-transform: uppercase; opacity: 0;
+      transform: rotate(-18deg);
+      transition: opacity 0.15s; pointer-events: none;
+      z-index: 10;
+    }
+    .stamp-like  { left: 20px; color: var(--green); border-color: var(--green); }
+    .stamp-nope  { right: 20px; color: var(--red); border-color: var(--red); transform: rotate(18deg); }
+
+    /* ── Corpo: informações ── */
+    .card-body {
+      flex: 1; padding: 16px 18px 14px;
+      display: flex; flex-direction: column;
+      overflow: hidden;
+    }
+
+    .card-empresa-row {
+      display: flex; align-items: center; gap: 8px;
+      margin-bottom: 6px;
+    }
+
+    .card-empresa-nome {
+      font-size: 13px; font-weight: 700; color: var(--ink2);
+    }
+
+    .card-verificado {
+      width: 14px; height: 14px; color: var(--orange); flex-shrink: 0;
+    }
+
+    .card-titulo {
+      font-family: 'Glory', sans-serif;
+      font-style: italic; font-weight: 800;
+      font-size: 21px; color: var(--ink);
+      line-height: 1.15; margin-bottom: 10px;
+      letter-spacing: -0.01em;
+    }
+
+    .card-stats {
+      display: flex; gap: 8px; flex-wrap: wrap;
+      margin-bottom: 10px;
+    }
+
+    .stat-pill {
+      display: flex; align-items: center; gap: 5px;
+      padding: 6px 11px; border-radius: 50px;
+      background: var(--surface); border: 1px solid var(--border);
+      font-size: 12px; font-weight: 700; color: var(--ink);
+    }
+
+    .stat-pill.preco { background: var(--green-pale); border-color: #C8ECDA; color: #0E7A48; }
+    .stat-pill svg { width: 13px; height: 13px; flex-shrink: 0; }
+
+    .card-puxador {
+      display: flex; flex-direction: column; align-items: center;
+      gap: 2px; padding: 6px 0 2px; margin-top: auto;
+      color: var(--ink3); cursor: grab;
+    }
+
+    .puxador-barra { width: 36px; height: 4px; border-radius: 2px; background: var(--border); }
+    .puxador-txt { font-size: 10px; font-weight: 600; letter-spacing: 0.02em; }
+
+    /* ── Detalhe expandido (revelado ao arrastar p/ baixo) ── */
+    .card-detalhe {
+      max-height: 0; overflow: hidden;
+      transition: max-height 0.35s ease;
+      border-top: 1px solid var(--border);
+    }
+
+    .card.expandido .card-detalhe { max-height: 240px; overflow-y: auto; }
+    .card.expandido .card-body { flex: 0 0 auto; }
+
+    .detalhe-inner { padding: 14px 18px 18px; }
+    .detalhe-secao { margin-bottom: 12px; }
+    .detalhe-label {
+      font-family: 'DM Mono', monospace; font-size: 10px;
+      font-weight: 500; color: var(--ink3); text-transform: uppercase;
+      letter-spacing: 0.05em; margin-bottom: 4px;
+    }
+    .detalhe-txt { font-size: 13px; color: var(--ink2); line-height: 1.55; }
+
+    .detalhe-tags { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 4px; }
+    .detalhe-tag {
+      padding: 5px 10px; border-radius: 50px;
+      background: var(--surface); border: 1px solid var(--border);
+      font-size: 11px; font-weight: 700; color: var(--ink2);
+    }
+
+    /* ══════════════════════════════════════
+       BOTÕES DE AÇÃO
+    ══════════════════════════════════════ */
+    .acoes {
+      flex-shrink: 0;
+      display: flex; align-items: center; justify-content: center;
+      gap: 14px; padding: 4px 16px 14px;
+    }
+
+    .acao-btn {
+      width: 52px; height: 52px; border-radius: 50%;
+      background: var(--white); border: 1.5px solid var(--border);
+      display: flex; align-items: center; justify-content: center;
+      cursor: pointer; transition: transform 0.12s, box-shadow 0.12s;
+      box-shadow: 0 4px 14px rgba(17,16,16,0.08);
+      color: var(--ink2);
+    }
+    .acao-btn:active { transform: scale(0.88); }
+
+    .acao-btn.voltar { width: 44px; height: 44px; color: var(--ink3); }
+    .acao-btn.cancelar { color: var(--red); }
+    .acao-btn.cancelar svg, .acao-btn.postular svg { width: 22px; height: 22px; }
+    .acao-btn.voltar svg, .acao-btn.compartilhar svg { width: 18px; height: 18px; }
+
+    .acao-btn.postular {
+      width: 62px; height: 62px;
+      background: var(--orange); color: white;
+      box-shadow: 0 8px 22px rgba(255,77,32,0.38);
+    }
+
+    /* ══════════════════════════════════════
+       BOTTOM NAV
+    ══════════════════════════════════════ */
+    .bottom-nav {
+      flex-shrink: 0;
+      display: flex; align-items: center; justify-content: space-around;
+      padding: 8px 8px calc(14px + env(safe-area-inset-bottom, 0px));
+      background: var(--white);
+      border-top: 1px solid var(--border);
+    }
+
+    .nav-item {
+      display: flex; flex-direction: column; align-items: center; gap: 3px;
+      flex: 1; padding: 4px 0; cursor: pointer;
+      color: var(--ink3); transition: color 0.15s;
+    }
+
+    .nav-item svg { width: 23px; height: 23px; }
+    .nav-item span { font-size: 10px; font-weight: 700; letter-spacing: -0.01em; }
+    .nav-item.ativo { color: var(--orange); }
+
+    .nav-publicar {
+      width: 46px; height: 46px; border-radius: 14px;
+      background: var(--orange); color: white;
+      display: flex; align-items: center; justify-content: center;
+      margin-top: -4px;
+      box-shadow: 0 6px 16px rgba(255,77,32,0.35);
+    }
+    .nav-publicar svg { width: 22px; height: 22px; }
+
+    .nav-avatar {
+      width: 24px; height: 24px; border-radius: 50%;
+      background: var(--orange-pale); border: 1.5px solid var(--border);
+      display: flex; align-items: center; justify-content: center;
+      font-size: 10px; font-weight: 800; color: var(--orange);
+      overflow: hidden;
+    }
+    .nav-item.ativo .nav-avatar { border-color: var(--orange); }
+
+    /* ══════════════════════════════════════
+       ESTADO VAZIO (fim do deck)
+    ══════════════════════════════════════ */
+    .vazio {
+      position: absolute; inset: 0;
+      display: none; flex-direction: column; align-items: center; justify-content: center;
+      text-align: center; gap: 14px; padding: 0 40px;
+    }
+    .vazio.show { display: flex; }
+    .vazio-icon {
+      width: 64px; height: 64px; border-radius: 50%;
+      background: var(--orange-pale); display: flex; align-items: center; justify-content: center;
+      color: var(--orange);
+    }
+    .vazio-titulo { font-family: 'Glory', sans-serif; font-style: italic; font-weight: 800; font-size: 18px; color: var(--ink); }
+    .vazio-sub { font-size: 13px; color: var(--ink2); line-height: 1.5; }
+    .vazio-btn {
+      margin-top: 6px; padding: 12px 24px; border-radius: 50px;
+      background: var(--orange); color: white; font-weight: 800; font-size: 13.5px;
+      border: none; cursor: pointer;
+    }
+
+    /* ══════════════════════════════════════
+       TOAST
+    ══════════════════════════════════════ */
+    #toast {
+      position: fixed; bottom: 100px; left: 50%;
+      transform: translateX(-50%) translateY(20px);
+      background: var(--ink); color: white;
+      padding: 11px 20px; border-radius: 50px;
+      font-size: 13px; font-weight: 700;
+      opacity: 0; pointer-events: none;
+      transition: opacity 0.25s, transform 0.25s;
+      z-index: 50; display: flex; align-items: center; gap: 8px;
+      white-space: nowrap;
+    }
+    #toast.show { opacity: 1; transform: translateX(-50%) translateY(0); }
+    #toast svg { width: 16px; height: 16px; flex-shrink: 0; }
+  </style>
+</head>
+<body>
+<div id="app">
+
+  <!-- TOP BAR -->
+  <div class="topbar">
+    <button class="top-btn tem-filtro" onclick="abrirFiltro()" aria-label="Filtros">
+      <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="22 3 2 3 10 12.46 10 19 14 21 14 12.46 22 3"/></svg>
+    </button>
+    <div class="top-logo">Eureka!</div>
+    <button class="top-btn" onclick="abrirBusca()" aria-label="Buscar">
+      <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+    </button>
+  </div>
+
+  <!-- TABS -->
+  <div class="tabs-wrap">
+    <div class="tabs">
+      <div class="tab ativo" id="tab-paravoce" onclick="trocarTab('paravoce')">Para você</div>
+      <div class="tab" id="tab-diarias" onclick="trocarTab('diarias')">Diárias</div>
+      <div class="tab" id="tab-fixos" onclick="trocarTab('fixos')">Fixos</div>
+    </div>
+  </div>
+
+  <!-- DECK -->
+  <div class="deck-wrap">
+    <div class="deck" id="deck"></div>
+    <div class="vazio" id="vazio">
+      <div class="vazio-icon">
+        <svg width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+      </div>
+      <div class="vazio-titulo">Por hoje é só isso!</div>
+      <div class="vazio-sub">Você viu todas as oportunidades disponíveis. Volte mais tarde ou explore outras categorias.</div>
+      <button class="vazio-btn" onclick="recarregarDeck()">Ver de novo</button>
+    </div>
+  </div>
+
+  <!-- AÇÕES -->
+  <div class="acoes">
+    <button class="acao-btn voltar" onclick="acaoVoltar()" aria-label="Ver anterior">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.25" stroke-linecap="round" stroke-linejoin="round"><polyline points="1 4 1 10 7 10"/><path d="M3.51 15a9 9 0 1 0 2.13-9.36L1 10"/></svg>
+    </button>
+    <button class="acao-btn cancelar" onclick="acaoCancelar()" aria-label="Cancelar">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.25" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+    </button>
+    <button class="acao-btn postular" onclick="acaoPostular()" aria-label="Postular-se">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.25" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
+    </button>
+    <button class="acao-btn compartilhar" onclick="acaoCompartilhar()" aria-label="Compartilhar">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.25" stroke-linecap="round" stroke-linejoin="round"><circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/><line x1="8.59" y1="13.51" x2="15.42" y2="17.49"/><line x1="15.41" y1="6.51" x2="8.59" y2="10.49"/></svg>
+    </button>
+  </div>
+
+  <!-- BOTTOM NAV -->
+  <div class="bottom-nav">
+    <div class="nav-item ativo" onclick="irPara('deslizar')">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg>
+      <span>Deslizar</span>
+    </div>
+    <div class="nav-item" onclick="irPara('match')">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>
+      <span>Match</span>
+    </div>
+    <div class="nav-item" onclick="irPara('publicar')">
+      <div class="nav-publicar">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+      </div>
+    </div>
+    <div class="nav-item" onclick="irPara('mensagens')">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z"/></svg>
+      <span>Mensagens</span>
+    </div>
+    <div class="nav-item" onclick="irPara('perfil')">
+      <div class="nav-avatar">DN</div>
+      <span>Perfil</span>
+    </div>
+  </div>
+
+</div><!-- /app -->
+
+<div id="toast" role="status"></div>
+
+<script>
+// ══════════════════════════════════════
+// DADOS DE EXEMPLO (futuramente vêm do Firestore)
+// ══════════════════════════════════════
+const OPORTUNIDADES = {
+  paravoce: [
+    { id:1, tipo:'Diária', urgencia:'Precisa hoje', empresa:'Restaurante Sabor Caseiro', verificado:true, titulo:'Garçom para evento de fim de semana', preco:'R$ 150/dia', distancia:'2,3 km', candidatos:'5 já se candidataram', desc:'Precisamos de um garçom experiente para atender um evento corporativo no sábado à noite. Ambiente tranquilo, equipe simpática.', tags:['Gastronomia','Eventos','Atendimento'], horario:'18h às 23h · Sábado', requisitos:'Experiência prévia em eventos. Uniforme fornecido pela casa.' },
+    { id:2, tipo:'Fixo', urgencia:null, empresa:'TechNova Soluções', verificado:true, titulo:'Designer gráfico para redes sociais', preco:'R$ 2.800/mês', distancia:'Remoto', candidatos:'12 já se candidataram', desc:'Buscamos designer para criar conteúdo visual para Instagram e LinkedIn. Trabalho remoto, horário flexível.', tags:['Design','Marketing','Remoto'], horario:'Flexível · 20h semanais', requisitos:'Portfólio com trabalhos anteriores. Canva ou Figma.' },
+    { id:3, tipo:'Diária', urgencia:'Última vaga', empresa:'Mudanças Rápidas Curitiba', verificado:false, titulo:'Ajudante para mudança residencial', preco:'R$ 120/dia', distancia:'5,1 km', candidatos:'2 já se candidataram', desc:'Precisamos de uma pessoa para ajudar no carregamento de móveis em uma mudança residencial no bairro Batel.', tags:['Logística','Mudanças'], horario:'8h às 14h · Quinta-feira', requisitos:'Disposição para carregar peso. Não é necessário experiência.' },
+  ],
+  diarias: [
+    { id:4, tipo:'Diária', urgencia:'Precisa hoje', empresa:'Buffet Doce Encanto', verificado:true, titulo:'Cozinheiro auxiliar para festa', preco:'R$ 180/dia', distancia:'3,8 km', candidatos:'3 já se candidataram', desc:'Auxiliar de cozinha para preparo de salgados e doces em festa de aniversário infantil.', tags:['Gastronomia','Eventos'], horario:'13h às 19h · Hoje', requisitos:'Experiência em cozinha. Manipulação de alimentos.' },
+    { id:5, tipo:'Diária', urgencia:null, empresa:'Construtora Pinheiro', verificado:true, titulo:'Pedreiro para reforma', preco:'R$ 200/dia', distancia:'7,2 km', candidatos:'1 já se candidatou', desc:'Reforma de banheiro residencial, precisa de pedreiro com experiência em revestimento e hidráulica básica.', tags:['Construção'], horario:'7h às 16h · Esta semana', requisitos:'Mínimo 2 anos de experiência. Ferramentas próprias.' },
+  ],
+  fixos: [
+    { id:6, tipo:'Fixo', urgencia:null, empresa:'Mercado Boa Vizinhança', verificado:true, titulo:'Repositor de mercadorias', preco:'R$ 1.650/mês', distancia:'1,4 km', candidatos:'8 já se candidataram', desc:'Vaga fixa para repositor de mercadorias em supermercado de bairro. Carteira assinada, benefícios inclusos.', tags:['Comércio'], horario:'6h às 14h · Segunda a sábado', requisitos:'Ensino fundamental completo. Disponibilidade imediata.' },
+  ]
+};
+
+let tabAtual = 'paravoce';
+let deckAtual = [];
+let historico = [];
+
+// ══════════════════════════════════════
+// RENDERIZAÇÃO DO DECK
+// ══════════════════════════════════════
+function montarDeck() {
+  deckAtual = [...OPORTUNIDADES[tabAtual]];
+  historico = [];
+  renderDeck();
+}
+
+function renderDeck() {
+  const deck = document.getElementById('deck');
+  deck.innerHTML = '';
+  document.getElementById('vazio').classList.toggle('show', deckAtual.length === 0);
+  if (deckAtual.length === 0) return;
+
+  // Renderiza no máximo 3 cartas visíveis (topo + 2 atrás)
+  const visiveis = deckAtual.slice(0, 3);
+  visiveis.forEach((op, i) => {
+    const card = criarCard(op, i);
+    deck.appendChild(card);
+  });
+}
+
+function criarCard(op, pos) {
+  const card = document.createElement('div');
+  card.className = 'card';
+  card.dataset.pos = pos;
+  card.dataset.id = op.id;
+
+  const mediaConteudo = op.logoUrl
+    ? `<img src="${op.logoUrl}" alt="${op.empresa}">`
+    : `<div class="logo-fallback">${op.empresa.charAt(0)}</div>`;
+
+  card.innerHTML = `
+    <div class="stamp stamp-like">Topa!</div>
+    <div class="stamp stamp-nope">Passo</div>
+    <div class="card-media">
+      ${mediaConteudo}
+      <div class="card-tipo-badge">${op.tipo}</div>
+      ${op.urgencia ? `<div class="card-urgencia">
+        <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+        ${op.urgencia}
+      </div>` : ''}
+    </div>
+    <div class="card-body">
+      <div class="card-empresa-row">
+        <span class="card-empresa-nome">${op.empresa}</span>
+        ${op.verificado ? `<svg class="card-verificado" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9" fill="currentColor" stroke="none"/><polyline points="8.5 12.5 11 15 16 9" stroke="white"/></svg>` : ''}
+      </div>
+      <div class="card-titulo">${op.titulo}</div>
+      <div class="card-stats">
+        <div class="stat-pill preco">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.25" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="1" x2="12" y2="23"/><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg>
+          ${op.preco}
+        </div>
+        <div class="stat-pill">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.25" stroke-linecap="round" stroke-linejoin="round"><path d="M12 21s-7-5.686-7-10a7 7 0 0 1 14 0c0 4.314-7 10-7 10z"/><circle cx="12" cy="11" r="2.5"/></svg>
+          ${op.distancia}
+        </div>
+        <div class="stat-pill">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.25" stroke-linecap="round" stroke-linejoin="round"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+          ${op.candidatos}
+        </div>
+      </div>
+      <div class="card-puxador">
+        <div class="puxador-barra"></div>
+        <span class="puxador-txt">Arraste para ver mais</span>
+      </div>
+    </div>
+    <div class="card-detalhe">
+      <div class="detalhe-inner">
+        <div class="detalhe-secao">
+          <div class="detalhe-label">Sobre a vaga</div>
+          <div class="detalhe-txt">${op.desc}</div>
+        </div>
+        <div class="detalhe-secao">
+          <div class="detalhe-label">Horário</div>
+          <div class="detalhe-txt">${op.horario}</div>
+        </div>
+        <div class="detalhe-secao">
+          <div class="detalhe-label">Requisitos</div>
+          <div class="detalhe-txt">${op.requisitos}</div>
+        </div>
+        <div class="detalhe-secao">
+          <div class="detalhe-label">Áreas</div>
+          <div class="detalhe-tags">${op.tags.map(t => `<span class="detalhe-tag">${t}</span>`).join('')}</div>
+        </div>
+      </div>
+    </div>
+  `;
+
+  if (pos === 0) {
+    ativarGestos(card);
+  }
+
+  return card;
+}
+
+// ══════════════════════════════════════
+// TABS
+// ══════════════════════════════════════
+function trocarTab(tab) {
+  if (tab === tabAtual) return;
+  tabAtual = tab;
+  ['paravoce','diarias','fixos'].forEach(t => {
+    document.getElementById(`tab-${t}`).classList.toggle('ativo', t === tab);
+  });
+  montarDeck();
+}
+window.trocarTab = trocarTab;
+
+// ══════════════════════════════════════
+// GESTOS DE ARRASTAR (swipe lateral + vertical)
+// ══════════════════════════════════════
+function ativarGestos(card) {
+  let startX = 0, startY = 0, dx = 0, dy = 0;
+  let arrastando = false;
+  let modo = null; // 'lateral' | 'vertical'
+
+  const stampLike = card.querySelector('.stamp-like');
+  const stampNope = card.querySelector('.stamp-nope');
+  const puxador = card.querySelector('.card-puxador');
+
+  function onStart(x, y) {
+    startX = x; startY = y; dx = 0; dy = 0;
+    arrastando = true; modo = null;
+    card.classList.add('arrastando');
+  }
+
+  function onMove(x, y) {
+    if (!arrastando) return;
+    dx = x - startX;
+    dy = y - startY;
+
+    if (!modo) {
+      if (Math.abs(dx) > 8 && Math.abs(dx) > Math.abs(dy)) modo = 'lateral';
+      else if (dy > 8 && Math.abs(dy) > Math.abs(dx)) modo = 'vertical';
+      else return;
+    }
+
+    if (modo === 'lateral') {
+      const rot = dx / 18;
+      card.style.transform = `translateX(${dx}px) rotate(${rot}deg)`;
+      const op = Math.min(Math.abs(dx) / 100, 1);
+      stampLike.style.opacity = dx > 20 ? op : 0;
+      stampNope.style.opacity = dx < -20 ? op : 0;
+    } else if (modo === 'vertical' && dy > 0 && !card.classList.contains('expandido')) {
+      const limitado = Math.min(dy, 90);
+      card.style.transform = `translateY(${limitado}px)`;
+    }
+  }
+
+  function onEnd() {
+    if (!arrastando) return;
+    arrastando = false;
+    card.classList.remove('arrastando');
+    stampLike.style.opacity = 0;
+    stampNope.style.opacity = 0;
+
+    if (modo === 'lateral') {
+      if (dx > 110) { decidir(card, 'like'); return; }
+      if (dx < -110) { decidir(card, 'nope'); return; }
+      card.style.transform = '';
+    } else if (modo === 'vertical') {
+      if (dy > 60) {
+        card.classList.add('expandido');
+      }
+      card.style.transform = '';
+    } else {
+      card.style.transform = '';
+    }
+    modo = null;
+  }
+
+  // Toque no puxador também expande/recolhe com um tap
+  puxador.addEventListener('click', (e) => {
+    e.stopPropagation();
+    card.classList.toggle('expandido');
+  });
+
+  card.addEventListener('touchstart', e => onStart(e.touches[0].clientX, e.touches[0].clientY), { passive: true });
+  card.addEventListener('touchmove', e => onMove(e.touches[0].clientX, e.touches[0].clientY), { passive: true });
+  card.addEventListener('touchend', onEnd);
+
+  card.addEventListener('mousedown', e => onStart(e.clientX, e.clientY));
+  window.addEventListener('mousemove', e => { if (arrastando) onMove(e.clientX, e.clientY); });
+  window.addEventListener('mouseup', onEnd);
+}
+
+// ══════════════════════════════════════
+// DECISÃO (like / nope) — usado por gesto e botões
+// ══════════════════════════════════════
+function decidir(card, tipo) {
+  const id = parseInt(card.dataset.id);
+  const idx = deckAtual.findIndex(o => o.id === id);
+  if (idx === -1) return;
+
+  card.classList.add(tipo === 'like' ? 'descartar-d' : 'descartar-e');
+
+  const removida = deckAtual.splice(idx, 1)[0];
+  historico.push(removida);
+
+  if (tipo === 'like') {
+    mostrarToast('ok', 'Candidatura enviada!');
+  }
+
+  setTimeout(() => renderDeck(), 300);
+}
+
+function cardTopo() {
+  return document.querySelector('.card[data-pos="0"]');
+}
+
+// ══════════════════════════════════════
+// BOTÕES DE AÇÃO
+// ══════════════════════════════════════
+window.acaoPostular = function() {
+  const card = cardTopo();
+  if (card) decidir(card, 'like');
+};
+
+window.acaoCancelar = function() {
+  const card = cardTopo();
+  if (card) decidir(card, 'nope');
+};
+
+window.acaoVoltar = function() {
+  if (historico.length === 0) {
+    mostrarToast('info', 'Nada para desfazer ainda.');
+    return;
+  }
+  const anterior = historico.pop();
+  deckAtual.unshift(anterior);
+  renderDeck();
+};
+
+window.acaoCompartilhar = function() {
+  const card = cardTopo();
+  if (!card) return;
+  const id = parseInt(card.dataset.id);
+  const op = [...OPORTUNIDADES.paravoce, ...OPORTUNIDADES.diarias, ...OPORTUNIDADES.fixos].find(o => o.id === id);
+  if (!op) return;
+
+  const texto = `${op.titulo} — ${op.empresa} (${op.preco}) via Eureka!`;
+  if (navigator.share) {
+    navigator.share({ title: op.titulo, text: texto }).catch(() => {});
+  } else {
+    mostrarToast('info', 'Compartilhamento não disponível neste navegador.');
+  }
+};
+
+function recarregarDeck() { montarDeck(); }
+window.recarregarDeck = recarregarDeck;
+
+// ══════════════════════════════════════
+// TOAST
+// ══════════════════════════════════════
+function mostrarToast(tipo, msg) {
+  const el = document.getElementById('toast');
+  const icone = tipo === 'ok'
+    ? '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>'
+    : '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="12" y1="16" x2="12" y2="12"/><line x1="12" y1="8" x2="12.01" y2="8"/></svg>';
+  el.innerHTML = icone + msg;
+  el.classList.add('show');
+  setTimeout(() => el.classList.remove('show'), 2200);
+}
+
+// ══════════════════════════════════════
+// FILTRO / BUSCA (placeholders por agora)
+// ══════════════════════════════════════
+window.abrirFiltro = function() { mostrarToast('info', 'Filtros chegando em breve.'); };
+window.abrirBusca  = function() { mostrarToast('info', 'Busca chegando em breve.'); };
+
+// ══════════════════════════════════════
+// NAVEGAÇÃO INFERIOR
+// ══════════════════════════════════════
+window.irPara = function(secao) {
+  const destinos = {
+    deslizar:  null,
+    match:     'match.html',
+    publicar:  'publicar.html',
+    mensagens: 'mensagens.html',
+    perfil:    'perfil.html'
+  };
+  const url = destinos[secao];
+  if (url) window.location.href = url;
+};
+
+// ══════════════════════════════════════
+// INICIAR
+// ══════════════════════════════════════
+montarDeck();
+</script>
+</body>
+</html>
