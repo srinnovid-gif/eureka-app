@@ -171,11 +171,21 @@
 
     .card-tipo-badge {
       position: absolute; top: 132px; left: 14px; z-index: 5;
-      padding: 6px 12px; border-radius: 50px;
-      background: rgba(17,16,16,0.55); backdrop-filter: blur(6px);
-      color: white; font-size: 11px; font-weight: 700;
-      letter-spacing: 0.02em; text-transform: uppercase;
-      font-family: 'DM Mono', monospace;
+      padding: 7px 13px 7px 10px; border-radius: 50px;
+      display: flex; align-items: center; gap: 5px;
+      color: white; font-size: 12px; font-weight: 800;
+      letter-spacing: 0.01em;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.3);
+    }
+
+    .card-tipo-badge svg { width: 13px; height: 13px; flex-shrink: 0; }
+
+    .card-tipo-badge.tipo-diaria {
+      background: var(--orange);
+    }
+
+    .card-tipo-badge.tipo-fixo {
+      background: var(--green);
     }
 
     .card-urgencia {
@@ -225,7 +235,7 @@
 
     .card-titulo {
       font-family: 'Glory', sans-serif;
-      font-style: italic; font-weight: 800;
+      font-weight: 800;
       font-size: 23px; color: var(--white);
       line-height: 1.15; margin-bottom: 10px;
       letter-spacing: -0.01em;
@@ -369,7 +379,7 @@
       background: var(--orange-pale); display: flex; align-items: center; justify-content: center;
       color: var(--orange);
     }
-    .vazio-titulo { font-family: 'Glory', sans-serif; font-style: italic; font-weight: 800; font-size: 18px; color: var(--white); }
+    .vazio-titulo { font-family: 'Glory', sans-serif; font-weight: 800; font-size: 18px; color: var(--white); }
     .vazio-sub { font-size: 13px; color: var(--ink2); line-height: 1.5; }
     .vazio-btn {
       margin-top: 6px; padding: 12px 24px; border-radius: 50px;
@@ -540,12 +550,17 @@ function criarCard(op, pos) {
     ? `<img src="${op.logoUrl}" alt="${op.empresa}">`
     : `<div class="logo-fallback">${op.empresa.charAt(0)}</div>`;
 
+  const tipoClasse = op.tipo === 'Fixo' ? 'tipo-fixo' : 'tipo-diaria';
+  const tipoIcone = op.tipo === 'Fixo'
+    ? '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.25" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="7" width="20" height="14" rx="2"/><path d="M16 21V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16"/></svg>'
+    : '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.25" stroke-linecap="round" stroke-linejoin="round"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg>';
+
   card.innerHTML = `
     <div class="stamp stamp-like">Topa!</div>
     <div class="stamp stamp-nope">Passo</div>
     <div class="card-media">
       ${mediaConteudo}
-      <div class="card-tipo-badge">${op.tipo}</div>
+      <div class="card-tipo-badge ${tipoClasse}">${tipoIcone}${op.tipo}</div>
       ${op.urgencia ? `<div class="card-urgencia">
         <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
         ${op.urgencia}
@@ -573,7 +588,7 @@ function criarCard(op, pos) {
       </div>
       <div class="card-puxador">
         <div class="puxador-barra"></div>
-        <span class="puxador-txt">Arraste para ver mais</span>
+        <span class="puxador-txt">Arraste para cima para ver mais</span>
       </div>
     </div>
     <div class="card-detalhe">
@@ -643,7 +658,7 @@ function ativarGestos(card) {
 
     if (!modo) {
       if (Math.abs(dx) > 8 && Math.abs(dx) > Math.abs(dy)) modo = 'lateral';
-      else if (dy > 8 && Math.abs(dy) > Math.abs(dx)) modo = 'vertical';
+      else if (Math.abs(dy) > 8 && Math.abs(dy) > Math.abs(dx)) modo = 'vertical';
       else return;
     }
 
@@ -653,8 +668,8 @@ function ativarGestos(card) {
       const op = Math.min(Math.abs(dx) / 100, 1);
       stampLike.style.opacity = dx > 20 ? op : 0;
       stampNope.style.opacity = dx < -20 ? op : 0;
-    } else if (modo === 'vertical' && dy > 0 && !card.classList.contains('expandido')) {
-      const limitado = Math.min(dy, 90);
+    } else if (modo === 'vertical' && dy < 0 && !card.classList.contains('expandido')) {
+      const limitado = Math.max(dy, -90);
       card.style.transform = `translateY(${limitado}px)`;
     }
   }
@@ -671,8 +686,10 @@ function ativarGestos(card) {
       if (dx < -110) { decidir(card, 'nope'); return; }
       card.style.transform = '';
     } else if (modo === 'vertical') {
-      if (dy > 60) {
+      if (dy < -60 && !card.classList.contains('expandido')) {
         card.classList.add('expandido');
+      } else if (dy > 60 && card.classList.contains('expandido')) {
+        card.classList.remove('expandido');
       }
       card.style.transform = '';
     } else {
