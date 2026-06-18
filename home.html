@@ -171,30 +171,34 @@
 
     .card-tipo-badge {
       position: absolute; top: 132px; left: 14px; z-index: 5;
-      padding: 7px 13px 7px 10px; border-radius: 50px;
+      padding: 6px 12px 6px 9px; border-radius: 50px;
       display: flex; align-items: center; gap: 5px;
-      color: white; font-size: 12px; font-weight: 800;
+      font-size: 12px; font-weight: 800;
       letter-spacing: 0.01em;
-      box-shadow: 0 4px 12px rgba(0,0,0,0.3);
+      border: 1.5px solid;
     }
 
     .card-tipo-badge svg { width: 13px; height: 13px; flex-shrink: 0; }
 
     .card-tipo-badge.tipo-diaria {
-      background: var(--orange);
+      background: rgba(255,77,32,0.16);
+      border-color: var(--orange);
+      color: #FF8A5C;
     }
 
     .card-tipo-badge.tipo-fixo {
-      background: var(--green);
+      background: rgba(15,138,111,0.18);
+      border-color: var(--green);
+      color: #5FD9B8;
     }
 
     .card-urgencia {
       position: absolute; top: 132px; right: 14px; z-index: 5;
-      padding: 6px 11px; border-radius: 50px;
-      background: var(--orange); color: white;
+      padding: 5px 10px; border-radius: 50px;
+      background: rgba(255,77,32,0.16); color: #FF8A5C;
+      border: 1.5px solid var(--orange);
       font-size: 11px; font-weight: 800;
       display: flex; align-items: center; gap: 4px;
-      box-shadow: 0 4px 12px rgba(255,77,32,0.4);
     }
 
     .stamp {
@@ -222,8 +226,20 @@
 
     .card-empresa-row {
       display: flex; align-items: center; gap: 8px;
-      margin-bottom: 6px;
+      margin-bottom: 8px;
     }
+
+    .card-avatar {
+      width: 28px; height: 28px; border-radius: 50%;
+      flex-shrink: 0; overflow: hidden;
+      border: 1.5px solid rgba(255,255,255,0.35);
+      display: flex; align-items: center; justify-content: center;
+      background: var(--orange);
+      font-family: 'DM Mono', monospace; font-weight: 700;
+      font-size: 11px; color: white;
+    }
+
+    .card-avatar img { width: 100%; height: 100%; object-fit: cover; }
 
     .card-empresa-nome {
       font-size: 13px; font-weight: 700; color: rgba(255,255,255,0.78);
@@ -404,6 +420,124 @@
     }
     #toast.show { opacity: 1; transform: translateX(-50%) translateY(0); }
     #toast svg { width: 16px; height: 16px; flex-shrink: 0; }
+
+    /* ══════════════════════════════════════
+       OVERLAY (busca / filtro) — bottom sheet
+    ══════════════════════════════════════ */
+    .overlay {
+      position: fixed; inset: 0; z-index: 100;
+      display: none;
+    }
+    .overlay.show { display: block; }
+
+    .overlay-fundo {
+      position: absolute; inset: 0;
+      background: rgba(0,0,0,0.55);
+      opacity: 0; transition: opacity 0.25s ease;
+    }
+    .overlay.show .overlay-fundo { opacity: 1; }
+
+    .overlay-painel {
+      position: absolute; left: 0; right: 0; bottom: 0;
+      background: var(--surface);
+      border-radius: 24px 24px 0 0;
+      padding: 10px 18px calc(20px + env(safe-area-inset-bottom, 0px));
+      max-height: 80vh; overflow-y: auto;
+      transform: translateY(100%);
+      transition: transform 0.3s cubic-bezier(.2,.8,.2,1);
+    }
+    .overlay.show .overlay-painel { transform: translateY(0); }
+
+    .painel-handle {
+      width: 36px; height: 4px; border-radius: 2px;
+      background: var(--border); margin: 4px auto 14px;
+    }
+
+    .painel-titulo {
+      font-family: 'Glory', sans-serif; font-weight: 800;
+      font-size: 18px; color: var(--white); margin-bottom: 16px;
+    }
+
+    /* ---- Busca ---- */
+    .busca-input-wrap {
+      display: flex; align-items: center; gap: 10px;
+      background: var(--bg-app); border: 1.5px solid var(--border);
+      border-radius: 14px; padding: 12px 14px; margin-bottom: 12px;
+      color: var(--ink3);
+    }
+    .busca-input {
+      flex: 1; border: none; background: none; outline: none;
+      font-family: 'Geologica', sans-serif; font-size: 15px; color: var(--white);
+    }
+    .busca-input::placeholder { color: var(--ink3); }
+    .busca-limpar {
+      width: 22px; height: 22px; border-radius: 50%;
+      background: var(--border); border: none; color: var(--ink2);
+      display: none; align-items: center; justify-content: center; flex-shrink: 0;
+    }
+    .busca-limpar.show { display: flex; }
+
+    .busca-resultados { display: flex; flex-direction: column; gap: 8px; min-height: 60px; }
+    .busca-item {
+      display: flex; align-items: center; gap: 12px;
+      padding: 10px 8px; border-radius: 12px;
+      cursor: pointer; transition: background 0.15s;
+    }
+    .busca-item:active { background: var(--bg-app); }
+    .busca-item-avatar {
+      width: 38px; height: 38px; border-radius: 50%; flex-shrink: 0;
+      background: var(--orange); color: white; overflow: hidden;
+      display: flex; align-items: center; justify-content: center;
+      font-family: 'DM Mono', monospace; font-weight: 700; font-size: 13px;
+    }
+    .busca-item-avatar img { width: 100%; height: 100%; object-fit: cover; }
+    .busca-item-info { flex: 1; min-width: 0; }
+    .busca-item-titulo { font-size: 13.5px; font-weight: 700; color: var(--white); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+    .busca-item-sub { font-size: 11.5px; color: var(--ink2); margin-top: 1px; }
+    .busca-item-preco { font-size: 12px; font-weight: 800; color: #5FD9B8; flex-shrink: 0; }
+
+    .busca-vazio { display: none; text-align: center; padding: 24px 0; color: var(--ink3); font-size: 13px; }
+    .busca-vazio.show { display: block; }
+
+    /* ---- Filtro ---- */
+    .filtro-secao { margin-bottom: 22px; }
+    .filtro-label { font-size: 12.5px; font-weight: 700; color: var(--ink2); margin-bottom: 10px; }
+
+    .filtro-chips { display: flex; gap: 8px; flex-wrap: wrap; }
+    .filtro-chip {
+      padding: 9px 16px; border-radius: 50px;
+      border: 1.5px solid var(--border); color: var(--ink2);
+      font-size: 13px; font-weight: 700; cursor: pointer;
+      transition: all 0.15s;
+    }
+    .filtro-chip.ativo {
+      background: rgba(255,77,32,0.16); border-color: var(--orange); color: #FF8A5C;
+    }
+
+    .filtro-distancia-valor { font-size: 13px; font-weight: 700; color: var(--white); margin-bottom: 8px; }
+    .filtro-slider {
+      width: 100%; height: 4px; border-radius: 2px;
+      background: var(--border); outline: none; -webkit-appearance: none;
+      margin-bottom: 6px;
+    }
+    .filtro-slider::-webkit-slider-thumb {
+      -webkit-appearance: none; width: 20px; height: 20px; border-radius: 50%;
+      background: var(--orange); cursor: pointer; box-shadow: 0 2px 6px rgba(0,0,0,0.4);
+    }
+    .filtro-slider-marcas { display: flex; justify-content: space-between; font-size: 10px; color: var(--ink3); }
+
+    .painel-botoes { display: flex; gap: 10px; margin-top: 8px; }
+    .btn-limpar-filtros {
+      flex: 1; padding: 13px; border-radius: 14px;
+      background: none; border: 1.5px solid var(--border); color: var(--ink2);
+      font-family: 'Geologica', sans-serif; font-weight: 700; font-size: 13.5px;
+    }
+    .btn-aplicar-filtros {
+      flex: 2; padding: 13px; border-radius: 14px;
+      background: var(--orange); border: none; color: white;
+      font-family: 'Geologica', sans-serif; font-weight: 800; font-size: 14px;
+      box-shadow: 0 6px 16px rgba(255,77,32,0.35);
+    }
   </style>
 </head>
 <body>
@@ -411,7 +545,7 @@
 
   <!-- TOP BAR -->
   <div class="topbar">
-    <button class="top-btn tem-filtro" onclick="abrirFiltro()" aria-label="Filtros">
+    <button class="top-btn" id="btn-filtro" onclick="abrirFiltro()" aria-label="Filtros">
       <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="22 3 2 3 10 12.46 10 19 14 21 14 12.46 22 3"/></svg>
     </button>
     <div class="top-logo">Eureka!</div>
@@ -483,6 +617,66 @@
     </div>
   </div>
 
+  <!-- OVERLAY: BUSCA -->
+  <div class="overlay" id="overlay-busca">
+    <div class="overlay-fundo" onclick="fecharBusca()"></div>
+    <div class="overlay-painel painel-busca">
+      <div class="painel-handle"></div>
+      <div class="busca-input-wrap">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+        <input type="text" id="input-busca" class="busca-input" placeholder="Buscar por vaga ou empresa..." oninput="filtrarBusca()" autocomplete="off"/>
+        <button class="busca-limpar" id="busca-limpar" onclick="limparBusca()" aria-label="Limpar">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+        </button>
+      </div>
+      <div class="busca-resultados" id="busca-resultados"></div>
+      <div class="busca-vazio" id="busca-vazio">
+        <span>Nenhuma oportunidade encontrada.</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- OVERLAY: FILTRO -->
+  <div class="overlay" id="overlay-filtro">
+    <div class="overlay-fundo" onclick="fecharFiltro()"></div>
+    <div class="overlay-painel painel-filtro">
+      <div class="painel-handle"></div>
+      <div class="painel-titulo">Filtros</div>
+
+      <div class="filtro-secao">
+        <div class="filtro-label">Tipo de vaga</div>
+        <div class="filtro-chips" id="filtro-tipo">
+          <div class="filtro-chip ativo" data-valor="todos">Todos</div>
+          <div class="filtro-chip" data-valor="Diária">Diárias</div>
+          <div class="filtro-chip" data-valor="Fixo">Fixos</div>
+        </div>
+      </div>
+
+      <div class="filtro-secao">
+        <div class="filtro-label">Modalidade</div>
+        <div class="filtro-chips" id="filtro-modalidade">
+          <div class="filtro-chip ativo" data-valor="todos">Todas</div>
+          <div class="filtro-chip" data-valor="presencial">Presencial</div>
+          <div class="filtro-chip" data-valor="remoto">Remoto</div>
+        </div>
+      </div>
+
+      <div class="filtro-secao">
+        <div class="filtro-label">Distância máxima</div>
+        <div class="filtro-distancia-valor"><span id="filtro-dist-txt">Qualquer distância</span></div>
+        <input type="range" id="filtro-dist-slider" class="filtro-slider" min="0" max="4" step="1" value="0" oninput="atualizarDistanciaLabel()"/>
+        <div class="filtro-slider-marcas">
+          <span>Qualquer</span><span>5km</span><span>10km</span><span>20km</span><span>50km</span>
+        </div>
+      </div>
+
+      <div class="painel-botoes">
+        <button class="btn-limpar-filtros" onclick="limparFiltros()">Limpar</button>
+        <button class="btn-aplicar-filtros" onclick="aplicarFiltros()">Aplicar filtros</button>
+      </div>
+    </div>
+  </div>
+
 </div><!-- /app -->
 
 <div id="toast" role="status"></div>
@@ -493,16 +687,16 @@
 // ══════════════════════════════════════
 const OPORTUNIDADES = {
   paravoce: [
-    { id:1, tipo:'Diária', urgencia:'Precisa hoje', empresa:'Restaurante Sabor Caseiro', verificado:true, titulo:'Garçom para evento de fim de semana', preco:'R$ 150/dia', distancia:'2,3 km', candidatos:'5 já se candidataram', desc:'Precisamos de um garçom experiente para atender um evento corporativo no sábado à noite. Ambiente tranquilo, equipe simpática.', tags:['Gastronomia','Eventos','Atendimento'], horario:'18h às 23h · Sábado', requisitos:'Experiência prévia em eventos. Uniforme fornecido pela casa.' },
-    { id:2, tipo:'Fixo', urgencia:null, empresa:'TechNova Soluções', verificado:true, titulo:'Designer gráfico para redes sociais', preco:'R$ 2.800/mês', distancia:'Remoto', candidatos:'12 já se candidataram', desc:'Buscamos designer para criar conteúdo visual para Instagram e LinkedIn. Trabalho remoto, horário flexível.', tags:['Design','Marketing','Remoto'], horario:'Flexível · 20h semanais', requisitos:'Portfólio com trabalhos anteriores. Canva ou Figma.' },
-    { id:3, tipo:'Diária', urgencia:'Última vaga', empresa:'Mudanças Rápidas Curitiba', verificado:false, titulo:'Ajudante para mudança residencial', preco:'R$ 120/dia', distancia:'5,1 km', candidatos:'2 já se candidataram', desc:'Precisamos de uma pessoa para ajudar no carregamento de móveis em uma mudança residencial no bairro Batel.', tags:['Logística','Mudanças'], horario:'8h às 14h · Quinta-feira', requisitos:'Disposição para carregar peso. Não é necessário experiência.' },
+    { id:1, modalidade:'presencial', distanciaKm:2.3, tipo:'Diária', urgencia:'Precisa hoje', empresa:'Restaurante Sabor Caseiro', verificado:true, titulo:'Garçom para evento de fim de semana', preco:'R$ 150/dia', distancia:'2,3 km', candidatos:'5 já se candidataram', desc:'Precisamos de um garçom experiente para atender um evento corporativo no sábado à noite. Ambiente tranquilo, equipe simpática.', tags:['Gastronomia','Eventos','Atendimento'], horario:'18h às 23h · Sábado', requisitos:'Experiência prévia em eventos. Uniforme fornecido pela casa.' },
+    { id:2, modalidade:'remoto', distanciaKm:null, tipo:'Fixo', urgencia:null, empresa:'TechNova Soluções', verificado:true, fotoPerfil:'https://i.pravatar.cc/100?img=12', titulo:'Designer gráfico para redes sociais', preco:'R$ 2.800/mês', distancia:'Remoto', candidatos:'12 já se candidataram', desc:'Buscamos designer para criar conteúdo visual para Instagram e LinkedIn. Trabalho remoto, horário flexível.', tags:['Design','Marketing','Remoto'], horario:'Flexível · 20h semanais', requisitos:'Portfólio com trabalhos anteriores. Canva ou Figma.' },
+    { id:3, modalidade:'presencial', distanciaKm:5.1, tipo:'Diária', urgencia:'Última vaga', empresa:'Mudanças Rápidas Curitiba', verificado:false, titulo:'Ajudante para mudança residencial', preco:'R$ 120/dia', distancia:'5,1 km', candidatos:'2 já se candidataram', desc:'Precisamos de uma pessoa para ajudar no carregamento de móveis em uma mudança residencial no bairro Batel.', tags:['Logística','Mudanças'], horario:'8h às 14h · Quinta-feira', requisitos:'Disposição para carregar peso. Não é necessário experiência.' },
   ],
   diarias: [
-    { id:4, tipo:'Diária', urgencia:'Precisa hoje', empresa:'Buffet Doce Encanto', verificado:true, titulo:'Cozinheiro auxiliar para festa', preco:'R$ 180/dia', distancia:'3,8 km', candidatos:'3 já se candidataram', desc:'Auxiliar de cozinha para preparo de salgados e doces em festa de aniversário infantil.', tags:['Gastronomia','Eventos'], horario:'13h às 19h · Hoje', requisitos:'Experiência em cozinha. Manipulação de alimentos.' },
-    { id:5, tipo:'Diária', urgencia:null, empresa:'Construtora Pinheiro', verificado:true, titulo:'Pedreiro para reforma', preco:'R$ 200/dia', distancia:'7,2 km', candidatos:'1 já se candidatou', desc:'Reforma de banheiro residencial, precisa de pedreiro com experiência em revestimento e hidráulica básica.', tags:['Construção'], horario:'7h às 16h · Esta semana', requisitos:'Mínimo 2 anos de experiência. Ferramentas próprias.' },
+    { id:4, modalidade:'presencial', distanciaKm:3.8, tipo:'Diária', urgencia:'Precisa hoje', empresa:'Buffet Doce Encanto', verificado:true, titulo:'Cozinheiro auxiliar para festa', preco:'R$ 180/dia', distancia:'3,8 km', candidatos:'3 já se candidataram', desc:'Auxiliar de cozinha para preparo de salgados e doces em festa de aniversário infantil.', tags:['Gastronomia','Eventos'], horario:'13h às 19h · Hoje', requisitos:'Experiência em cozinha. Manipulação de alimentos.' },
+    { id:5, modalidade:'presencial', distanciaKm:7.2, tipo:'Diária', urgencia:null, empresa:'Construtora Pinheiro', verificado:true, titulo:'Pedreiro para reforma', preco:'R$ 200/dia', distancia:'7,2 km', candidatos:'1 já se candidatou', desc:'Reforma de banheiro residencial, precisa de pedreiro com experiência em revestimento e hidráulica básica.', tags:['Construção'], horario:'7h às 16h · Esta semana', requisitos:'Mínimo 2 anos de experiência. Ferramentas próprias.' },
   ],
   fixos: [
-    { id:6, tipo:'Fixo', urgencia:null, empresa:'Mercado Boa Vizinhança', verificado:true, titulo:'Repositor de mercadorias', preco:'R$ 1.650/mês', distancia:'1,4 km', candidatos:'8 já se candidataram', desc:'Vaga fixa para repositor de mercadorias em supermercado de bairro. Carteira assinada, benefícios inclusos.', tags:['Comércio'], horario:'6h às 14h · Segunda a sábado', requisitos:'Ensino fundamental completo. Disponibilidade imediata.' },
+    { id:6, modalidade:'presencial', distanciaKm:1.4, tipo:'Fixo', urgencia:null, empresa:'Mercado Boa Vizinhança', verificado:true, titulo:'Repositor de mercadorias', preco:'R$ 1.650/mês', distancia:'1,4 km', candidatos:'8 já se candidataram', desc:'Vaga fixa para repositor de mercadorias em supermercado de bairro. Carteira assinada, benefícios inclusos.', tags:['Comércio'], horario:'6h às 14h · Segunda a sábado', requisitos:'Ensino fundamental completo. Disponibilidade imediata.' },
   ]
 };
 
@@ -510,11 +704,35 @@ let tabAtual = 'paravoce';
 let deckAtual = [];
 let historico = [];
 
+// Estado dos filtros ativos
+let filtrosAtivos = {
+  tipo: 'todos',
+  modalidade: 'todos',
+  distanciaMax: null // null = qualquer distância
+};
+
+const DISTANCIA_OPCOES = [null, 5, 10, 20, 50];
+const DISTANCIA_LABELS = ['Qualquer distância', 'Até 5 km', 'Até 10 km', 'Até 20 km', 'Até 50 km'];
+
+function todasOportunidades() {
+  return [...OPORTUNIDADES.paravoce, ...OPORTUNIDADES.diarias, ...OPORTUNIDADES.fixos];
+}
+
+function passaFiltros(op) {
+  if (filtrosAtivos.tipo !== 'todos' && op.tipo !== filtrosAtivos.tipo) return false;
+  if (filtrosAtivos.modalidade !== 'todos' && op.modalidade !== filtrosAtivos.modalidade) return false;
+  if (filtrosAtivos.distanciaMax !== null) {
+    if (op.distanciaKm === null || op.distanciaKm === undefined) return false; // remoto não tem km
+    if (op.distanciaKm > filtrosAtivos.distanciaMax) return false;
+  }
+  return true;
+}
+
 // ══════════════════════════════════════
 // RENDERIZAÇÃO DO DECK
 // ══════════════════════════════════════
 function montarDeck() {
-  deckAtual = [...OPORTUNIDADES[tabAtual]];
+  deckAtual = OPORTUNIDADES[tabAtual].filter(passaFiltros);
   historico = [];
   renderDeck();
 }
@@ -568,6 +786,9 @@ function criarCard(op, pos) {
     </div>
     <div class="card-body">
       <div class="card-empresa-row">
+        <div class="card-avatar">
+          ${op.fotoPerfil ? `<img src="${op.fotoPerfil}" alt="${op.empresa}">` : op.empresa.charAt(0)}
+        </div>
         <span class="card-empresa-nome">${op.empresa}</span>
         ${op.verificado ? `<svg class="card-verificado" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9" fill="currentColor" stroke="none"/><polyline points="8.5 12.5 11 15 16 9" stroke="white"/></svg>` : ''}
       </div>
@@ -807,8 +1028,149 @@ function mostrarToast(tipo, msg) {
 // ══════════════════════════════════════
 // FILTRO / BUSCA (placeholders por agora)
 // ══════════════════════════════════════
-window.abrirFiltro = function() { mostrarToast('info', 'Filtros chegando em breve.'); };
-window.abrirBusca  = function() { mostrarToast('info', 'Busca chegando em breve.'); };
+// ══════════════════════════════════════
+// BUSCA (em tempo real sobre oportunidades carregadas)
+// ══════════════════════════════════════
+window.abrirBusca = function() {
+  document.getElementById('overlay-busca').classList.add('show');
+  setTimeout(() => document.getElementById('input-busca').focus(), 280);
+  renderResultadosBusca(todasOportunidades().filter(passaFiltros));
+};
+
+window.fecharBusca = function() {
+  document.getElementById('overlay-busca').classList.remove('show');
+  document.getElementById('input-busca').value = '';
+  document.getElementById('busca-limpar').classList.remove('show');
+};
+
+window.limparBusca = function() {
+  const input = document.getElementById('input-busca');
+  input.value = '';
+  input.focus();
+  filtrarBusca();
+};
+
+window.filtrarBusca = function() {
+  const termo = document.getElementById('input-busca').value.trim().toLowerCase();
+  document.getElementById('busca-limpar').classList.toggle('show', termo.length > 0);
+
+  const base = todasOportunidades().filter(passaFiltros);
+  const resultado = termo
+    ? base.filter(op => op.titulo.toLowerCase().includes(termo) || op.empresa.toLowerCase().includes(termo))
+    : base;
+
+  renderResultadosBusca(resultado);
+};
+
+function renderResultadosBusca(lista) {
+  const wrap = document.getElementById('busca-resultados');
+  const vazio = document.getElementById('busca-vazio');
+  wrap.innerHTML = '';
+
+  vazio.classList.toggle('show', lista.length === 0);
+  if (lista.length === 0) return;
+
+  lista.forEach(op => {
+    const item = document.createElement('div');
+    item.className = 'busca-item';
+    item.innerHTML = `
+      <div class="busca-item-avatar">${op.fotoPerfil ? `<img src="${op.fotoPerfil}" alt="${op.empresa}">` : op.empresa.charAt(0)}</div>
+      <div class="busca-item-info">
+        <div class="busca-item-titulo">${op.titulo}</div>
+        <div class="busca-item-sub">${op.empresa} · ${op.distancia}</div>
+      </div>
+      <div class="busca-item-preco">${op.preco}</div>
+    `;
+    item.onclick = () => { fecharBusca(); irParaOportunidade(op); };
+    wrap.appendChild(item);
+  });
+}
+
+function irParaOportunidade(op) {
+  // Garante que a aba certa esteja ativa e essa oportunidade apareça no topo do deck
+  let abaDestino = 'paravoce';
+  if (OPORTUNIDADES.diarias.some(o => o.id === op.id)) abaDestino = 'diarias';
+  if (OPORTUNIDADES.fixos.some(o => o.id === op.id)) abaDestino = 'fixos';
+
+  tabAtual = abaDestino;
+  ['paravoce','diarias','fixos'].forEach(t => {
+    document.getElementById(`tab-${t}`).classList.toggle('ativo', t === abaDestino);
+  });
+
+  const lista = OPORTUNIDADES[abaDestino].filter(passaFiltros);
+  const idx = lista.findIndex(o => o.id === op.id);
+  if (idx === -1) {
+    mostrarToast('info', 'Essa oportunidade não está visível com os filtros atuais.');
+    return;
+  }
+  // Reordena para que a oportunidade buscada apareça primeiro
+  deckAtual = [...lista.slice(idx), ...lista.slice(0, idx)];
+  historico = [];
+  renderDeck();
+}
+
+// ══════════════════════════════════════
+// FILTRO (tipo de vaga, modalidade, distância)
+// ══════════════════════════════════════
+window.abrirFiltro = function() {
+  document.getElementById('overlay-filtro').classList.add('show');
+};
+
+window.fecharFiltro = function() {
+  document.getElementById('overlay-filtro').classList.remove('show');
+};
+
+document.addEventListener('DOMContentLoaded', () => {
+  document.querySelectorAll('#filtro-tipo .filtro-chip').forEach(chip => {
+    chip.addEventListener('click', () => {
+      document.querySelectorAll('#filtro-tipo .filtro-chip').forEach(c => c.classList.remove('ativo'));
+      chip.classList.add('ativo');
+    });
+  });
+  document.querySelectorAll('#filtro-modalidade .filtro-chip').forEach(chip => {
+    chip.addEventListener('click', () => {
+      document.querySelectorAll('#filtro-modalidade .filtro-chip').forEach(c => c.classList.remove('ativo'));
+      chip.classList.add('ativo');
+    });
+  });
+});
+
+window.atualizarDistanciaLabel = function() {
+  const idx = parseInt(document.getElementById('filtro-dist-slider').value);
+  document.getElementById('filtro-dist-txt').textContent = DISTANCIA_LABELS[idx];
+};
+
+window.limparFiltros = function() {
+  document.querySelectorAll('#filtro-tipo .filtro-chip').forEach(c => c.classList.toggle('ativo', c.dataset.valor === 'todos'));
+  document.querySelectorAll('#filtro-modalidade .filtro-chip').forEach(c => c.classList.toggle('ativo', c.dataset.valor === 'todos'));
+  document.getElementById('filtro-dist-slider').value = 0;
+  atualizarDistanciaLabel();
+};
+
+window.aplicarFiltros = function() {
+  const tipoSel = document.querySelector('#filtro-tipo .filtro-chip.ativo').dataset.valor;
+  const modalidadeSel = document.querySelector('#filtro-modalidade .filtro-chip.ativo').dataset.valor;
+  const distIdx = parseInt(document.getElementById('filtro-dist-slider').value);
+
+  filtrosAtivos = {
+    tipo: tipoSel,
+    modalidade: modalidadeSel,
+    distanciaMax: DISTANCIA_OPCOES[distIdx]
+  };
+
+  // Indicador visual de filtro ativo no botão do funil
+  const temFiltroAtivo = tipoSel !== 'todos' || modalidadeSel !== 'todos' || distIdx !== 0;
+  document.getElementById('btn-filtro').classList.toggle('tem-filtro', temFiltroAtivo);
+
+  fecharFiltro();
+  montarDeck();
+
+  if (deckAtual.length === 0) {
+    mostrarToast('info', 'Nenhuma oportunidade encontrada com esses filtros.');
+  } else {
+    mostrarToast('ok', `${deckAtual.length} oportunidade${deckAtual.length > 1 ? 's' : ''} encontrada${deckAtual.length > 1 ? 's' : ''}.`);
+  }
+};
 
 // ══════════════════════════════════════
 // NAVEGAÇÃO INFERIOR
