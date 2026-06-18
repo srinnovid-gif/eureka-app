@@ -16,7 +16,7 @@
    Cambiar este número fuerza la actualización
    en todos los dispositivos con la app instalada.
 ───────────────────────────────────────── */
-const CACHE_VERSION  = "eureka-v6";
+const CACHE_VERSION  = "eureka-v7";
 
 /* ─────────────────────────────────────────
    ARCHIVOS A CACHEAR
@@ -26,6 +26,11 @@ const CACHE_VERSION  = "eureka-v6";
 const ARCHIVOS_CACHE = [
   "/",
   "/index.html",
+  "/cadastro.html",
+  "/cadastroempresa.html",
+  "/home.html",
+  "/termos.html",
+  "/privacidade.html",
   "/style.css",
   "/app.js",
   "/auth.js",
@@ -114,14 +119,32 @@ self.addEventListener("fetch", (event) => {
   /* Firebase y APIs → Network First */
   const esFirebase = url.hostname.includes("firebase") ||
                      url.hostname.includes("googleapis.com") ||
-                     url.hostname.includes("firebaseio.com");
+                     url.hostname.includes("firebaseio.com") ||
+                     url.hostname.includes("viacep.com.br") ||
+                     url.hostname.includes("nominatim.openstreetmap.org");
 
   if (esFirebase) {
     event.respondWith(networkFirst(event.request));
     return;
   }
 
-  /* Todo lo demás → Cache First */
+  /* Páginas HTML → Network First
+     Garante que o usuário sempre receba a versão mais nova do app
+     (HTML muda com frequência durante o desenvolvimento; cache first
+     fazia o usuário ficar "preso" numa versão antiga até trocar o
+     CACHE_VERSION manualmente). */
+  const esHTML = event.request.mode === "navigate" ||
+                 url.pathname.endsWith(".html") ||
+                 url.pathname === "/";
+
+  if (esHTML) {
+    event.respondWith(networkFirst(event.request));
+    return;
+  }
+
+  /* CSS, JS, imagens, fonts → Cache First
+     Esses arquivos mudam com menos frequência e a invalidação
+     acontece via CACHE_VERSION quando necessário. */
   event.respondWith(cacheFirst(event.request));
 });
 
