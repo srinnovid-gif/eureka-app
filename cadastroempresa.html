@@ -1347,6 +1347,8 @@ window.mascaraCel = function(el) {
 // ══════════════════════════════════════
 // CEP — máscara + busca automática (ViaCEP)
 // ══════════════════════════════════════
+let _ultimoCepConsultado = null;
+
 window.mascaraCEP = function(el) {
   let v = el.value.replace(/\D/g,'').slice(0,8);
   if (v.length > 5) v = v.slice(0,5) + '-' + v.slice(5);
@@ -1369,6 +1371,10 @@ async function buscarCEP(cep) {
   const num = cep.replace(/\D/g,'');
   if (num.length !== 8) return;
 
+  // Evita consultar o mesmo CEP duas vezes (oninput + onblur disparam em sequência)
+  if (num === _ultimoCepConsultado) return;
+  _ultimoCepConsultado = num;
+
   const cepEl = document.getElementById('cep');
   cepEl.classList.remove('ok','err');
 
@@ -1379,6 +1385,7 @@ async function buscarCEP(cep) {
     if (data.erro) {
       document.getElementById('cep-err-txt').textContent = 'CEP não encontrado';
       setCampoErr('cep','cep-err');
+      _ultimoCepConsultado = null; // permite tentar de novo se o usuário corrigir
       return;
     }
 
@@ -1395,6 +1402,7 @@ async function buscarCEP(cep) {
     if (numEl && !numEl.value) numEl.focus();
   } catch (e) {
     // Sem internet ou API indisponível — usuário preenche manualmente
+    _ultimoCepConsultado = null; // permite tentar de novo quando a conexão voltar
   }
 }
 
