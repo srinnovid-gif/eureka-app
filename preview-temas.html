@@ -1,0 +1,424 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8"/>
+  <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"/>
+  <meta name="theme-color" content="#16232A"/>
+  <title>Eureka! — Preview de Temas</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com"/>
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+  <link href="https://fonts.googleapis.com/css2?family=Asap:ital,wght@0,700;0,800;1,700;1,800&family=Geologica:slnt,wght@-12..0,100..900&family=Glory:ital,wght@0,400;0,700;0,800;1,700;1,800&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet"/>
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; -webkit-tap-highlight-color: transparent; user-select: none; }
+    html, body { height: 100%; overflow: hidden; font-family: 'Geologica', sans-serif; -webkit-font-smoothing: antialiased; background: #0E1418; }
+
+    /* ══════════════════════════════════════
+       SWITCHER (galeria)
+    ══════════════════════════════════════ */
+    #switcher {
+      position: fixed; top: 0; left: 0; right: 0; z-index: 999;
+      display: flex; gap: 6px; padding: 10px 10px 8px;
+      background: #0A0E11; overflow-x: auto;
+      border-bottom: 1px solid #25333B;
+    }
+    #switcher::-webkit-scrollbar { display: none; }
+    .sw-btn {
+      flex-shrink: 0; padding: 8px 14px; border-radius: 50px;
+      font-family: 'Geologica', sans-serif; font-size: 12px; font-weight: 700;
+      border: 1.5px solid #2A3940; background: #16232A; color: #9CABB1;
+      cursor: pointer; white-space: nowrap; transition: all 0.15s;
+    }
+    .sw-btn.ativo { background: #FF4D20; color: white; border-color: #FF4D20; }
+    .sw-label {
+      flex-shrink: 0; display: flex; align-items: center;
+      font-family: 'DM Mono', monospace; font-size: 10px; color: #6E7E85;
+      padding: 0 4px; text-transform: uppercase; letter-spacing: 0.05em;
+    }
+
+    #phone-wrap {
+      position: fixed; top: 52px; left: 0; right: 0; bottom: 0;
+      display: flex; align-items: center; justify-content: center;
+      background: #1a1a1a;
+      overflow: hidden;
+    }
+
+    #phone {
+      position: relative;
+      width: 100%; max-width: 390px; height: 100%; max-height: 844px;
+      overflow: hidden;
+      box-shadow: 0 0 0 1px rgba(255,255,255,0.06);
+    }
+
+    .tema { position: absolute; inset: 0; display: none; flex-direction: column; overflow: hidden; }
+    .tema.ativo { display: flex; }
+
+    /* ══════════════════════════════════════
+       TOKENS COMPARTILHADOS (paleta base)
+    ══════════════════════════════════════ */
+    .tema {
+      --orange:      #FF4D20;
+      --orange-d:    #D93A10;
+      --green:       #0F8A6F;
+    }
+
+    /* ---- DARK base ---- */
+    .tema.dark {
+      --bg-app:  #0E1418;
+      --ink:     #16232A;
+      --surface: #1C2A32;
+      --surface2:#243440;
+      --white:   #FAF7F2;
+      --ink2:    #C8D2D6;
+      --ink3:    #6E7E85;
+      --border:  #25333B;
+      --orange-pale: rgba(255,77,32,0.14);
+      --green-pale:  rgba(15,138,111,0.18);
+      background: var(--bg-app); color: var(--white);
+    }
+
+    /* ---- LIGHT base ---- */
+    .tema.light {
+      --bg-app:  #E4EEF0;
+      --ink:     #16232A;
+      --surface: #FAF7F2;
+      --surface2:#FFFFFF;
+      --white:   #FAF7F2;
+      --ink2:    #4E5E66;
+      --ink3:    #93A3A8;
+      --border:  #D7E2E4;
+      --orange-pale: #FFE6DC;
+      --green-pale:  #DCEFE9;
+      background: var(--bg-app); color: var(--ink);
+    }
+
+    /* ══════════════════════════════════════
+       ESTRUTURA COMUM
+    ══════════════════════════════════════ */
+    .topo {
+      flex-shrink: 0; position: relative; z-index: 20;
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 16px 16px 8px;
+    }
+    .topo-btn {
+      width: 36px; height: 36px; border-radius: 50%;
+      display: flex; align-items: center; justify-content: center;
+      border: 1px solid var(--border);
+    }
+    .topo-logo {
+      font-family: 'Asap', sans-serif; font-weight: 800; font-style: italic;
+      font-size: 19px; letter-spacing: -0.02em;
+    }
+    .abas-wrap { flex-shrink: 0; position: relative; z-index: 20; padding: 2px 16px 10px; }
+    .abas { display: flex; gap: 6px; border-radius: 50px; padding: 4px; }
+    .aba { flex: 1; text-align: center; padding: 8px 0; border-radius: 50px; font-size: 12px; font-weight: 700; }
+
+    .deck-area { flex: 1; position: relative; overflow: hidden; }
+    .vcard { position: absolute; inset: 0; display: flex; flex-direction: column; overflow: hidden; }
+
+    .v-tag-row { display: flex; align-items: center; gap: 6px; margin-bottom: 6px; }
+    .v-empresa { font-size: 12.5px; font-weight: 700; }
+    .v-titulo { font-family: 'Glory', sans-serif; font-style: italic; font-weight: 800; font-size: 20px; line-height: 1.15; margin-bottom: 9px; letter-spacing: -0.01em; }
+    .v-stats { display: flex; gap: 7px; flex-wrap: wrap; margin-bottom: 10px; }
+    .v-pill { display: flex; align-items: center; gap: 5px; padding: 6px 10px; border-radius: 50px; font-size: 11.5px; font-weight: 700; }
+    .v-pill svg { width: 12px; height: 12px; flex-shrink: 0; }
+    .v-puxador { text-align: center; font-size: 10px; font-weight: 600; padding: 4px 0; }
+
+    .acoes-row { flex-shrink: 0; display: flex; align-items: center; justify-content: center; gap: 13px; padding: 6px 16px 12px; position: relative; z-index: 20; }
+    .ac-btn { width: 48px; height: 48px; border-radius: 50%; display: flex; align-items: center; justify-content: center; border: 1.5px solid var(--border); }
+    .ac-btn svg { width: 19px; height: 19px; }
+    .ac-btn.voltar { width: 40px; height: 40px; color: var(--ink3); }
+    .ac-btn.voltar svg, .ac-btn.share svg { width: 16px; height: 16px; }
+    .ac-btn.cancelar { color: #E0524F; }
+    .ac-btn.postular { width: 58px; height: 58px; background: var(--green); color: white; border: none; box-shadow: 0 8px 20px rgba(15,138,111,0.4); }
+
+    .navb { flex-shrink: 0; display: flex; align-items: center; justify-content: space-around; padding: 7px 8px 16px; border-top: 1px solid var(--border); position: relative; z-index: 20; }
+    .nv-item { display: flex; flex-direction: column; align-items: center; gap: 2px; color: var(--ink3); }
+    .nv-item.on { color: var(--orange); }
+    .nv-item svg { width: 20px; height: 20px; }
+    .nv-item span { font-size: 9px; font-weight: 700; }
+    .nv-pub { width: 40px; height: 40px; border-radius: 12px; background: var(--orange); color: white; display: flex; align-items: center; justify-content: center; }
+    .nv-pub svg { width: 19px; height: 19px; }
+    .nv-avt { width: 21px; height: 21px; border-radius: 50%; background: var(--orange-pale); border: 1.5px solid var(--border); display: flex; align-items: center; justify-content: center; font-size: 9px; font-weight: 800; color: var(--orange); }
+
+    .logo-fb { font-family: 'Asap', sans-serif; font-weight: 800; font-style: italic; }
+    .verif { width: 13px; height: 13px; color: var(--orange); flex-shrink: 0; }
+    .badge-tipo { font-size: 10px; font-weight: 700; letter-spacing: 0.02em; text-transform: uppercase; font-family: 'DM Mono', monospace; padding: 5px 11px; border-radius: 50px; }
+    .badge-urg { font-size: 10px; font-weight: 800; padding: 5px 10px; border-radius: 50px; background: var(--orange); color: white; display: flex; align-items: center; gap: 4px; }
+
+    /* ══════════════════════════════════════
+       A1 — DARK · Imersiva total
+    ══════════════════════════════════════ */
+    #a1 .topo, #a1 .abas-wrap { position: absolute; left: 0; right: 0; }
+    #a1 .topo { top: 0; background: linear-gradient(to bottom, rgba(14,20,24,0.7), transparent); }
+    #a1 .abas-wrap { top: 52px; }
+    #a1 .abas { background: rgba(255,255,255,0.1); border: 1px solid rgba(255,255,255,0.16); backdrop-filter: blur(8px); }
+    #a1 .aba { color: rgba(255,255,255,0.7); }
+    #a1 .aba.on { background: var(--orange); color: white; }
+    #a1 .topo-btn { background: rgba(255,255,255,0.12); border-color: rgba(255,255,255,0.18); color: white; }
+    #a1 .topo-logo { color: white; }
+    #a1 .vcard { background: linear-gradient(135deg, #243d33, var(--ink)); }
+    #a1 .vcard::after { content:''; position:absolute; inset:0; background: linear-gradient(to bottom, rgba(14,20,24,0) 35%, rgba(14,20,24,0.55) 62%, rgba(14,20,24,0.94) 100%); }
+    #a1 .v-media-fb { position:absolute; inset:0; display:flex; align-items:center; justify-content:center; }
+    #a1 .logo-fb { font-size: 60px; color: rgba(255,255,255,0.16); }
+    #a1 .badge-tipo, #a1 .v-badges { position: relative; z-index: 5; }
+    #a1 .v-badges-row { position: absolute; top: 120px; left:14px; right:14px; z-index:5; display:flex; justify-content:space-between; }
+    #a1 .badge-tipo { background: rgba(0,0,0,0.5); color: white; }
+    #a1 .v-body { position: relative; z-index: 5; margin-top: auto; padding: 16px 16px 12px; }
+    #a1 .v-empresa { color: rgba(255,255,255,0.78); }
+    #a1 .v-titulo { color: white; }
+    #a1 .v-pill { background: rgba(255,255,255,0.12); border: 1px solid rgba(255,255,255,0.16); color: white; backdrop-filter: blur(4px); }
+    #a1 .v-pill.preco { background: rgba(15,138,111,0.35); border-color: rgba(15,138,111,0.5); color: #6FE0C4; }
+    #a1 .v-puxador { color: rgba(255,255,255,0.45); }
+    #a1 .navb, #a1 .acoes-row { background: var(--bg-app); }
+    #a1 .ac-btn:not(.postular) { background: var(--surface); }
+
+    /* ══════════════════════════════════════
+       A2 — DARK · Borda glow premium
+    ══════════════════════════════════════ */
+    #a2 .topo, #a2 .abas-wrap { background: var(--bg-app); }
+    #a2 .abas { background: var(--surface); border: 1px solid var(--border); }
+    #a2 .aba { color: var(--ink2); }
+    #a2 .aba.on { background: var(--orange); color: white; }
+    #a2 .topo-btn { background: var(--surface); border-color: var(--border); color: var(--white); }
+    #a2 .topo-logo { color: var(--orange); }
+    #a2 .deck-area { padding: 8px 10px 6px; }
+    #a2 .vcard { border-radius: 22px; border: 1px solid rgba(255,77,32,0.35); box-shadow: 0 0 0 1px rgba(255,77,32,0.08), 0 20px 50px rgba(0,0,0,0.5), 0 0 32px rgba(255,77,32,0.12); background: linear-gradient(150deg, #25333B, var(--ink) 60%); }
+    #a2 .v-media-fb { position:absolute; inset:0; display:flex; align-items:center; justify-content:center; }
+    #a2 .logo-fb { font-size: 56px; color: rgba(255,77,32,0.22); }
+    #a2 .vcard::after { content:''; position:absolute; inset:0; background: linear-gradient(to bottom, rgba(22,35,42,0) 38%, rgba(22,35,42,0.6) 64%, rgba(22,35,42,0.97) 100%); border-radius: 22px; }
+    #a2 .v-badges-row { position: absolute; top: 14px; left:14px; right:14px; z-index:5; display:flex; justify-content:space-between; }
+    #a2 .badge-tipo { background: rgba(0,0,0,0.45); color: white; border: 1px solid rgba(255,255,255,0.15); }
+    #a2 .v-body { position: relative; z-index: 5; margin-top: auto; padding: 16px 18px 14px; }
+    #a2 .v-empresa { color: rgba(255,255,255,0.78); }
+    #a2 .v-titulo { color: white; }
+    #a2 .v-pill { background: rgba(255,255,255,0.1); border: 1px solid rgba(255,255,255,0.15); color: white; }
+    #a2 .v-pill.preco { background: rgba(15,138,111,0.3); border-color: rgba(15,138,111,0.5); color: #6FE0C4; }
+    #a2 .v-puxador { color: rgba(255,255,255,0.4); }
+    #a2 .navb, #a2 .acoes-row { background: var(--bg-app); }
+    #a2 .ac-btn:not(.postular) { background: var(--surface); }
+
+    /* ══════════════════════════════════════
+       A3 — DARK · Split sólido (sem degradê)
+    ══════════════════════════════════════ */
+    #a3 .topo, #a3 .abas-wrap { background: var(--bg-app); }
+    #a3 .abas { background: var(--surface); border: 1px solid var(--border); }
+    #a3 .aba { color: var(--ink2); }
+    #a3 .aba.on { background: var(--orange); color: white; }
+    #a3 .topo-btn { background: var(--surface); border-color: var(--border); color: var(--white); }
+    #a3 .topo-logo { color: var(--orange); }
+    #a3 .vcard { background: var(--surface); }
+    #a3 .v-media { position: relative; height: 50%; flex-shrink: 0; background: linear-gradient(135deg, #2A3940, var(--ink)); display:flex; align-items:center; justify-content:center; overflow:hidden; }
+    #a3 .logo-fb { font-size: 46px; color: var(--orange); opacity: 0.65; }
+    #a3 .v-badges-row { position: absolute; top: 14px; left:14px; right:14px; z-index:5; display:flex; justify-content:space-between; }
+    #a3 .badge-tipo { background: rgba(0,0,0,0.4); color: white; }
+    #a3 .v-body { padding: 16px 18px 14px; }
+    #a3 .v-empresa { color: var(--ink2); }
+    #a3 .v-titulo { color: var(--white); }
+    #a3 .v-pill { background: var(--bg-app); border: 1px solid var(--border); color: var(--white); }
+    #a3 .v-pill.preco { background: rgba(15,138,111,0.18); border-color: rgba(15,138,111,0.4); color: #4FCBA8; }
+    #a3 .v-puxador { color: var(--ink3); }
+    #a3 .navb, #a3 .acoes-row { background: var(--bg-app); }
+    #a3 .ac-btn:not(.postular) { background: var(--surface); }
+
+    /* ══════════════════════════════════════
+       B1 — LIGHT · Espelho imersivo
+    ══════════════════════════════════════ */
+    #b1 .topo, #b1 .abas-wrap { position: absolute; left: 0; right: 0; }
+    #b1 .topo { top: 0; background: linear-gradient(to bottom, rgba(228,238,240,0.85), transparent); }
+    #b1 .abas-wrap { top: 52px; }
+    #b1 .abas { background: rgba(255,255,255,0.55); border: 1px solid rgba(255,255,255,0.7); backdrop-filter: blur(8px); }
+    #b1 .aba { color: var(--ink2); }
+    #b1 .aba.on { background: var(--orange); color: white; }
+    #b1 .topo-btn { background: rgba(255,255,255,0.65); border-color: rgba(255,255,255,0.8); color: var(--ink); }
+    #b1 .topo-logo { color: var(--orange); }
+    #b1 .vcard { background: linear-gradient(135deg, #DCE9EA, var(--bg-app)); }
+    #b1 .v-media-fb { position:absolute; inset:0; display:flex; align-items:center; justify-content:center; }
+    #b1 .logo-fb { font-size: 60px; color: rgba(22,35,42,0.12); }
+    #b1 .vcard::after { content:''; position:absolute; inset:0; background: linear-gradient(to bottom, rgba(228,238,240,0) 35%, rgba(228,238,240,0.7) 62%, rgba(250,247,242,0.98) 100%); }
+    #b1 .v-badges-row { position: absolute; top: 120px; left:14px; right:14px; z-index:5; display:flex; justify-content:space-between; }
+    #b1 .badge-tipo { background: rgba(22,35,42,0.7); color: white; }
+    #b1 .v-body { position: relative; z-index: 5; margin-top: auto; padding: 16px 16px 12px; }
+    #b1 .v-empresa { color: var(--ink2); }
+    #b1 .v-titulo { color: var(--ink); }
+    #b1 .v-pill { background: rgba(255,255,255,0.85); border: 1px solid rgba(255,255,255,0.9); color: var(--ink); }
+    #b1 .v-pill.preco { background: #CFEDE3; border-color: #A9DFCD; color: #086B52; }
+    #b1 .v-puxador { color: var(--ink3); }
+    #b1 .navb, #b1 .acoes-row { background: var(--bg-app); }
+    #b1 .ac-btn:not(.postular) { background: var(--surface2); }
+
+    /* ══════════════════════════════════════
+       B2 — LIGHT · Tarjeta flotante clássica
+    ══════════════════════════════════════ */
+    #b2 .topo, #b2 .abas-wrap { background: var(--bg-app); }
+    #b2 .abas { background: var(--surface2); border: 1px solid var(--border); }
+    #b2 .aba { color: var(--ink2); }
+    #b2 .aba.on { background: var(--orange); color: white; box-shadow: 0 4px 12px rgba(255,77,32,0.3); }
+    #b2 .topo-btn { background: var(--surface2); border-color: var(--border); color: var(--ink); }
+    #b2 .topo-logo { color: var(--orange); }
+    #b2 .deck-area { padding: 6px 10px 6px; }
+    #b2 .vcard { border-radius: 26px; box-shadow: 0 16px 36px rgba(22,35,42,0.18), 0 2px 10px rgba(22,35,42,0.08); background: var(--surface2); }
+    #b2 .v-media { position: relative; height: 46%; flex-shrink: 0; background: linear-gradient(135deg, #FFD9C4, #FFEDE2); display:flex; align-items:center; justify-content:center; overflow:hidden; }
+    #b2 .logo-fb { font-size: 30px; color: var(--orange); opacity: 0.55; }
+    #b2 .v-badges-row { position: absolute; top: 14px; left:14px; right:14px; z-index:5; display:flex; justify-content:space-between; }
+    #b2 .badge-tipo { background: rgba(22,35,42,0.55); color: white; }
+    #b2 .v-body { padding: 16px 18px 14px; }
+    #b2 .v-empresa { color: var(--ink2); }
+    #b2 .v-titulo { color: var(--ink); }
+    #b2 .v-pill { background: var(--bg-app); border: 1px solid var(--border); color: var(--ink); }
+    #b2 .v-pill.preco { background: #DCEFE9; border-color: #BCE0D4; color: #086B52; }
+    #b2 .v-puxador { color: var(--ink3); }
+    #b2 .navb, #b2 .acoes-row { background: var(--surface2); }
+    #b2 .ac-btn:not(.postular) { background: var(--bg-app); }
+
+    /* ══════════════════════════════════════
+       B3 — LIGHT · Minimal com faixa de acento
+    ══════════════════════════════════════ */
+    #b3 .topo, #b3 .abas-wrap { background: var(--surface2); }
+    #b3 .abas { background: var(--bg-app); border: 1px solid var(--border); }
+    #b3 .aba { color: var(--ink2); }
+    #b3 .aba.on { background: var(--ink); color: white; }
+    #b3 .topo-btn { background: var(--bg-app); border-color: var(--border); color: var(--ink); }
+    #b3 .topo-logo { color: var(--ink); }
+    #b3 .vcard { background: var(--surface2); }
+    #b3 .v-faixa { height: 5px; flex-shrink:0; background: linear-gradient(90deg, var(--orange), var(--green)); }
+    #b3 .v-media { position: relative; height: 42%; flex-shrink: 0; background: var(--bg-app); display:flex; align-items:center; justify-content:center; overflow:hidden; border-bottom: 1px solid var(--border); }
+    #b3 .logo-fb { font-size: 40px; color: var(--ink); opacity: 0.12; }
+    #b3 .v-badges-row { position: absolute; top: 14px; left:14px; right:14px; z-index:5; display:flex; justify-content:space-between; }
+    #b3 .badge-tipo { background: var(--ink); color: white; }
+    #b3 .v-body { padding: 18px 20px 14px; }
+    #b3 .v-empresa { color: var(--ink2); }
+    #b3 .v-titulo { color: var(--ink); }
+    #b3 .v-pill { background: transparent; border: 1.5px solid var(--border); color: var(--ink); }
+    #b3 .v-pill.preco { background: transparent; border-color: var(--green); color: var(--green); }
+    #b3 .v-puxador { color: var(--ink3); }
+    #b3 .navb, #b3 .acoes-row { background: var(--surface2); }
+    #b3 .ac-btn:not(.postular) { background: var(--bg-app); }
+    #b3 .ac-btn.postular { background: var(--green); }
+
+  </style>
+</head>
+<body>
+
+<div id="switcher">
+  <span class="sw-label">Escuro</span>
+  <button class="sw-btn ativo" data-tema="a1">A1 Imersiva</button>
+  <button class="sw-btn" data-tema="a2">A2 Glow</button>
+  <button class="sw-btn" data-tema="a3">A3 Split</button>
+  <span class="sw-label">Claro</span>
+  <button class="sw-btn" data-tema="b1">B1 Imersiva</button>
+  <button class="sw-btn" data-tema="b2">B2 Flutuante</button>
+  <button class="sw-btn" data-tema="b3">B3 Minimal</button>
+</div>
+
+<div id="phone-wrap">
+  <div id="phone">
+
+    <!-- Template gerado 6x via JS para evitar repetição manual de HTML -->
+    <div id="render-target"></div>
+
+  </div>
+</div>
+
+<script>
+function montarTema(id, classe) {
+  return `
+  <div class="tema ${classe}" id="${id}">
+    <div class="topo">
+      <div class="topo-btn">
+        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="22 3 2 3 10 12.46 10 19 14 21 14 12.46 22 3"/></svg>
+      </div>
+      <div class="topo-logo">Eureka!</div>
+      <div class="topo-btn">
+        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+      </div>
+    </div>
+    <div class="abas-wrap">
+      <div class="abas">
+        <div class="aba on">Para você</div>
+        <div class="aba">Diárias</div>
+        <div class="aba">Fixos</div>
+      </div>
+    </div>
+    <div class="deck-area">
+      <div class="vcard">
+        ${id === 'a3' || id === 'b2' || id === 'b3' ? `
+        ${id === 'b3' ? '<div class="v-faixa"></div>' : ''}
+        <div class="v-media">
+          <div class="logo-fb">R</div>
+          <div class="v-badges-row">
+            <div class="badge-tipo">Diária</div>
+            <div class="badge-urg"><svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>Precisa hoje</div>
+          </div>
+        </div>
+        ` : `
+        <div class="v-media-fb"><div class="logo-fb">R</div></div>
+        <div class="v-badges-row">
+          <div class="badge-tipo">Diária</div>
+          <div class="badge-urg"><svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>Precisa hoje</div>
+        </div>
+        `}
+        <div class="v-body">
+          <div class="v-tag-row">
+            <span class="v-empresa">Restaurante Sabor Caseiro</span>
+            <svg class="verif" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9" fill="currentColor" stroke="none"/><polyline points="8.5 12.5 11 15 16 9" stroke="white"/></svg>
+          </div>
+          <div class="v-titulo">Garçom para evento de fim de semana</div>
+          <div class="v-stats">
+            <div class="v-pill preco">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.25" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="1" x2="12" y2="23"/><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg>
+              R$ 150/dia
+            </div>
+            <div class="v-pill">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.25" stroke-linecap="round" stroke-linejoin="round"><path d="M12 21s-7-5.686-7-10a7 7 0 0 1 14 0c0 4.314-7 10-7 10z"/><circle cx="12" cy="11" r="2.5"/></svg>
+              2,3 km
+            </div>
+            <div class="v-pill">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.25" stroke-linecap="round" stroke-linejoin="round"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/></svg>
+              5 candidatos
+            </div>
+          </div>
+          <div class="v-puxador">▔ Arraste para ver mais</div>
+        </div>
+      </div>
+    </div>
+    <div class="acoes-row">
+      <div class="ac-btn voltar"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.25" stroke-linecap="round" stroke-linejoin="round"><polyline points="1 4 1 10 7 10"/><path d="M3.51 15a9 9 0 1 0 2.13-9.36L1 10"/></svg></div>
+      <div class="ac-btn cancelar"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.25" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg></div>
+      <div class="ac-btn postular"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg></div>
+      <div class="ac-btn share"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.25" stroke-linecap="round" stroke-linejoin="round"><circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/><line x1="8.59" y1="13.51" x2="15.42" y2="17.49"/><line x1="15.41" y1="6.51" x2="8.59" y2="10.49"/></svg></div>
+    </div>
+    <div class="navb">
+      <div class="nv-item on"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg><span>Deslizar</span></div>
+      <div class="nv-item"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg><span>Match</span></div>
+      <div class="nv-item"><div class="nv-pub"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg></div></div>
+      <div class="nv-item"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z"/></svg><span>Mensagens</span></div>
+      <div class="nv-item"><div class="nv-avt">DN</div><span>Perfil</span></div>
+    </div>
+  </div>`;
+}
+
+const temas = [
+  { id: 'a1', classe: 'tema dark' },
+  { id: 'a2', classe: 'tema dark' },
+  { id: 'a3', classe: 'tema dark' },
+  { id: 'b1', classe: 'tema light' },
+  { id: 'b2', classe: 'tema light' },
+  { id: 'b3', classe: 'tema light' },
+];
+
+const target = document.getElementById('render-target');
+target.innerHTML = temas.map(t => montarTema(t.id, t.classe)).join('');
+document.getElementById('a1').classList.add('ativo');
+
+document.querySelectorAll('.sw-btn').forEach(btn => {
+  btn.addEventListener('click', () => {
+    document.querySelectorAll('.sw-btn').forEach(b => b.classList.remove('ativo'));
+    btn.classList.add('ativo');
+    document.querySelectorAll('.tema').forEach(t => t.classList.remove('ativo'));
+    document.getElementById(btn.dataset.tema).classList.add('ativo');
+  });
+});
+</script>
+</body>
+</html>
