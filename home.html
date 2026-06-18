@@ -511,6 +511,13 @@ function montarDeck() {
 
 function renderDeck() {
   const deck = document.getElementById('deck');
+
+  // Limpa listeners de window de qualquer carta ainda viva antes de descartar o DOM
+  // (cobre os casos de troca de aba/recarregar deck, que não passam por decidir())
+  deck.querySelectorAll('.card').forEach(c => {
+    if (c._cleanupGestos) c._cleanupGestos();
+  });
+
   deck.innerHTML = '';
   document.getElementById('vazio').classList.toggle('show', deckAtual.length === 0);
   if (deckAtual.length === 0) return;
@@ -684,9 +691,19 @@ function ativarGestos(card) {
   card.addEventListener('touchmove', e => onMove(e.touches[0].clientX, e.touches[0].clientY), { passive: true });
   card.addEventListener('touchend', onEnd);
 
+  // Handlers nomeados em window para poder remover depois (evita memory leak)
+  const onWindowMove = e => { if (arrastando) onMove(e.clientX, e.clientY); };
+  const onWindowUp   = onEnd;
+
   card.addEventListener('mousedown', e => onStart(e.clientX, e.clientY));
-  window.addEventListener('mousemove', e => { if (arrastando) onMove(e.clientX, e.clientY); });
-  window.addEventListener('mouseup', onEnd);
+  window.addEventListener('mousemove', onWindowMove);
+  window.addEventListener('mouseup', onWindowUp);
+
+  // Guarda referência na própria carta para limpeza em descartarCard()
+  card._cleanupGestos = () => {
+    window.removeEventListener('mousemove', onWindowMove);
+    window.removeEventListener('mouseup', onWindowUp);
+  };
 }
 
 // ══════════════════════════════════════
@@ -698,6 +715,9 @@ function decidir(card, tipo) {
   if (idx === -1) return;
 
   card.classList.add(tipo === 'like' ? 'descartar-d' : 'descartar-e');
+
+  // Remove os listeners de window desta carta imediatamente — ela já não é mais a do topo
+  if (card._cleanupGestos) card._cleanupGestos();
 
   const removida = deckAtual.splice(idx, 1)[0];
   historico.push(removida);
