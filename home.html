@@ -18,16 +18,17 @@
     :root {
       --orange:      #FF4D20;
       --orange-d:    #D93A10;
-      --orange-pale: #FFE8DD;
-      --orange-soft: #FFD3BC;
+      --orange-pale: rgba(255,77,32,0.14);
+      --orange-soft: rgba(255,77,32,0.24);
       --ink:         #16232A;
-      --ink2:        #4E5E66;
-      --ink3:        #9CABB1;
-      --border:      #D7E5E8;
-      --white:       #FFFFFF;
-      --surface:     #E4EEF0;
-      --green:       #075056;
-      --green-pale:  #E0EBEC;
+      --ink2:        #C8D2D6;
+      --ink3:        #6E7E85;
+      --border:      #25333B;
+      --white:       #FAF7F2;
+      --surface:     #1C2A32;
+      --green:       #0F8A6F;
+      --green-pale:  rgba(15,138,111,0.16);
+      --bg-app:      #0E1418;
       --red:         #E05252;
       --red-pale:    #FFF0EE;
     }
@@ -37,32 +38,34 @@
     html, body {
       height: 100%; overflow: hidden;
       font-family: 'Geologica', sans-serif;
-      background: var(--ink); color: var(--ink);
+      background: var(--bg-app); color: var(--white);
       -webkit-font-smoothing: antialiased;
     }
 
     #app {
       position: fixed; inset: 0;
       display: flex; flex-direction: column;
-      background: var(--surface); overflow: hidden;
+      background: var(--bg-app); overflow: hidden;
     }
 
     /* ══════════════════════════════════════
        TOP BAR
     ══════════════════════════════════════ */
     .topbar {
+      position: absolute; top: 0; left: 0; right: 0; z-index: 20;
       flex-shrink: 0;
       display: flex; align-items: center; justify-content: space-between;
       padding: 18px 16px 10px;
-      background: var(--surface);
+      background: linear-gradient(to bottom, rgba(14,20,24,0.65), transparent);
     }
 
     .top-btn {
       width: 38px; height: 38px; border-radius: 50%;
-      background: var(--white); border: 1.5px solid var(--border);
+      background: rgba(255,255,255,0.12); border: 1px solid rgba(255,255,255,0.18);
+      backdrop-filter: blur(8px);
       display: flex; align-items: center; justify-content: center;
       cursor: pointer; transition: transform 0.12s;
-      color: var(--ink);
+      color: var(--white);
       position: relative;
     }
     .top-btn:active { transform: scale(0.92); }
@@ -77,19 +80,24 @@
     .top-logo {
       font-family: 'Asap', sans-serif;
       font-weight: 800; font-style: italic;
-      font-size: 21px; color: var(--orange);
+      font-size: 21px; color: var(--white);
       letter-spacing: -0.02em;
+      text-shadow: 0 2px 8px rgba(0,0,0,0.4);
     }
 
     /* ══════════════════════════════════════
        TABS (Diárias / Fixos / Para você)
     ══════════════════════════════════════ */
-    .tabs-wrap { flex-shrink: 0; padding: 2px 16px 12px; }
+    .tabs-wrap {
+      position: absolute; top: 60px; left: 0; right: 0; z-index: 20;
+      flex-shrink: 0; padding: 2px 16px 12px;
+    }
 
     .tabs {
       display: flex; gap: 6px;
-      background: var(--white);
-      border: 1.5px solid var(--border);
+      background: rgba(255,255,255,0.12);
+      border: 1px solid rgba(255,255,255,0.18);
+      backdrop-filter: blur(8px);
       border-radius: 50px; padding: 4px;
     }
 
@@ -97,7 +105,7 @@
       flex: 1; text-align: center;
       padding: 9px 0; border-radius: 50px;
       font-size: 12.5px; font-weight: 700;
-      color: var(--ink2); cursor: pointer;
+      color: rgba(255,255,255,0.75); cursor: pointer;
       transition: all 0.2s;
       letter-spacing: -0.01em;
     }
@@ -108,26 +116,21 @@
     }
 
     /* ══════════════════════════════════════
-       DECK (stack de tarjetas)
+       DECK (stack de tarjetas — tela cheia)
     ══════════════════════════════════════ */
     .deck-wrap {
       flex: 1; position: relative;
-      padding: 0 16px 10px;
-      display: flex; align-items: center; justify-content: center;
       overflow: hidden;
     }
 
     .deck {
       position: relative;
       width: 100%; height: 100%;
-      max-width: 420px;
     }
 
     .card {
       position: absolute; inset: 0;
-      background: var(--white);
-      border-radius: 28px;
-      box-shadow: 0 12px 32px rgba(17,16,16,0.12), 0 2px 8px rgba(17,16,16,0.06);
+      background: var(--ink);
       overflow: hidden;
       display: flex; flex-direction: column;
       will-change: transform;
@@ -147,9 +150,8 @@
 
     /* ── Topo: imagem/logo da empresa ── */
     .card-media {
-      position: relative;
-      height: 46%; flex-shrink: 0;
-      background: linear-gradient(135deg, var(--orange-soft), var(--orange-pale));
+      position: absolute; inset: 0;
+      background: linear-gradient(135deg, #2A3D33, var(--ink));
       display: flex; align-items: center; justify-content: center;
       overflow: hidden;
     }
@@ -158,11 +160,17 @@
 
     .card-media .logo-fallback {
       font-family: 'Asap', sans-serif; font-weight: 800; font-style: italic;
-      font-size: 30px; color: var(--orange); opacity: 0.55;
+      font-size: 64px; color: rgba(255,255,255,0.18);
+    }
+
+    .card-media::after {
+      content: '';
+      position: absolute; inset: 0;
+      background: linear-gradient(to bottom, rgba(14,20,24,0) 35%, rgba(14,20,24,0.55) 62%, rgba(14,20,24,0.94) 100%);
     }
 
     .card-tipo-badge {
-      position: absolute; top: 14px; left: 14px;
+      position: absolute; top: 132px; left: 14px; z-index: 5;
       padding: 6px 12px; border-radius: 50px;
       background: rgba(17,16,16,0.55); backdrop-filter: blur(6px);
       color: white; font-size: 11px; font-weight: 700;
@@ -171,7 +179,7 @@
     }
 
     .card-urgencia {
-      position: absolute; top: 14px; right: 14px;
+      position: absolute; top: 132px; right: 14px; z-index: 5;
       padding: 6px 11px; border-radius: 50px;
       background: var(--orange); color: white;
       font-size: 11px; font-weight: 800;
@@ -192,9 +200,12 @@
     .stamp-like  { left: 20px; color: var(--green); border-color: var(--green); }
     .stamp-nope  { right: 20px; color: var(--red); border-color: var(--red); transform: rotate(18deg); }
 
-    /* ── Corpo: informações ── */
+    /* ── Corpo: informações (flutua sobre a imagem) ── */
     .card-body {
-      flex: 1; padding: 16px 18px 14px;
+      position: relative; z-index: 5;
+      margin-top: auto;
+      padding: 18px 18px 14px;
+      background: linear-gradient(to top, rgba(22,35,42,0.55), rgba(22,35,42,0));
       display: flex; flex-direction: column;
       overflow: hidden;
     }
@@ -205,7 +216,7 @@
     }
 
     .card-empresa-nome {
-      font-size: 13px; font-weight: 700; color: var(--ink2);
+      font-size: 13px; font-weight: 700; color: rgba(255,255,255,0.78);
     }
 
     .card-verificado {
@@ -215,7 +226,7 @@
     .card-titulo {
       font-family: 'Glory', sans-serif;
       font-style: italic; font-weight: 800;
-      font-size: 21px; color: var(--ink);
+      font-size: 23px; color: var(--white);
       line-height: 1.15; margin-bottom: 10px;
       letter-spacing: -0.01em;
     }
@@ -228,31 +239,33 @@
     .stat-pill {
       display: flex; align-items: center; gap: 5px;
       padding: 6px 11px; border-radius: 50px;
-      background: var(--surface); border: 1px solid var(--border);
-      font-size: 12px; font-weight: 700; color: var(--ink);
+      background: rgba(255,255,255,0.12); border: 1px solid rgba(255,255,255,0.16);
+      backdrop-filter: blur(6px);
+      font-size: 12px; font-weight: 700; color: var(--white);
     }
 
-    .stat-pill.preco { background: var(--green-pale); border-color: #BFD6D8; color: var(--green); }
+    .stat-pill.preco { background: rgba(15,138,111,0.35); border-color: rgba(15,138,111,0.5); color: #6FE0C4; }
     .stat-pill svg { width: 13px; height: 13px; flex-shrink: 0; }
 
     .card-puxador {
       display: flex; flex-direction: column; align-items: center;
-      gap: 2px; padding: 6px 0 2px; margin-top: auto;
-      color: var(--ink3); cursor: grab;
+      gap: 2px; padding: 6px 0 2px; margin-top: 4px;
+      color: rgba(255,255,255,0.45); cursor: grab;
     }
 
-    .puxador-barra { width: 36px; height: 4px; border-radius: 2px; background: var(--border); }
+    .puxador-barra { width: 36px; height: 4px; border-radius: 2px; background: rgba(255,255,255,0.25); }
     .puxador-txt { font-size: 10px; font-weight: 600; letter-spacing: 0.02em; }
 
     /* ── Detalhe expandido (revelado ao arrastar p/ baixo) ── */
     .card-detalhe {
+      position: relative; z-index: 5;
       max-height: 0; overflow: hidden;
+      background: var(--ink);
       transition: max-height 0.35s ease;
-      border-top: 1px solid var(--border);
+      border-top: 1px solid rgba(255,255,255,0.1);
     }
 
-    .card.expandido .card-detalhe { max-height: 240px; overflow-y: auto; }
-    .card.expandido .card-body { flex: 0 0 auto; }
+    .card.expandido .card-detalhe { max-height: 50vh; overflow-y: auto; }
 
     .detalhe-inner { padding: 14px 18px 18px; }
     .detalhe-secao { margin-bottom: 12px; }
@@ -266,7 +279,7 @@
     .detalhe-tags { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 4px; }
     .detalhe-tag {
       padding: 5px 10px; border-radius: 50px;
-      background: var(--surface); border: 1px solid var(--border);
+      background: rgba(255,255,255,0.08); border: 1px solid rgba(255,255,255,0.14);
       font-size: 11px; font-weight: 700; color: var(--ink2);
     }
 
@@ -274,40 +287,43 @@
        BOTÕES DE AÇÃO
     ══════════════════════════════════════ */
     .acoes {
+      position: relative; z-index: 20;
       flex-shrink: 0;
       display: flex; align-items: center; justify-content: center;
       gap: 14px; padding: 4px 16px 14px;
+      background: var(--bg-app);
     }
 
     .acao-btn {
       width: 52px; height: 52px; border-radius: 50%;
-      background: var(--white); border: 1.5px solid var(--border);
+      background: var(--surface); border: 1.5px solid var(--border);
       display: flex; align-items: center; justify-content: center;
       cursor: pointer; transition: transform 0.12s, box-shadow 0.12s;
-      box-shadow: 0 4px 14px rgba(17,16,16,0.08);
+      box-shadow: 0 4px 14px rgba(0,0,0,0.3);
       color: var(--ink2);
     }
     .acao-btn:active { transform: scale(0.88); }
 
     .acao-btn.voltar { width: 44px; height: 44px; color: var(--ink3); }
-    .acao-btn.cancelar { color: var(--red); }
+    .acao-btn.cancelar { color: #FF6B6B; }
     .acao-btn.cancelar svg, .acao-btn.postular svg { width: 22px; height: 22px; }
     .acao-btn.voltar svg, .acao-btn.compartilhar svg { width: 18px; height: 18px; }
 
     .acao-btn.postular {
       width: 62px; height: 62px;
-      background: var(--orange); color: white;
-      box-shadow: 0 8px 22px rgba(255,77,32,0.38);
+      background: var(--green); color: white;
+      box-shadow: 0 8px 22px rgba(15,138,111,0.45);
     }
 
     /* ══════════════════════════════════════
        BOTTOM NAV
     ══════════════════════════════════════ */
     .bottom-nav {
+      position: relative; z-index: 20;
       flex-shrink: 0;
       display: flex; align-items: center; justify-content: space-around;
       padding: 8px 8px calc(14px + env(safe-area-inset-bottom, 0px));
-      background: var(--white);
+      background: var(--bg-app);
       border-top: 1px solid var(--border);
     }
 
@@ -353,7 +369,7 @@
       background: var(--orange-pale); display: flex; align-items: center; justify-content: center;
       color: var(--orange);
     }
-    .vazio-titulo { font-family: 'Glory', sans-serif; font-style: italic; font-weight: 800; font-size: 18px; color: var(--ink); }
+    .vazio-titulo { font-family: 'Glory', sans-serif; font-style: italic; font-weight: 800; font-size: 18px; color: var(--white); }
     .vazio-sub { font-size: 13px; color: var(--ink2); line-height: 1.5; }
     .vazio-btn {
       margin-top: 6px; padding: 12px 24px; border-radius: 50px;
@@ -367,7 +383,8 @@
     #toast {
       position: fixed; bottom: 100px; left: 50%;
       transform: translateX(-50%) translateY(20px);
-      background: var(--ink); color: white;
+      background: var(--surface); color: var(--white);
+      border: 1px solid var(--border);
       padding: 11px 20px; border-radius: 50px;
       font-size: 13px; font-weight: 700;
       opacity: 0; pointer-events: none;
