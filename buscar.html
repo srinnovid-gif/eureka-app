@@ -1,0 +1,575 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8"/>
+  <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate"/>
+  <meta http-equiv="Pragma" content="no-cache"/>
+  <meta http-equiv="Expires" content="0"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"/>
+  <meta name="theme-color" content="#16232A"/>
+  <meta name="mobile-web-app-capable" content="yes"/>
+  <meta name="apple-mobile-web-app-capable" content="yes"/>
+  <title>Eureka! — Buscar</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com"/>
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+  <link href="https://fonts.googleapis.com/css2?family=Asap:ital,wght@0,700;0,800;1,700;1,800&family=Geologica:slnt,wght@-12..0,100..900&family=Glory:ital,wght@0,400;0,700;0,800;1,700;1,800&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet"/>
+  <style>
+    :root {
+      --orange:      #FF4D20;
+      --orange-d:    #D93A10;
+      --orange-pale: #FFE8DD;
+      --ink:         #16232A;
+      --ink2:        #C8D2D6;
+      --ink3:        #6E7E85;
+      --border:      #25333B;
+      --white:       #FAF7F2;
+      --surface:     #1C2A32;
+      --bg-app:      #0E1418;
+      --green:       #0F8A6F;
+    }
+
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; -webkit-tap-highlight-color: transparent; }
+
+    html, body {
+      height: 100%; overflow: hidden;
+      font-family: 'Geologica', sans-serif;
+      background: var(--bg-app); color: var(--white);
+      -webkit-font-smoothing: antialiased;
+    }
+
+    #app {
+      position: fixed; inset: 0;
+      display: flex; flex-direction: column;
+      background: var(--bg-app); overflow: hidden;
+    }
+
+    /* ══════════════════════════════════════
+       HEADER
+    ══════════════════════════════════════ */
+    .header {
+      flex-shrink: 0;
+      padding: 18px 16px 10px;
+      display: flex; align-items: center; gap: 12px;
+    }
+
+    .btn-voltar {
+      width: 38px; height: 38px; border-radius: 50%;
+      background: var(--surface); border: 1.5px solid var(--border);
+      display: flex; align-items: center; justify-content: center;
+      flex-shrink: 0; cursor: pointer; color: var(--white);
+      transition: transform 0.12s;
+    }
+    .btn-voltar:active { transform: scale(0.9); }
+    .btn-voltar svg { width: 16px; height: 16px; }
+
+    /* ══════════════════════════════════════
+       CAMPO DE BUSCA
+    ══════════════════════════════════════ */
+    .busca-wrap {
+      flex: 1;
+      display: flex; align-items: center; gap: 10px;
+      background: var(--surface); border: 1.5px solid var(--border);
+      border-radius: 16px; padding: 12px 14px;
+      transition: border-color 0.2s;
+    }
+
+    .busca-wrap:focus-within { border-color: var(--orange); }
+    .busca-wrap svg { color: var(--ink3); flex-shrink: 0; transition: color 0.2s; }
+    .busca-wrap:focus-within svg { color: var(--orange); }
+
+    .busca-input {
+      flex: 1; border: none; background: none; outline: none;
+      font-family: 'Geologica', sans-serif; font-size: 16px; color: var(--white);
+    }
+    .busca-input::placeholder { color: var(--ink3); }
+
+    .busca-limpar {
+      width: 20px; height: 20px; border-radius: 50%;
+      background: var(--border); border: none; color: var(--ink2);
+      display: none; align-items: center; justify-content: center;
+      flex-shrink: 0; cursor: pointer;
+    }
+    .busca-limpar.show { display: flex; }
+
+    /* ══════════════════════════════════════
+       ACCESOS RÁPIDOS — los 3 botones grandes
+    ══════════════════════════════════════ */
+    .atajos {
+      flex-shrink: 0;
+      padding: 20px 16px 16px;
+      display: flex; flex-direction: column; gap: 12px;
+      overflow-y: auto;
+    }
+
+    .secao-titulo {
+      font-family: 'Glory', sans-serif; font-weight: 800;
+      font-size: 17px; color: var(--white);
+      letter-spacing: -0.01em;
+      margin-bottom: 2px;
+    }
+
+    .atajo-btn {
+      display: flex; align-items: center; gap: 16px;
+      padding: 18px 20px; border-radius: 20px;
+      border: 1.5px solid var(--border);
+      background: var(--surface);
+      cursor: pointer; text-align: left;
+      transition: border-color 0.15s, background 0.15s;
+    }
+    .atajo-btn:active { transform: scale(0.98); }
+    .atajo-btn.diurno:active, .atajo-btn.diurno.sel { border-color: #FBB931; background: rgba(251,185,49,0.08); }
+    .atajo-btn.noturno:active, .atajo-btn.noturno.sel { border-color: #6366F1; background: rgba(99,102,241,0.08); }
+    .atajo-btn.jaja:active, .atajo-btn.jaja.sel { border-color: var(--orange); background: rgba(255,77,32,0.1); }
+
+    .atajo-icone {
+      width: 48px; height: 48px; border-radius: 16px;
+      display: flex; align-items: center; justify-content: center;
+      flex-shrink: 0; font-size: 24px;
+    }
+    .atajo-btn.diurno  .atajo-icone { background: rgba(251,185,49,0.15); }
+    .atajo-btn.noturno .atajo-icone { background: rgba(99,102,241,0.15); }
+    .atajo-btn.jaja    .atajo-icone { background: rgba(255,77,32,0.14); }
+
+    .atajo-info { flex: 1; }
+    .atajo-nome {
+      font-family: 'Glory', sans-serif; font-weight: 800;
+      font-size: 18px; margin-bottom: 2px;
+    }
+    .atajo-btn.diurno  .atajo-nome { color: #FBB931; }
+    .atajo-btn.noturno .atajo-nome { color: #9698F5; }
+    .atajo-btn.jaja    .atajo-nome { color: #FF8A5C; }
+
+    .atajo-sub { font-size: 12.5px; color: var(--ink3); line-height: 1.4; }
+
+    .atajo-seta { color: var(--ink3); flex-shrink: 0; }
+    .atajo-seta svg { width: 18px; height: 18px; }
+
+    /* ══════════════════════════════════════
+       SERVIÇOS A DOMICÍLIO — cuadros
+    ══════════════════════════════════════ */
+    .servicos-grid {
+      display: grid; grid-template-columns: repeat(3, 1fr);
+      gap: 10px; margin-top: 4px;
+    }
+
+    .servico-item {
+      aspect-ratio: 1; border-radius: 18px;
+      background: var(--surface); border: 1.5px solid var(--border);
+      display: flex; flex-direction: column; align-items: center; justify-content: center;
+      gap: 8px; padding: 10px; text-align: center;
+      cursor: pointer; transition: border-color 0.15s, transform 0.12s;
+    }
+    .servico-item:active { transform: scale(0.95); border-color: var(--orange); }
+
+    .servico-icone {
+      width: 44px; height: 44px; border-radius: 14px;
+      background: rgba(255,77,32,0.12);
+      display: flex; align-items: center; justify-content: center;
+      font-size: 22px;
+    }
+
+    .servico-nome {
+      font-size: 11.5px; font-weight: 700; color: var(--ink2);
+      line-height: 1.25;
+    }
+
+
+    /* ══════════════════════════════════════
+       RESULTADOS
+    ══════════════════════════════════════ */
+    .resultados-area {
+      flex: 1; overflow-y: auto; overflow-x: hidden;
+      padding: 0 16px 16px;
+      display: none; flex-direction: column; gap: 8px;
+    }
+    .resultados-area.show { display: flex; }
+
+    .resultados-header {
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 8px 0 4px; flex-shrink: 0;
+    }
+    .resultados-count { font-size: 13px; color: var(--ink3); }
+    .resultados-filtro-ativo {
+      font-size: 12px; font-weight: 700; color: #FF8A5C;
+      background: rgba(255,77,32,0.14); border: 1px solid rgba(255,77,32,0.35);
+      padding: 4px 10px; border-radius: 50px;
+      display: flex; align-items: center; gap: 5px; cursor: pointer;
+    }
+    .resultados-filtro-ativo svg { width: 12px; height: 12px; }
+
+    .resultado-item {
+      display: flex; align-items: center; gap: 12px;
+      padding: 12px; border-radius: 16px;
+      background: var(--surface); border: 1px solid var(--border);
+      cursor: pointer; transition: border-color 0.15s;
+      flex-shrink: 0;
+    }
+    .resultado-item:active { border-color: var(--orange); }
+
+    .res-avatar {
+      width: 42px; height: 42px; border-radius: 50%; flex-shrink: 0;
+      background: var(--orange); color: white; overflow: hidden;
+      display: flex; align-items: center; justify-content: center;
+      font-family: 'DM Mono', monospace; font-weight: 700; font-size: 14px;
+      border: 1.5px solid rgba(255,255,255,0.15);
+    }
+    .res-avatar img { width: 100%; height: 100%; object-fit: cover; }
+
+    .res-info { flex: 1; min-width: 0; }
+    .res-titulo { font-size: 13.5px; font-weight: 700; color: var(--white); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+    .res-sub { font-size: 12px; color: var(--ink3); margin-top: 2px; display: flex; align-items: center; gap: 6px; }
+    .res-badge {
+      font-size: 10px; font-weight: 700; padding: 2px 7px; border-radius: 50px;
+      border: 1px solid;
+    }
+    .res-badge.diaria { background: rgba(255,77,32,0.14); border-color: var(--orange); color: #FF8A5C; }
+    .res-badge.fixo   { background: rgba(15,138,111,0.16); border-color: var(--green); color: #5FD9B8; }
+    .res-badge.jaja   { background: rgba(255,77,32,0.22); border-color: var(--orange); color: #FF8A5C; }
+
+    .res-preco { font-size: 12px; font-weight: 800; color: #5FD9B8; flex-shrink: 0; }
+
+    .resultados-vazio {
+      display: none; text-align: center; padding: 48px 24px;
+      color: var(--ink3); font-size: 14px; flex-direction: column;
+      align-items: center; gap: 10px;
+    }
+    .resultados-vazio.show { display: flex; }
+    .vazio-icone { font-size: 36px; margin-bottom: 4px; }
+
+    /* ══════════════════════════════════════
+       BOTTOM NAV
+    ══════════════════════════════════════ */
+    .bottom-nav {
+      flex-shrink: 0;
+      display: flex; align-items: center; justify-content: space-around;
+      padding: 8px 8px calc(14px + env(safe-area-inset-bottom, 0px));
+      background: var(--bg-app); border-top: 1px solid var(--border);
+    }
+
+    .nv-item { display: flex; flex-direction: column; align-items: center; gap: 3px; color: var(--ink3); cursor: pointer; flex: 1; }
+    .nv-item svg { width: 22px; height: 22px; }
+    .nv-item span { font-size: 9px; font-weight: 700; }
+    .nv-item.on { color: var(--orange); }
+
+    .nv-pub {
+      width: 42px; height: 42px; border-radius: 13px;
+      background: var(--orange); color: white;
+      display: flex; align-items: center; justify-content: center;
+      margin-top: -4px; box-shadow: 0 4px 14px rgba(255,77,32,0.35);
+    }
+    .nv-pub svg { width: 20px; height: 20px; }
+
+    .nv-avt {
+      width: 22px; height: 22px; border-radius: 50%;
+      background: var(--orange-pale); border: 1.5px solid var(--border);
+      display: flex; align-items: center; justify-content: center;
+      font-size: 9px; font-weight: 800; color: var(--orange);
+    }
+
+    /* ══════════════════════════════════════
+       TOAST
+    ══════════════════════════════════════ */
+    #toast {
+      position: fixed; bottom: 90px; left: 50%;
+      transform: translateX(-50%) translateY(20px);
+      background: var(--surface); color: var(--white);
+      border: 1px solid var(--border);
+      padding: 11px 20px; border-radius: 50px;
+      font-size: 13px; font-weight: 700;
+      opacity: 0; pointer-events: none;
+      transition: opacity 0.25s, transform 0.25s;
+      z-index: 50; display: flex; align-items: center; gap: 8px;
+      white-space: nowrap;
+    }
+    #toast.show { opacity: 1; transform: translateX(-50%) translateY(0); }
+    #toast svg { width: 15px; height: 15px; }
+  </style>
+</head>
+<body>
+<div id="app">
+
+  <!-- HEADER -->
+  <div class="header">
+    <button class="btn-voltar" onclick="history.back()" aria-label="Voltar">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.25" stroke-linecap="round" stroke-linejoin="round"><path d="M19 12H5M11 6l-6 6 6 6"/></svg>
+    </button>
+    <div class="busca-wrap">
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+      <input type="search" id="input-busca" class="busca-input" placeholder="Buscar por vaga ou empresa..." autocomplete="off" oninput="onBusca()" autofocus/>
+      <button class="busca-limpar" id="btn-limpar" onclick="limpar()" aria-label="Limpar">
+        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+      </button>
+    </div>
+  </div>
+
+  <!-- ATAJOS (estado inicial) -->
+  <div class="atajos" id="atajos">
+    <div class="secao-titulo">Explorar por tipo</div>
+
+    <div class="atajo-btn diurno" onclick="ativarAtajo('diurno')">
+      <div class="atajo-icone">☀️</div>
+      <div class="atajo-info">
+        <div class="atajo-nome">Diurno</div>
+        <div class="atajo-sub">Trabalhos de dia — manhã e tarde</div>
+      </div>
+      <div class="atajo-seta"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.25" stroke-linecap="round" stroke-linejoin="round"><path d="M9 18l6-6-6-6"/></svg></div>
+    </div>
+
+    <div class="atajo-btn noturno" onclick="ativarAtajo('noturno')">
+      <div class="atajo-icone">🌙</div>
+      <div class="atajo-info">
+        <div class="atajo-nome">Noturno</div>
+        <div class="atajo-sub">Trabalhos de noite — tarde e madrugada</div>
+      </div>
+      <div class="atajo-seta"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.25" stroke-linecap="round" stroke-linejoin="round"><path d="M9 18l6-6-6-6"/></svg></div>
+    </div>
+
+    <div class="atajo-btn jaja" onclick="ativarAtajo('jaja')">
+      <div class="atajo-icone">⚡</div>
+      <div class="atajo-info">
+        <div class="atajo-nome">Já Já</div>
+        <div class="atajo-sub">Precisa de alguém agora mesmo — urgente</div>
+      </div>
+      <div class="atajo-seta"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.25" stroke-linecap="round" stroke-linejoin="round"><path d="M9 18l6-6-6-6"/></svg></div>
+    </div>
+
+    <div class="secao-titulo" style="margin-top: 14px;">Serviço a Domicílio Para Você</div>
+    <div class="servicos-grid">
+      <div class="servico-item" onclick="abrirServico('barbearia', 'Barbearia', '💈')">
+        <div class="servico-icone">💈</div>
+        <div class="servico-nome">Barbearia</div>
+      </div>
+      <div class="servico-item" onclick="abrirServico('musica', 'Aulas de Música', '🎸')">
+        <div class="servico-icone">🎸</div>
+        <div class="servico-nome">Aulas de Música</div>
+      </div>
+      <div class="servico-item" onclick="abrirServico('reforco', 'Reforço Escolar', '📚')">
+        <div class="servico-icone">📚</div>
+        <div class="servico-nome">Reforço Escolar</div>
+      </div>
+      <div class="servico-item" onclick="abrirServico('baba', 'Babá', '🍼')">
+        <div class="servico-icone">🍼</div>
+        <div class="servico-nome">Babá</div>
+      </div>
+      <div class="servico-item" onclick="abrirServico('transporte', 'Transporte Privado', '🚗')">
+        <div class="servico-icone">🚗</div>
+        <div class="servico-nome">Transporte Privado</div>
+      </div>
+      <div class="servico-item" onclick="abrirServico('advogado', 'Advogado', '⚖️')">
+        <div class="servico-icone">⚖️</div>
+        <div class="servico-nome">Advogado</div>
+      </div>
+      <div class="servico-item" onclick="abrirServico('financeira', 'Assessoria Financeira', '📊')">
+        <div class="servico-icone">📊</div>
+        <div class="servico-nome">Assessoria Financeira</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- RESULTADOS -->
+  <div class="resultados-area" id="resultados-area">
+    <div class="resultados-header">
+      <div class="resultados-count" id="res-count"></div>
+      <div class="resultados-filtro-ativo" id="res-filtro-label" onclick="voltarAtalhos()" style="display:none;">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+        <span id="res-filtro-txt"></span>
+      </div>
+    </div>
+    <div id="lista-resultados"></div>
+    <div class="resultados-vazio" id="res-vazio">
+      <div class="vazio-icone">🔍</div>
+      <span>Nenhuma oportunidade encontrada.</span>
+    </div>
+  </div>
+
+  <!-- BOTTOM NAV -->
+  <div class="bottom-nav">
+    <div class="nv-item" onclick="location.href='home.html'">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg>
+      <span>Deslizar</span>
+    </div>
+    <div class="nv-item" onclick="location.href='match.html'">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>
+      <span>Match</span>
+    </div>
+    <div class="nv-item" onclick="location.href='publicar.html'">
+      <div class="nv-pub">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+      </div>
+    </div>
+    <div class="nv-item on">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+      <span>Buscar</span>
+    </div>
+    <div class="nv-item" onclick="location.href='perfil.html'">
+      <div class="nv-avt">DN</div>
+      <span>Perfil</span>
+    </div>
+  </div>
+
+</div><!-- /app -->
+<div id="toast"></div>
+
+<script>
+// ══════════════════════════════════════
+// DADOS — idênticos ao home.html
+// (futuramente virão de uma API/Firestore compartilhada)
+// ══════════════════════════════════════
+const OPORTUNIDADES = [
+  { id:1, turno:'noturno', jaja:false, modalidade:'presencial', tipo:'Diária', urgencia:'Precisa hoje', empresa:'Restaurante Sabor Caseiro', verificado:true, titulo:'Garçom para evento de fim de semana', preco:'R$ 150/dia', distancia:'2,3 km' },
+  { id:2, turno:'diurno',  jaja:false, modalidade:'remoto',     tipo:'Fixo',   urgencia:null,          empresa:'TechNova Soluções',          verificado:true,  fotoPerfil:'https://i.pravatar.cc/100?img=12', titulo:'Designer gráfico para redes sociais', preco:'R$ 2.800/mês', distancia:'Remoto' },
+  { id:3, turno:'diurno',  jaja:false, modalidade:'presencial', tipo:'Diária', urgencia:'Última vaga', empresa:'Mudanças Rápidas Curitiba',   verificado:false, titulo:'Ajudante para mudança residencial', preco:'R$ 120/dia', distancia:'5,1 km' },
+  { id:4, turno:'diurno',  jaja:true,  modalidade:'presencial', tipo:'Diária', urgencia:'Precisa hoje', empresa:'Buffet Doce Encanto',         verificado:true,  titulo:'Cozinheiro auxiliar para festa', preco:'R$ 180/dia', distancia:'3,8 km' },
+  { id:5, turno:'diurno',  jaja:false, modalidade:'presencial', tipo:'Diária', urgencia:null,          empresa:'Construtora Pinheiro',         verificado:true,  titulo:'Pedreiro para reforma', preco:'R$ 200/dia', distancia:'7,2 km' },
+  { id:6, turno:'diurno',  jaja:false, modalidade:'presencial', tipo:'Fixo',   urgencia:null,          empresa:'Mercado Boa Vizinhança',       verificado:true,  titulo:'Repositor de mercadorias', preco:'R$ 1.650/mês', distancia:'1,4 km' },
+];
+
+// ══════════════════════════════════════
+// ESTADO
+// ══════════════════════════════════════
+let filtroAtivo = null; // null | 'diurno' | 'noturno' | 'jaja'
+let termoBusca = '';
+
+const NOMES_FILTRO = {
+  diurno:  '☀️ Diurno',
+  noturno: '🌙 Noturno',
+  jaja:    '⚡ Já Já'
+};
+
+// ══════════════════════════════════════
+// BUSCA EM TEMPO REAL
+// ══════════════════════════════════════
+function onBusca() {
+  termoBusca = document.getElementById('input-busca').value.trim();
+  document.getElementById('btn-limpar').classList.toggle('show', termoBusca.length > 0);
+
+  if (termoBusca.length > 0) {
+    mostrarResultados();
+  } else if (!filtroAtivo) {
+    voltarAtalhos();
+  } else {
+    mostrarResultados();
+  }
+}
+
+function limpar() {
+  document.getElementById('input-busca').value = '';
+  termoBusca = '';
+  document.getElementById('btn-limpar').classList.remove('show');
+  if (!filtroAtivo) {
+    voltarAtalhos();
+  } else {
+    mostrarResultados();
+  }
+}
+
+// ══════════════════════════════════════
+// ATAJOS — clic en los 3 botones grandes
+// ══════════════════════════════════════
+function ativarAtajo(tipo) {
+  filtroAtivo = tipo;
+  mostrarResultados();
+}
+
+// ══════════════════════════════════════
+// SERVIÇOS A DOMICÍLIO — clic em um cuadro de serviço
+// ══════════════════════════════════════
+function abrirServico(id, nome, icone) {
+  const params = new URLSearchParams({ id, nome, icone });
+  location.href = `servico-lista.html?${params.toString()}`;
+}
+
+function voltarAtalhos() {
+  filtroAtivo = null;
+  termoBusca = '';
+  document.getElementById('input-busca').value = '';
+  document.getElementById('btn-limpar').classList.remove('show');
+  document.getElementById('atajos').style.display = '';
+  document.getElementById('resultados-area').classList.remove('show');
+}
+
+// ══════════════════════════════════════
+// RENDER RESULTADOS
+// ══════════════════════════════════════
+function mostrarResultados() {
+  document.getElementById('atajos').style.display = 'none';
+  document.getElementById('resultados-area').classList.add('show');
+
+  let lista = OPORTUNIDADES;
+
+  // Aplica filtro de atajo
+  if (filtroAtivo === 'diurno')  lista = lista.filter(op => op.turno === 'diurno');
+  if (filtroAtivo === 'noturno') lista = lista.filter(op => op.turno === 'noturno');
+  if (filtroAtivo === 'jaja')    lista = lista.filter(op => op.jaja === true);
+
+  // Aplica busca de texto
+  if (termoBusca) {
+    const t = termoBusca.toLowerCase();
+    lista = lista.filter(op =>
+      op.titulo.toLowerCase().includes(t) || op.empresa.toLowerCase().includes(t)
+    );
+  }
+
+  // Header de resultados
+  const count = lista.length;
+  document.getElementById('res-count').textContent =
+    count === 0 ? 'Nenhuma oportunidade' :
+    count === 1 ? '1 oportunidade encontrada' :
+    `${count} oportunidades encontradas`;
+
+  const labelEl = document.getElementById('res-filtro-label');
+  const labelTxt = document.getElementById('res-filtro-txt');
+  if (filtroAtivo) {
+    labelEl.style.display = 'flex';
+    labelTxt.textContent = NOMES_FILTRO[filtroAtivo];
+  } else {
+    labelEl.style.display = 'none';
+  }
+
+  const lista_el = document.getElementById('lista-resultados');
+  lista_el.innerHTML = '';
+
+  document.getElementById('res-vazio').classList.toggle('show', count === 0);
+
+  lista.forEach(op => {
+    const el = document.createElement('div');
+    el.className = 'resultado-item';
+
+    const badgeClasse = op.jaja ? 'jaja' : (op.tipo === 'Fixo' ? 'fixo' : 'diaria');
+    const badgeTxt    = op.jaja ? '⚡ Já Já' : op.tipo;
+
+    el.innerHTML = `
+      <div class="res-avatar">
+        ${op.fotoPerfil ? `<img src="${op.fotoPerfil}" alt="${op.empresa}">` : op.empresa.charAt(0)}
+      </div>
+      <div class="res-info">
+        <div class="res-titulo">${op.titulo}</div>
+        <div class="res-sub">
+          <span class="res-badge ${badgeClasse}">${badgeTxt}</span>
+          ${op.empresa} · ${op.distancia}
+        </div>
+      </div>
+      <div class="res-preco">${op.preco}</div>
+    `;
+
+    el.onclick = () => {
+      // Futuramente: navegar ao detalhe da oportunidade
+      mostrarToast(`${op.empresa}: ${op.titulo}`);
+    };
+
+    lista_el.appendChild(el);
+  });
+}
+
+// ══════════════════════════════════════
+// TOAST
+// ══════════════════════════════════════
+function mostrarToast(msg) {
+  const el = document.getElementById('toast');
+  el.innerHTML = `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg> ${msg}`;
+  el.classList.add('show');
+  setTimeout(() => el.classList.remove('show'), 2200);
+}
+</script>
+</body>
+</html>
