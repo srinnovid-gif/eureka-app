@@ -16,7 +16,7 @@
    Cambiar este número fuerza la actualización
    en todos los dispositivos con la app instalada.
 ───────────────────────────────────────── */
-const CACHE_VERSION  = "eureka-v7";
+const CACHE_VERSION  = "eureka-v8";
 
 /* ─────────────────────────────────────────
    ARCHIVOS A CACHEAR
@@ -29,6 +29,9 @@ const ARCHIVOS_CACHE = [
   "/cadastro.html",
   "/cadastroempresa.html",
   "/home.html",
+  "/buscar.html",
+  "/servico-lista.html",
+  "/servico-perfil.html",
   "/termos.html",
   "/privacidade.html",
   "/style.css",
