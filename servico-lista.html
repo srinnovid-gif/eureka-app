@@ -1,0 +1,278 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8"/>
+  <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"/>
+  <meta name="theme-color" content="#16232A"/>
+  <title>Eureka! â€” Profissionais</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com"/>
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+  <link href="https://fonts.googleapis.com/css2?family=Asap:ital,wght@0,800;1,800&family=Geologica:slnt,wght@-12..0,100..900&family=Glory:ital,wght@0,800&family=DM+Mono:wght@500&display=swap" rel="stylesheet"/>
+  <style>
+    :root {
+      --orange: #FF4D20; --green: #0F8A6F;
+      --ink: #16232A; --ink2: #C8D2D6; --ink3: #6E7E85;
+      --border: #25333B; --white: #FAF7F2; --surface: #1C2A32; --bg-app: #0E1418;
+    }
+    * { box-sizing: border-box; margin:0; padding:0; -webkit-tap-highlight-color: transparent; }
+    html, body { height: 100%; overflow: hidden; font-family: 'Geologica', sans-serif; background: var(--bg-app); color: var(--white); -webkit-font-smoothing: antialiased; }
+
+    #app { position: fixed; inset: 0; display: flex; flex-direction: column; background: var(--bg-app); overflow: hidden; }
+
+    .header {
+      flex-shrink: 0; padding: 18px 16px 14px;
+      display: flex; align-items: center; gap: 12px;
+    }
+    .btn-voltar {
+      width: 38px; height: 38px; border-radius: 50%;
+      background: var(--surface); border: 1.5px solid var(--border);
+      display: flex; align-items: center; justify-content: center;
+      flex-shrink: 0; cursor: pointer; color: var(--white);
+    }
+    .btn-voltar svg { width: 16px; height: 16px; }
+    .header-info { flex: 1; min-width: 0; }
+    .header-titulo {
+      font-family: 'Glory', sans-serif; font-weight: 800; font-size: 19px;
+      display: flex; align-items: center; gap: 8px;
+    }
+    .header-icone { font-size: 20px; }
+    .header-sub { font-size: 12.5px; color: var(--ink3); margin-top: 2px; }
+
+    .ordenar-bar {
+      flex-shrink: 0; display: flex; gap: 8px;
+      padding: 0 16px 12px; overflow-x: auto;
+    }
+    .ordenar-bar::-webkit-scrollbar { display: none; }
+    .ordenar-chip {
+      flex-shrink: 0; padding: 8px 14px; border-radius: 50px;
+      border: 1.5px solid var(--border); color: var(--ink2);
+      font-size: 12.5px; font-weight: 700; cursor: pointer; white-space: nowrap;
+    }
+    .ordenar-chip.ativo { background: rgba(255,77,32,0.16); border-color: var(--orange); color: #FF8A5C; }
+
+    .lista-area {
+      flex: 1; overflow-y: auto; padding: 0 16px 16px;
+      display: flex; flex-direction: column; gap: 10px;
+    }
+
+    .item-prof {
+      display: flex; align-items: center; gap: 13px;
+      padding: 13px; border-radius: 16px;
+      background: var(--surface); border: 1px solid var(--border);
+      cursor: pointer; transition: border-color 0.15s;
+    }
+    .item-prof:active { border-color: var(--orange); }
+
+    .item-avatar {
+      width: 54px; height: 54px; border-radius: 50%; flex-shrink: 0;
+      background: linear-gradient(135deg, #FF8A5C, var(--orange));
+      display: flex; align-items: center; justify-content: center;
+      font-family: 'DM Mono', monospace; font-weight: 700; font-size: 18px; color: white;
+      border: 2px solid rgba(255,255,255,0.15); overflow: hidden;
+    }
+    .item-avatar img { width: 100%; height: 100%; object-fit: cover; }
+
+    .item-info { flex: 1; min-width: 0; }
+    .item-nome { font-size: 15px; font-weight: 700; color: var(--white); display: flex; align-items: center; gap: 5px; }
+    .item-cat { font-size: 12px; color: var(--ink3); margin-top: 2px; }
+
+    .item-meta { display: flex; align-items: center; gap: 10px; margin-top: 7px; flex-wrap: wrap; }
+    .item-rating { display: flex; align-items: center; gap: 3px; font-size: 12px; font-weight: 700; color: #FBB931; }
+    .item-rating svg { width: 13px; height: 13px; }
+    .item-dist { font-size: 12px; color: var(--ink3); display: flex; align-items: center; gap: 3px; }
+    .item-dist svg { width: 12px; height: 12px; }
+
+    .item-popularidade {
+      font-size: 11px; font-weight: 700; color: #5FD9B8;
+    }
+    .item-popularidade.novo {
+      color: #FBB931;
+    }
+
+    .verif { width: 13px; height: 13px; color: var(--orange); flex-shrink: 0; }
+
+    .item-seta { color: var(--ink3); flex-shrink: 0; }
+    .item-seta svg { width: 17px; height: 17px; }
+
+    .vazio {
+      display: none; flex-direction: column; align-items: center; justify-content: center;
+      text-align: center; gap: 10px; padding: 60px 24px; color: var(--ink3); font-size: 14px;
+    }
+    .vazio.show { display: flex; }
+    .vazio-icone { font-size: 36px; }
+
+    .bottom-nav {
+      flex-shrink: 0; display: flex; align-items: center; justify-content: space-around;
+      padding: 8px 8px calc(14px + env(safe-area-inset-bottom, 0px));
+      background: var(--bg-app); border-top: 1px solid var(--border);
+    }
+    .nv-item { display: flex; flex-direction: column; align-items: center; gap: 3px; color: var(--ink3); cursor: pointer; flex: 1; }
+    .nv-item svg { width: 22px; height: 22px; }
+    .nv-item span { font-size: 9px; font-weight: 700; }
+    .nv-item.on { color: var(--orange); }
+    .nv-pub {
+      width: 42px; height: 42px; border-radius: 13px; background: var(--orange); color: white;
+      display: flex; align-items: center; justify-content: center; margin-top: -4px;
+      box-shadow: 0 4px 14px rgba(255,77,32,0.35);
+    }
+    .nv-pub svg { width: 20px; height: 20px; }
+    .nv-avt {
+      width: 22px; height: 22px; border-radius: 50%; background: #FFE8DD; border: 1.5px solid var(--border);
+      display: flex; align-items: center; justify-content: center; font-size: 9px; font-weight: 800; color: var(--orange);
+    }
+  </style>
+</head>
+<body>
+<div id="app">
+
+  <div class="header">
+    <button class="btn-voltar" onclick="history.back()" aria-label="Voltar">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.25" stroke-linecap="round" stroke-linejoin="round"><path d="M19 12H5M11 6l-6 6 6 6"/></svg>
+    </button>
+    <div class="header-info">
+      <div class="header-titulo"><span class="header-icone" id="cat-icone">ðŸ’ˆ</span><span id="cat-nome">Barbearia</span></div>
+      <div class="header-sub" id="cat-count">Carregando profissionais...</div>
+    </div>
+  </div>
+
+  <div class="ordenar-bar">
+    <div class="ordenar-chip ativo" data-ord="popular" onclick="ordenarPor('popular')">Mais populares</div>
+    <div class="ordenar-chip" data-ord="rating" onclick="ordenarPor('rating')">Melhor avaliados</div>
+    <div class="ordenar-chip" data-ord="perto" onclick="ordenarPor('perto')">Mais perto</div>
+  </div>
+
+  <div class="lista-area" id="lista-area"></div>
+
+  <div class="vazio" id="vazio">
+    <div class="vazio-icone">ðŸ”</div>
+    <span>Nenhum profissional encontrado nessa categoria ainda.</span>
+  </div>
+
+  <div class="bottom-nav">
+    <div class="nv-item" onclick="location.href='home.html'">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg>
+      <span>Deslizar</span>
+    </div>
+    <div class="nv-item" onclick="location.href='match.html'">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>
+      <span>Match</span>
+    </div>
+    <div class="nv-item" onclick="location.href='publicar.html'">
+      <div class="nv-pub"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg></div>
+    </div>
+    <div class="nv-item on" onclick="location.href='buscar.html'">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+      <span>Buscar</span>
+    </div>
+    <div class="nv-item" onclick="location.href='perfil.html'">
+      <div class="nv-avt">DN</div>
+      <span>Perfil</span>
+    </div>
+  </div>
+
+</div>
+
+<script>
+// â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
+// DADOS DE EXEMPLO POR CATEGORIA
+// â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
+const PROFISSIONAIS = {
+  barbearia: [
+    { id:1, nome:'JoÃ£o Ricardo', verificado:true, cat:'Barbeiro Â· 6 anos de experiÃªncia', rating:4.9, avaliacoes:87, servicos:124, distanciaKm:1.8 },
+    { id:2, nome:'Marcos VinÃ­cius', verificado:true, cat:'Barbeiro Â· Especialista em degradÃª', rating:4.6, avaliacoes:41, servicos:68, distanciaKm:4.0 },
+    { id:3, nome:'Felipe Augusto', verificado:false, cat:'Barbeiro', rating:0, avaliacoes:0, servicos:0, distanciaKm:2.7 },
+  ],
+  musica: [
+    { id:4, nome:'Carla Mendes', verificado:false, cat:'Aulas de mÃºsica Â· ViolÃ£o e canto', rating:4.7, avaliacoes:32, servicos:55, distanciaKm:3.2 },
+    { id:5, nome:'Rafael TenÃ³rio', verificado:true, cat:'Aulas de mÃºsica Â· Piano e teoria musical', rating:5.0, avaliacoes:9, servicos:12, distanciaKm:6.1 },
+  ],
+  reforco: [
+    { id:6, nome:'Paulo Santos', verificado:true, cat:'ReforÃ§o escolar Â· MatemÃ¡tica e FÃ­sica', rating:5.0, avaliacoes:14, servicos:21, distanciaKm:2.5 },
+    { id:7, nome:'Juliana Castro', verificado:false, cat:'ReforÃ§o escolar Â· PortuguÃªs e RedaÃ§Ã£o', rating:0, avaliacoes:0, servicos:0, distanciaKm:1.1 },
+  ],
+  baba: [
+    { id:8, nome:'Ana Beatriz', verificado:true, cat:'BabÃ¡ Â· Cuidados infantis', rating:4.8, avaliacoes:53, servicos:90, distanciaKm:0.9 },
+  ],
+  transporte: [
+    { id:9, nome:'Edson Carlos', verificado:true, cat:'Transporte privado Â· Sedan executivo', rating:4.9, avaliacoes:120, servicos:310, distanciaKm:3.4 },
+  ],
+  advogado: [
+    { id:10, nome:'Dra. PatrÃ­cia Lima', verificado:true, cat:'Advogada Â· Direito trabalhista', rating:4.9, avaliacoes:28, servicos:40, distanciaKm:5.0 },
+  ],
+  financeira: [
+    { id:11, nome:'Rodrigo Almeida', verificado:false, cat:'Assessoria financeira Â· MEI e autÃ´nomos', rating:0, avaliacoes:0, servicos:0, distanciaKm:2.2 },
+  ],
+};
+
+const params = new URLSearchParams(location.search);
+const categoriaId = params.get('id') || 'barbearia';
+const categoriaNome = params.get('nome') || 'Profissionais';
+const categoriaIcone = params.get('icone') || 'ðŸ”§';
+
+document.getElementById('cat-icone').textContent = categoriaIcone;
+document.getElementById('cat-nome').textContent = categoriaNome;
+
+let ordemAtual = 'popular';
+
+function carregarLista() {
+  const lista = [...(PROFISSIONAIS[categoriaId] || [])];
+
+  if (ordemAtual === 'popular') lista.sort((a,b) => b.servicos - a.servicos);
+  if (ordemAtual === 'rating')  lista.sort((a,b) => b.rating - a.rating);
+  if (ordemAtual === 'perto')   lista.sort((a,b) => a.distanciaKm - b.distanciaKm);
+
+  document.getElementById('cat-count').textContent =
+    lista.length === 0 ? 'Nenhum profissional ainda' :
+    lista.length === 1 ? '1 profissional disponÃ­vel' :
+    `${lista.length} profissionais disponÃ­veis`;
+
+  const area = document.getElementById('lista-area');
+  area.innerHTML = '';
+  document.getElementById('vazio').classList.toggle('show', lista.length === 0);
+
+  lista.forEach(p => {
+    const el = document.createElement('div');
+    el.className = 'item-prof';
+
+    const popularidadeHtml = p.servicos > 0
+      ? `<span class="item-popularidade">${p.servicos} serviÃ§os realizados</span>`
+      : `<span class="item-popularidade novo">âœ¨ Novo no Eureka</span>`;
+
+    const ratingHtml = p.avaliacoes > 0
+      ? `<div class="item-rating"><svg viewBox="0 0 24 24" fill="currentColor"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>${p.rating.toFixed(1)} (${p.avaliacoes})</div>`
+      : '';
+
+    el.innerHTML = `
+      <div class="item-avatar">${p.fotoPerfil ? `<img src="${p.fotoPerfil}" alt="${p.nome}">` : p.nome.charAt(0)}</div>
+      <div class="item-info">
+        <div class="item-nome">${p.nome}${p.verificado ? `<svg class="verif" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9" fill="currentColor" stroke="none"/><polyline points="8.5 12.5 11 15 16 9" stroke="white"/></svg>` : ''}</div>
+        <div class="item-cat">${p.cat}</div>
+        <div class="item-meta">
+          ${ratingHtml}
+          <div class="item-dist"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.25" stroke-linecap="round" stroke-linejoin="round"><path d="M12 21s-7-5.686-7-10a7 7 0 0 1 14 0c0 4.314-7 10-7 10z"/><circle cx="12" cy="11" r="2.5"/></svg>${p.distanciaKm.toString().replace('.',',')} km</div>
+        </div>
+        <div style="margin-top:4px;">${popularidadeHtml}</div>
+      </div>
+      <div class="item-seta"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.25" stroke-linecap="round" stroke-linejoin="round"><path d="M9 18l6-6-6-6"/></svg></div>
+    `;
+
+    el.onclick = () => {
+      const p2 = new URLSearchParams({ id: p.id, cat: categoriaId });
+      location.href = `servico-perfil.html?${p2.toString()}`;
+    };
+
+    area.appendChild(el);
+  });
+}
+
+window.ordenarPor = function(ord) {
+  ordemAtual = ord;
+  document.querySelectorAll('.ordenar-chip').forEach(c => c.classList.toggle('ativo', c.dataset.ord === ord));
+  carregarLista();
+};
+
+carregarLista();
+</script>
+</body>
+</html>
