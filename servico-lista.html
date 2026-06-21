@@ -107,12 +107,12 @@
       padding: 8px 8px calc(14px + env(safe-area-inset-bottom, 0px));
       background: var(--bg-app); border-top: 1px solid var(--border);
     }
-    .nv-item { display: flex; flex-direction: column; align-items: center; gap: 3px; color: var(--ink3); cursor: pointer; flex: 1; }
-    .nv-item svg { width: 22px; height: 22px; }
-    .nv-item span { font-size: 9px; font-weight: 700; }
+    .nv-item { display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 3px; color: var(--ink3); cursor: pointer; flex: 1; padding: 10px 0; }
+    .nv-item svg { width: 26px; height: 26px; }
+    .nv-item span { display: none; }
     .nv-item.on { color: var(--orange); }
-    .nv-central-icone { width: 28px; height: 28px; border-radius: 9px; display: flex; align-items: center; justify-content: center; }
-    .nv-central-icone svg { width: 20px; height: 20px; }
+    .nv-central-icone { width: 34px; height: 34px; border-radius: 11px; display: flex; align-items: center; justify-content: center; }
+    .nv-central-icone svg { width: 24px; height: 24px; }
     .nv-pub {
       width: 42px; height: 42px; border-radius: 13px; background: var(--orange); color: white;
       display: flex; align-items: center; justify-content: center; margin-top: -4px;
@@ -120,9 +120,11 @@
     }
     .nv-pub svg { width: 20px; height: 20px; }
     .nv-avt {
-      width: 22px; height: 22px; border-radius: 50%; background: #FFE8DD; border: 1.5px solid var(--border);
-      display: flex; align-items: center; justify-content: center; font-size: 9px; font-weight: 800; color: var(--orange);
+      width: 26px; height: 26px;
+      display: flex; align-items: center; justify-content: center; color: var(--ink3);
     }
+    .nv-avt svg { width: 26px; height: 26px; }
+    .nv-item.on .nv-avt { color: var(--orange); }
   </style>
 </head>
 <body>
@@ -171,7 +173,9 @@
       <span>Mensagens</span>
     </div>
     <div class="nv-item" onclick="location.href='perfil.html'">
-      <div class="nv-avt">DN</div>
+      <div class="nv-avt">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="8" r="4"/><path d="M4 21c0-4.5 3.5-7 8-7s8 2.5 8 7"/></svg>
+      </div>
       <span>Perfil</span>
     </div>
   </div>
