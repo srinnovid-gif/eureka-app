@@ -1,0 +1,378 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8"/>
+  <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"/>
+  <meta name="theme-color" content="#16232A"/>
+  <title>Eureka! — Perfil</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com"/>
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+  <link href="https://fonts.googleapis.com/css2?family=Asap:ital,wght@0,800;1,800&family=Geologica:slnt,wght@-12..0,100..900&family=Glory:ital,wght@0,800&family=DM+Mono:wght@500&display=swap" rel="stylesheet"/>
+  <style>
+    :root {
+      --orange: #FF4D20; --green: #0F8A6F;
+      --ink: #16232A; --ink2: #C8D2D6; --ink3: #6E7E85;
+      --border: #25333B; --white: #FAF7F2; --surface: #1C2A32; --bg-app: #0E1418;
+    }
+    * { box-sizing: border-box; margin:0; padding:0; -webkit-tap-highlight-color: transparent; }
+    html, body { height: 100%; font-family: 'Geologica', sans-serif; background: var(--bg-app); color: var(--white); -webkit-font-smoothing: antialiased; }
+    body { overflow-y: auto; }
+
+    #app { min-height: 100%; display: flex; flex-direction: column; background: var(--bg-app); }
+
+    /* ══════════════════════════════════════
+       HEADER FLUTUANTE
+    ══════════════════════════════════════ */
+    .header {
+      position: sticky; top: 0; z-index: 30;
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 16px;
+      background: linear-gradient(to bottom, rgba(14,20,24,0.85), transparent);
+    }
+    .btn-voltar, .btn-editar-topo {
+      width: 38px; height: 38px; border-radius: 50%;
+      background: rgba(255,255,255,0.12); border: 1px solid rgba(255,255,255,0.18);
+      backdrop-filter: blur(8px);
+      display: flex; align-items: center; justify-content: center;
+      cursor: pointer; color: white;
+    }
+    .btn-voltar svg, .btn-editar-topo svg { width: 16px; height: 16px; }
+
+    /* ══════════════════════════════════════
+       CAPA + AVATAR
+    ══════════════════════════════════════ */
+    .capa {
+      height: 150px; margin-top: -54px;
+      background: linear-gradient(135deg, #2A3D33, var(--ink));
+      position: relative;
+    }
+
+    .perfil-cabecalho {
+      padding: 0 20px; margin-top: -44px; position: relative; z-index: 2;
+    }
+
+    .perfil-avatar {
+      width: 88px; height: 88px; border-radius: 50%;
+      background: linear-gradient(135deg, #FF8A5C, var(--orange));
+      border: 4px solid var(--bg-app);
+      display: flex; align-items: center; justify-content: center;
+      font-family: 'DM Mono', monospace; font-weight: 700; font-size: 30px; color: white;
+      overflow: hidden;
+    }
+    .perfil-avatar img { width: 100%; height: 100%; object-fit: cover; }
+
+    .perfil-nome-row {
+      display: flex; align-items: center; gap: 7px; margin-top: 12px;
+    }
+    .perfil-nome {
+      font-family: 'Glory', sans-serif; font-weight: 800; font-size: 22px;
+    }
+    .verif { width: 18px; height: 18px; color: var(--orange); flex-shrink: 0; }
+
+    .perfil-cat { font-size: 13.5px; color: var(--ink3); margin-top: 3px; }
+
+    .perfil-stats {
+      display: flex; gap: 18px; margin-top: 14px;
+    }
+    .stat-item { display: flex; flex-direction: column; }
+    .stat-valor { font-size: 16px; font-weight: 800; color: var(--white); display: flex; align-items: center; gap: 4px; }
+    .stat-valor svg { width: 14px; height: 14px; color: #FBB931; }
+    .stat-label { font-size: 11px; color: var(--ink3); margin-top: 1px; }
+
+    .stat-novo { color: #FBB931; font-size: 13px; font-weight: 700; }
+
+    /* ══════════════════════════════════════
+       BOTÕES MENSAGEM / FAVORITAR
+    ══════════════════════════════════════ */
+    .acoes-perfil {
+      padding: 18px 20px 6px;
+    }
+    .btn-editar-perfil {
+      width: 100%; padding: 13px; border-radius: 14px;
+      font-family: 'Geologica', sans-serif; font-weight: 800; font-size: 14px;
+      display: flex; align-items: center; justify-content: center; gap: 8px;
+      cursor: pointer; border: 1.5px solid var(--border);
+      background: var(--surface); color: var(--white);
+    }
+    .btn-editar-perfil svg { width: 16px; height: 16px; }
+
+    /* ══════════════════════════════════════
+       BIO
+    ══════════════════════════════════════ */
+    .bio {
+      padding: 14px 20px 4px;
+      font-size: 13.5px; color: var(--ink2); line-height: 1.55;
+    }
+
+    /* ══════════════════════════════════════
+       MEU TRABALHO — galeria
+    ══════════════════════════════════════ */
+    .secao-trabalho {
+      padding: 24px 20px 100px;
+    }
+
+    .secao-titulo-row {
+      display: flex; align-items: center; gap: 8px; margin-bottom: 14px;
+    }
+    .secao-titulo {
+      font-family: 'Glory', sans-serif; font-weight: 800; font-size: 17px;
+    }
+    .secao-titulo-icone { font-size: 17px; }
+
+    .galeria-grid {
+      display: grid; grid-template-columns: 1fr 1fr; gap: 8px;
+    }
+
+    .galeria-item {
+      border-radius: 14px; overflow: hidden; position: relative;
+      aspect-ratio: 1; background: var(--surface); border: 1px solid var(--border);
+      cursor: pointer;
+    }
+    .galeria-item img { width: 100%; height: 100%; object-fit: cover; }
+    .galeria-fallback {
+      width: 100%; height: 100%; display: flex; align-items: center; justify-content: center;
+      background: linear-gradient(135deg, #2A3D33, var(--ink)); font-size: 28px;
+    }
+    .galeria-desc {
+      position: absolute; left: 0; right: 0; bottom: 0;
+      background: linear-gradient(to top, rgba(0,0,0,0.8), transparent);
+      padding: 20px 10px 8px; font-size: 11px; color: white; font-weight: 600;
+      line-height: 1.3;
+    }
+    .galeria-video-badge {
+      position: absolute; top: 8px; right: 8px;
+      width: 22px; height: 22px; border-radius: 50%;
+      background: rgba(0,0,0,0.55); backdrop-filter: blur(4px);
+      display: flex; align-items: center; justify-content: center; color: white;
+    }
+    .galeria-video-badge svg { width: 11px; height: 11px; }
+
+    .galeria-vazia {
+      text-align: center; padding: 30px 16px; color: var(--ink3); font-size: 13px;
+      grid-column: 1 / -1;
+    }
+
+    /* ══════════════════════════════════════
+       MODAL DE FOTO COM DESCRIÇÃO
+    ══════════════════════════════════════ */
+    .modal-foto {
+      position: fixed; inset: 0; z-index: 100;
+      display: none; align-items: flex-end; justify-content: center;
+      background: rgba(0,0,0,0.75);
+    }
+    .modal-foto.show { display: flex; }
+    .modal-foto-conteudo {
+      width: 100%; max-width: 430px; background: var(--surface);
+      border-radius: 24px 24px 0 0; overflow: hidden;
+    }
+    .modal-foto-img {
+      width: 100%; aspect-ratio: 1; object-fit: cover; background: var(--ink);
+    }
+    .modal-foto-fallback {
+      width: 100%; aspect-ratio: 1; display: flex; align-items: center; justify-content: center;
+      background: linear-gradient(135deg, #2A3D33, var(--ink)); font-size: 50px;
+    }
+    .modal-foto-info { padding: 16px 18px calc(20px + env(safe-area-inset-bottom, 0px)); }
+    .modal-foto-desc { font-size: 14px; color: var(--white); line-height: 1.5; }
+    .modal-foto-fechar {
+      position: absolute; top: 12px; right: 12px;
+      width: 32px; height: 32px; border-radius: 50%;
+      background: rgba(0,0,0,0.5); backdrop-filter: blur(6px);
+      display: flex; align-items: center; justify-content: center; color: white;
+      cursor: pointer;
+    }
+    .modal-foto-fechar svg { width: 16px; height: 16px; }
+
+    /* ══════════════════════════════════════
+       TOAST
+    ══════════════════════════════════════ */
+    #toast {
+      position: fixed; bottom: 24px; left: 50%;
+      transform: translateX(-50%) translateY(20px);
+      background: var(--surface); color: var(--white);
+      border: 1px solid var(--border);
+      padding: 11px 20px; border-radius: 50px;
+      font-size: 13px; font-weight: 700;
+      opacity: 0; pointer-events: none;
+      transition: opacity 0.25s, transform 0.25s;
+      z-index: 150; display: flex; align-items: center; gap: 8px;
+      white-space: nowrap;
+    }
+    #toast.show { opacity: 1; transform: translateX(-50%) translateY(0); }
+    #toast svg { width: 15px; height: 15px; }
+
+    /* ══════════════════════════════════════
+       BOTTOM NAV (fixa, já que esta página tem scroll natural)
+    ══════════════════════════════════════ */
+    .bottom-nav {
+      position: fixed; left: 0; right: 0; bottom: 0; z-index: 40;
+      display: flex; align-items: center; justify-content: space-around;
+      padding: 0 8px calc(14px + env(safe-area-inset-bottom, 0px));
+      background: var(--bg-app); border-top: 1px solid var(--border);
+    }
+    .nv-item { display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 3px; color: var(--ink3); cursor: pointer; flex: 1; padding: 10px 0; }
+    .nv-item svg { width: 26px; height: 26px; }
+    .nv-item.on { color: var(--orange); }
+    .nv-central-icone { width: 34px; height: 34px; border-radius: 11px; display: flex; align-items: center; justify-content: center; }
+    .nv-central-icone svg { width: 24px; height: 24px; }
+    .nv-avt { width: 26px; height: 26px; display: flex; align-items: center; justify-content: center; color: var(--ink3); }
+    .nv-avt svg { width: 26px; height: 26px; }
+    .nv-item.on .nv-avt { color: var(--orange); }
+  </style>
+</head>
+<body>
+<div id="app">
+
+  <div class="header">
+    <div></div>
+    <button class="btn-editar-topo" onclick="location.href='editar-perfil.html'" aria-label="Editar perfil">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.25" stroke-linecap="round" stroke-linejoin="round"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg>
+    </button>
+  </div>
+
+  <div class="capa" id="capa"></div>
+
+  <div class="perfil-cabecalho">
+    <div class="perfil-avatar" id="avatar">JR</div>
+    <div class="perfil-nome-row">
+      <div class="perfil-nome" id="nome">João Ricardo</div>
+      <svg class="verif" id="verif-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9" fill="currentColor" stroke="none"/><polyline points="8.5 12.5 11 15 16 9" stroke="white"/></svg>
+    </div>
+    <div class="perfil-cat" id="cat">Barbeiro · 6 anos de experiência</div>
+
+    <div class="perfil-stats" id="stats"></div>
+  </div>
+
+  <div class="acoes-perfil">
+    <button class="btn-editar-perfil" onclick="location.href='editar-perfil.html'">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.25" stroke-linecap="round" stroke-linejoin="round"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg>
+      Editar perfil
+    </button>
+  </div>
+
+  <div class="bio" id="bio"></div>
+
+  <div class="secao-trabalho">
+    <div class="secao-titulo-row">
+      <span class="secao-titulo-icone">🛠️</span>
+      <span class="secao-titulo">Meu Trabalho</span>
+    </div>
+    <div class="galeria-grid" id="galeria"></div>
+  </div>
+
+</div>
+
+<div class="bottom-nav">
+  <div class="nv-item" onclick="location.href='inicio.html'">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 9.5L12 2l9 7.5V21a1 1 0 0 1-1 1h-5v-7H9v7H4a1 1 0 0 1-1-1V9.5z"/></svg>
+  </div>
+  <div class="nv-item nv-item-central" onclick="location.href='home.html'">
+    <div class="nv-central-icone">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.25" stroke-linecap="round" stroke-linejoin="round"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg>
+    </div>
+  </div>
+  <div class="nv-item" onclick="location.href='buscar.html'">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+  </div>
+  <div class="nv-item" onclick="location.href='mensagens.html'">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z"/></svg>
+  </div>
+  <div class="nv-item on" onclick="location.href='perfil.html'">
+    <div class="nv-avt">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="8" r="4"/><path d="M4 21c0-4.5 3.5-7 8-7s8 2.5 8 7"/></svg>
+    </div>
+  </div>
+</div>
+
+<!-- MODAL: foto/vídeo expandido com descrição -->
+<div class="modal-foto" id="modal-foto">
+  <div class="modal-foto-conteudo">
+    <button class="modal-foto-fechar" onclick="fecharModalFoto()">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+    </button>
+    <div id="modal-foto-media"></div>
+    <div class="modal-foto-info">
+      <div class="modal-foto-desc" id="modal-foto-desc"></div>
+    </div>
+  </div>
+</div>
+
+<div id="toast"></div>
+
+<script>
+// ══════════════════════════════════════
+// PERFIL PRÓPRIO DO USUÁRIO
+// (futuramente vem do Firestore, doc do usuário logado)
+// ══════════════════════════════════════
+const meuPerfil = {
+  nome: 'José David',
+  verificado: false,
+  cat: 'Cozinheiro auxiliar · Curitiba, PR',
+  rating: 0, avaliacoes: 0, servicos: 0,
+  bio: 'Cozinheiro com experiência em restaurantes, também atuo em frente de casa e operações de FLV. Aberto a oportunidades fixas e diárias na região de Curitiba.',
+  galeria: []
+};
+
+const perfil = meuPerfil;
+
+document.getElementById('nome').textContent = perfil.nome;
+document.getElementById('cat').textContent = perfil.cat;
+document.getElementById('bio').textContent = perfil.bio;
+document.getElementById('avatar').textContent = perfil.nome.charAt(0);
+document.getElementById('verif-icon').style.display = perfil.verificado ? '' : 'none';
+
+const statsEl = document.getElementById('stats');
+if (perfil.servicos > 0) {
+  statsEl.innerHTML = `
+    <div class="stat-item">
+      <div class="stat-valor"><svg viewBox="0 0 24 24" fill="currentColor"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>${perfil.rating.toFixed(1)}</div>
+      <div class="stat-label">${perfil.avaliacoes} avaliações</div>
+    </div>
+    <div class="stat-item">
+      <div class="stat-valor">${perfil.servicos}</div>
+      <div class="stat-label">serviços realizados</div>
+    </div>
+  `;
+} else {
+  statsEl.innerHTML = `<div class="stat-item"><div class="stat-novo">✨ Novo no Eureka</div></div>`;
+}
+
+// Galeria "Meu Trabalho"
+const galeriaEl = document.getElementById('galeria');
+if (!perfil.galeria || perfil.galeria.length === 0) {
+  galeriaEl.innerHTML = `
+    <div class="galeria-vazia">
+      Você ainda não publicou fotos do seu trabalho.<br/>
+      <a href="publicar.html" style="color:#FF8A5C; font-weight:700; text-decoration:none;">Adicionar agora →</a>
+    </div>`;
+} else {
+  perfil.galeria.forEach((item, idx) => {
+    const el = document.createElement('div');
+    el.className = 'galeria-item';
+    el.innerHTML = `
+      <div class="galeria-fallback">${item.tipo === 'video' ? '🎬' : '📷'}</div>
+      ${item.tipo === 'video' ? `<div class="galeria-video-badge"><svg viewBox="0 0 24 24" fill="currentColor"><polygon points="5 3 19 12 5 21 5 3"/></svg></div>` : ''}
+      <div class="galeria-desc">${item.desc}</div>
+    `;
+    el.onclick = () => abrirModalFoto(item);
+    galeriaEl.appendChild(el);
+  });
+}
+
+// ══════════════════════════════════════
+// MODAL DE FOTO/VÍDEO
+// ══════════════════════════════════════
+window.abrirModalFoto = function(item) {
+  document.getElementById('modal-foto-media').innerHTML =
+    `<div class="modal-foto-fallback">${item.tipo === 'video' ? '🎬' : '📷'}</div>`;
+  document.getElementById('modal-foto-desc').textContent = item.desc;
+  document.getElementById('modal-foto').classList.add('show');
+};
+
+window.fecharModalFoto = function() {
+  document.getElementById('modal-foto').classList.remove('show');
+};
+</script>
+</body>
+</html>
