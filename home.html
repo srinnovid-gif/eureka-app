@@ -354,34 +354,33 @@
     }
 
     .nav-item {
-      display: flex; flex-direction: column; align-items: center; gap: 3px;
-      flex: 1; padding: 4px 0; cursor: pointer;
+      display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 3px;
+      flex: 1; padding: 10px 0; cursor: pointer;
       color: var(--ink3); transition: color 0.15s;
     }
 
-    .nav-item svg { width: 23px; height: 23px; }
-    .nav-item span { font-size: 10px; font-weight: 700; letter-spacing: -0.01em; }
+    .nav-item svg { width: 27px; height: 27px; }
+    .nav-item span { display: none; }
     .nav-item.ativo { color: var(--orange); }
 
     /* Deslizar fica no centro e ganha um leve destaque — sem ser um botão
        flutuante elevado, apenas um anel sutil ao redor do ícone. */
     .nav-central-icone {
-      width: 30px; height: 30px; border-radius: 10px;
+      width: 36px; height: 36px; border-radius: 12px;
       display: flex; align-items: center; justify-content: center;
     }
     .nav-item-central.ativo .nav-central-icone {
       background: rgba(255,77,32,0.14);
     }
-    .nav-central-icone svg { width: 21px; height: 21px; }
+    .nav-central-icone svg { width: 25px; height: 25px; }
 
     .nav-avatar {
-      width: 24px; height: 24px; border-radius: 50%;
-      background: var(--orange-pale); border: 1.5px solid var(--border);
+      width: 27px; height: 27px;
       display: flex; align-items: center; justify-content: center;
-      font-size: 10px; font-weight: 800; color: var(--orange);
-      overflow: hidden;
+      color: var(--ink3);
     }
-    .nav-item.ativo .nav-avatar { border-color: var(--orange); }
+    .nav-avatar svg { width: 27px; height: 27px; }
+    .nav-item.ativo .nav-avatar { color: var(--orange); }
 
     /* ══════════════════════════════════════
        ESTADO VAZIO (fim do deck)
@@ -615,7 +614,9 @@
       <span>Mensagens</span>
     </div>
     <div class="nav-item" onclick="irPara('perfil')">
-      <div class="nav-avatar">DN</div>
+      <div class="nav-avatar">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="8" r="4"/><path d="M4 21c0-4.5 3.5-7 8-7s8 2.5 8 7"/></svg>
+      </div>
       <span>Perfil</span>
     </div>
   </div>
